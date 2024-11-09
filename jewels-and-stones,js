@@ -1,0 +1,20 @@
+var numJewelsInStones = function (jewels, stones) {
+  const obj = {};
+  let count = 0;
+  for (let index = 0; index < stones.length; index++) {
+    if (obj[stones[index]]) {
+      obj[stones[index]] += 1;
+    } else {
+      obj[stones[index]] = 1;
+    }
+  }
+  for (let index = 0; index < jewels.length; index++) {
+    if (obj[jewels[index]]) {
+      count += obj[jewels[index]];
+    }
+  }
+  return count;
+};
+
+console.log(numJewelsInStones((jewels = 'aA'), (stones = 'aAAbbbb')));
+console.log(numJewelsInStones((jewels = 'z'), (stones = 'ZZ')));
