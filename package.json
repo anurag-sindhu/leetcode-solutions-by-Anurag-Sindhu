@@ -1,0 +1,15 @@
+{
+  "name": "angular-6",
+  "version": "1.0.0",
+  "description": "My first ANgular 6 app",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "Anurag",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+  }
+}

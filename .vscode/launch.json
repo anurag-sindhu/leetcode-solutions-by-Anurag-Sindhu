@@ -14,7 +14,7 @@
           },
           "name": "Init",
           "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/problemSolving/leetcode/find-missing-observations.js"
+          "program": "${workspaceFolder}/solutions/best-time-to-buy-and-sell-stock-with-cooldown.js"
       }
   ]
 }

@@ -1,0 +1,142 @@
+{
+    "results": [
+        {
+            "address_components": [
+                {
+                    "long_name": "Uttarahalli Hobli",
+                    "short_name": "Uttarahalli Hobli",
+                    "types": ["political", "sublocality", "sublocality_level_1"]
+                },
+                {
+                    "long_name": "Bengaluru",
+                    "short_name": "Bengaluru",
+                    "types": ["locality", "political"]
+                },
+                {
+                    "long_name": "Bengaluru Urban",
+                    "short_name": "Bengaluru Urban",
+                    "types": ["administrative_area_level_3", "political"]
+                },
+                {
+                    "long_name": "Karnataka",
+                    "short_name": "KA",
+                    "types": ["administrative_area_level_1", "political"]
+                },
+                {
+                    "long_name": "India",
+                    "short_name": "IN",
+                    "types": ["country", "political"]
+                }
+            ],
+            "formatted_address": "Uttarahalli Hobli, Bengaluru, Karnataka, India",
+            "geometry": {
+                "bounds": {
+                    "northeast": {
+                        "lat": 12.9163268,
+                        "lng": 77.55848700000001
+                    },
+                    "southwest": {
+                        "lat": 12.9006672,
+                        "lng": 77.53731429999999
+                    }
+                },
+                "location": {
+                    "lat": 12.9069823,
+                    "lng": 77.552059
+                },
+                "location_type": "APPROXIMATE",
+                "viewport": {
+                    "northeast": {
+                        "lat": 12.9163268,
+                        "lng": 77.55848700000001
+                    },
+                    "southwest": {
+                        "lat": 12.9006672,
+                        "lng": 77.53731429999999
+                    }
+                }
+            },
+            "partial_match": true,
+            "place_id": "ChIJy_lzRMY_rjsRJpzi2YyUSjE",
+            "types": ["political", "sublocality", "sublocality_level_1"]
+        },
+        {
+            "address_components": [
+                {
+                    "long_name": "Whitefield Main Road",
+                    "short_name": "Whitefield Main Road",
+                    "types": ["route"]
+                },
+                {
+                    "long_name": "Belathur",
+                    "short_name": "Belathur",
+                    "types": ["political", "sublocality", "sublocality_level_2"]
+                },
+                {
+                    "long_name": "Uttarahalli Hobli",
+                    "short_name": "Uttarahalli Hobli",
+                    "types": ["political", "sublocality", "sublocality_level_1"]
+                },
+                {
+                    "long_name": "Bengaluru",
+                    "short_name": "Bengaluru",
+                    "types": ["locality", "political"]
+                },
+                {
+                    "long_name": "Bengaluru Urban",
+                    "short_name": "Bengaluru Urban",
+                    "types": ["administrative_area_level_3", "political"]
+                },
+                {
+                    "long_name": "Karnataka",
+                    "short_name": "KA",
+                    "types": ["administrative_area_level_1", "political"]
+                },
+                {
+                    "long_name": "India",
+                    "short_name": "IN",
+                    "types": ["country", "political"]
+                },
+                {
+                    "long_name": "560067",
+                    "short_name": "560067",
+                    "types": ["postal_code"]
+                }
+            ],
+            "formatted_address": "Bellathur Village, Bidarhalli, Whitefield Main Road, Belathur, Uttarahalli Hobli, Bengaluru, Karnataka 560067, India",
+            "geometry": {
+                "location": {
+                    "lat": 13.0063338,
+                    "lng": 77.7570313
+                },
+                "location_type": "GEOMETRIC_CENTER",
+                "viewport": {
+                    "northeast": {
+                        "lat": 13.0076724802915,
+                        "lng": 77.7584020302915
+                    },
+                    "southwest": {
+                        "lat": 13.0049745197085,
+                        "lng": 77.75570406970849
+                    }
+                }
+            },
+            "partial_match": true,
+            "place_id": "ChIJhSU7BiUPrjsRruFHwyqdhDc",
+            "plus_code": {
+                "compound_code": "2Q44+GR Bengaluru, Karnataka, India",
+                "global_code": "7J5V2Q44+GR"
+            },
+            "types": [
+                "doctor",
+                "establishment",
+                "health",
+                "hospital",
+                "pharmacy",
+                "point_of_interest",
+                "store"
+            ]
+        }
+    ],
+    "status": "OK"
+}
