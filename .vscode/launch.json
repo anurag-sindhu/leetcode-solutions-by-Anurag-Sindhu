@@ -14,7 +14,7 @@
           },
           "name": "Init",
           "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/solutions/best-time-to-buy-and-sell-stock-with-cooldown.js"
+          "program": "${workspaceFolder}/javascript/range-sum-query-2d-immutable.js"
       }
   ]
 }
