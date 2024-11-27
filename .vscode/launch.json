@@ -14,7 +14,7 @@
           },
           "name": "Init",
           "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/javascript/range-sum-query-2d-immutable.js"
+          "program": "${workspaceFolder}/solutions/maximum-total-importance-of-roads.js"
       }
   ]
 }

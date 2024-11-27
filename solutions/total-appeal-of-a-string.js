@@ -1,29 +1,21 @@
-function countDistinctCharacters(str) {
-  if (!str) {
-    return 0;
-  }
-  if (str.length === 1) {
-    return 1;
-  }
-  const obj = {};
-  for (let index = 0; index < str.length; index++) {
-    obj[str[index]] = {};
-  }
-  return Object.keys(obj).length;
-}
+const ord = (c) => c.charCodeAt();
 
-var appealSum = function (s) {
-  let length = s.length;
-  let count = 0;
-  while (length) {
-    for (let index = 0; index + length <= s.length; index++) {
-      const toIndex = index + length;
-      count += countDistinctCharacters(s.substring(index, toIndex));
+const appealSum = (s) => {
+    let last = Array(26).fill(0),
+        res = 0;
+    for (let i = 0; i < s.length; i++) {
+        last[ord(s[i]) - 97] = i + 1;
+        for (let j = 0; j < 26; j++) {
+            res += last[j];
+        }
     }
-    length--;
-  }
-  return count;
+    return res;
 };
-
-console.log(appealSum((s = 'code')));
 console.log(appealSum((s = 'abbca')));
+console.log(appealSum((s = 'code')));
+1, 2, 3, 4, 5
+1
+3
+6
+10
+15

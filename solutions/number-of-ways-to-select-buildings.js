@@ -1,81 +1,64 @@
-var numberOfWays1 = function (s) {
-  let count = 0;
-  const length = s.length;
-  let pointer1 = 0;
-  let pointer2 = 1;
-  let pointer3 = 2;
-  while (pointer1 < length - 2) {
-    let first = s[pointer1];
-    pointer2 = pointer1 + 1;
-    while (pointer2 < length - 1) {
-      let second = s[pointer2];
-      if (first === second) {
-        pointer2++;
-        continue;
-      }
-      pointer3 = pointer2 + 1;
-      while (pointer3 < length) {
-        let third = s[pointer3];
-        if (third === second) {
-          pointer3++;
-          continue;
+var numberOfWays = function (s) {
+    const countOfOne = (function () {
+        let count = 0;
+        const arr = [];
+        for (let index = s.length - 1; index >= 0; index--) {
+            const element = s[index];
+            if (element === '1') {
+                count += 1;
+            }
+            arr.push(count);
         }
-        count++;
-        pointer3++;
-      }
-      pointer2++;
-    }
-    pointer1++;
-  }
-  return count;
-};
+        return arr.reverse();
+    })();
+    const countOfZero = (function () {
+        let count = 0;
+        const arr = [];
+        for (let index = s.length - 1; index >= 0; index--) {
+            const element = s[index];
+            if (element === '0') {
+                count += 1;
+            }
+            arr.push(count);
+        }
+        return arr.reverse();
+    })();
+    const countOfOneZero = (function () {
+        let count = 0;
+        const arr = [];
+        for (let index = s.length - 1; index >= 0; index--) {
+            const element = s[index];
+            if (element === '1') {
+                count += countOfZero[index];
+            }
+            arr.push(count);
+        }
+        return arr.reverse();
+    })();
 
-var numberOfWays = function (array) {
-  const ones = [];
-  const zeroes = [];
-  for (let index = 0; index < array.length; index++) {
-    if (index === 0) {
-      if (array[index] === `1`) {
-        ones.push(1);
-      } else {
-        ones.push(0);
-      }
-    } else {
-      if (array[index] === `1`) {
-        ones.push(1 + Number(ones[ones.length - 1]));
-      } else {
-        ones.push(Number(ones[ones.length - 1]));
-      }
-    }
-    if (index === 0) {
-      if (array[index] === `0`) {
-        zeroes.push(1);
-      } else {
-        zeroes.push(0);
-      }
-    } else {
-      if (array[index] === `0`) {
-        zeroes.push(1 + Number(zeroes[zeroes.length - 1]));
-      } else {
-        zeroes.push(Number(zeroes[zeroes.length - 1]));
-      }
-    }
-  }
-  const length = array.length;
-  let count = 0;
-  for (let index = array.length - 1; index > 1; index--) {
-    for (let childIndex = index - 1; childIndex > 0; childIndex--) {
-      if (array[index] !== array[childIndex]) {
-        if (array[childIndex] === `0`) {
-          count += ones[childIndex];
+    const countOfZeroOne = (function () {
+        let count = 0;
+        const arr = [];
+        for (let index = s.length - 1; index >= 0; index--) {
+            const element = s[index];
+            if (element === '0') {
+                count += countOfOne[index];
+            }
+            arr.push(count);
+        }
+        return arr.reverse();
+    })();
+    let count = 0;
+    for (let index = 0; index < s.length - 2; index++) {
+        const element = s[index];
+        if (element === '1') {
+            count += countOfZeroOne[index];
         } else {
-          count += zeroes[childIndex];
+            count += countOfOneZero[index];
         }
-      }
     }
-  }
-  return count;
+    return count;
 };
-console.log(numberOfWays((s = '11100')));
-
-console.log(numberOfWays((s = '001101')));
+console.log(numberOfWays((s = '0001100100')) == 38);
+console.log(numberOfWays((s = '11100')) == 0);
+console.log(numberOfWays((s = '001101')) == 6);

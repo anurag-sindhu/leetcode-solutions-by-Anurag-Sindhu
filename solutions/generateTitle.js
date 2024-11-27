@@ -5,7 +5,7 @@ function generateTitle(heading) {
     console.log(title.length);
     return title;
 }
-console.log(generateTitle(`minimum-number-of-food-buckets-to-feed-the-hamsters`));
+console.log(generateTitle(`tried-again-after-1.5-Years`));
 //tried-after-2-years-
 /**
  * constant, 
