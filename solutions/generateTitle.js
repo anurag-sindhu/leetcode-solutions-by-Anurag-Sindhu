@@ -5,7 +5,8 @@ function generateTitle(heading) {
     console.log(title.length);
     return title;
 }
-console.log(generateTitle(`tried-again-after-1.5-Years`));
+console.log(generateTitle(`100% time and space complexity`));
+
 //tried-after-2-years-
 /**
  * constant, 

@@ -14,7 +14,7 @@
           },
           "name": "Init",
           "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/solutions/maximum-total-importance-of-roads.js"
+          "program": "${workspaceFolder}/solutions/minimum-sum-of-squared-difference.js"
       }
   ]
 }
