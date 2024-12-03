@@ -1,102 +1,165 @@
+const { areTwoArrayEqual } = require('../javascript/compare-two-array');
+
 function isCapitalLetter(char) {
-	return char.toLowerCase() !== char;
+    return char.toLowerCase() !== char;
 }
 
-function splitWordAsCamelCasePattern(word) {
-	const output = [];
-	let tempWord = ``;
-	for (let index = 0; index < word.length; index++) {
-		if (isCapitalLetter(word[index])) {
-			if (tempWord.length) {
-				output.push(tempWord);
-			}
-			tempWord = ``;
-		}
-		tempWord += word[index];
-	}
-	if (tempWord.length) {
-		output.push(tempWord);
-	}
-	return output;
+function splitWordAsCamelCasePattern(word, patternSplitted) {
+    const output = [];
+    let tempWord = ``;
+    for (let index = 0; index < word.length; index++) {
+        if (isCapitalLetter(word[index])) {
+            if (tempWord.length) {
+                output.push(tempWord);
+            }
+            tempWord = ``;
+        }
+        tempWord += word[index];
+    }
+    if (tempWord.length) {
+        output.push(tempWord);
+    }
+    return output;
+}
+function splitWordAsCamelCasePatternWithPatternSplitted(word, patternSplitted) {
+    let patternSplittedIndex = 0;
+    let capitalLetterIndex = 0;
+    let index = 0;
+    let capitalLetters = '';
+    for (let ind = 0; ind < word.length; ind++) {
+        const element = word[ind];
+        if (isCapitalLetter(element)) {
+            capitalLetters += element;
+        }
+    }
+    if (capitalLetters.length != patternSplitted.length) {
+        return false;
+    }
+    for (; index < word.length; index++) {
+        if (patternSplitted[patternSplittedIndex][capitalLetterIndex] == word[index]) {
+            capitalLetterIndex++;
+        }
+        if (
+            patternSplitted[patternSplittedIndex] &&
+            patternSplitted[patternSplittedIndex][capitalLetterIndex] === undefined
+        ) {
+            capitalLetterIndex = 0;
+            patternSplittedIndex++;
+            if (patternSplittedIndex == patternSplitted.length) {
+                break;
+            }
+        }
+    }
+    if (patternSplittedIndex !== patternSplitted.length) {
+        return false;
+    }
+    if (++index !== word.length) {
+        let capitalLetters = '';
+        for (; index < word.length; index++) {
+            const element = word[index];
+            if (isCapitalLetter(element)) {
+                capitalLetters += element;
+            }
+        }
+        if (capitalLetters.length) {
+            return false;
+        }
+    }
+    return true;
 }
 
-var camelMatch = function(queries, pattern) {
-	const queriesSplitted = [];
-	const patternSplitted = splitWordAsCamelCasePattern(pattern);
-	const output = [];
-	for (const iterator of queries) {
-		queriesSplitted.push(splitWordAsCamelCasePattern(iterator));
-	}
-
-	for (const iterator of queriesSplitted) {
-		let subOutput = true;
-		let patternIndex = 0;
-		for (let index = 0; index < iterator.length; index++) {
-			const element = iterator[index];
-			const patternElement = patternSplitted[patternIndex++];
-			let internalPatternIndex = 0;
-			for (let elementIndex = 0; elementIndex < element.length; elementIndex++) {
-				const subElement = element[elementIndex];
-				if (!patternElement) {
-					subOutput = false;
-					break;
-				}
-				if (subElement === patternElement[internalPatternIndex]) {
-					internalPatternIndex++;
-				}
-			}
-			if (patternElement && patternElement[internalPatternIndex] !== undefined) {
-				subOutput = false;
-				break;
-			}
-		}
-		if (patternSplitted[patternIndex] !== undefined) {
-			subOutput = false;
-		}
-		output.push(subOutput);
-	}
-	return output;
+var camelMatch = function (queries, pattern) {
+    const patternSplitted = splitWordAsCamelCasePattern(pattern);
+    const output = [];
+    for (const iterator of queries) {
+        output.push(splitWordAsCamelCasePatternWithPatternSplitted(iterator, patternSplitted));
+    }
+    return output;
 };
 
 console.log(
-	camelMatch(
-		(queries = [
-			'uAxaqlzahfialcezsLfj',
-			'cAqlzyahaslccezssLfj',
-			'AqlezahjarflcezshLfj',
-			'AqlzofahaplcejuzsLfj',
-			'tAqlzahavslcezsLwzfj',
-			'AqlzahalcerrzsLpfonj',
-			'AqlzahalceaczdsosLfj',
-			'eAqlzbxahalcezelsLfj'
-		]),
-		(pattern = 'AqlzahalcezsLfj')
-	)
+    areTwoArrayEqual(
+        camelMatch(
+            (queries = ['CompetitiveProgramming', 'CounterPick', 'ControlPanel']),
+            (pattern = 'CooP'),
+        ),
+        [false, false, true],
+    ),
 );
 
 console.log(
-	camelMatch(
-		(queries = [ 'FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack' ]),
-		(pattern = 'FB')
-	)
+    areTwoArrayEqual(
+        camelMatch(
+            [
+                'aksvbjLiknuTzqon',
+                'ksvjLimflkpnTzqn',
+                'mmkasvjLiknTxzqn',
+                'ksvjLiurknTzzqbn',
+                'ksvsjLctikgnTzqn',
+                'knzsvzjLiknTszqn',
+            ],
+            'ksvjLiknTzqn',
+        ),
+        [true, true, true, true, true, true],
+    ),
 );
 console.log(
-	camelMatch(
-		(queries = [ 'FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack' ]),
-		(pattern = 'FoBa')
-	)
+    areTwoArrayEqual(
+        camelMatch(
+            (queries = ['FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack']),
+            (pattern = 'FB'),
+        ),
+        [true, false, true, true, false],
+    ),
 );
-//[false,false,true]
 console.log(
-	camelMatch(
-		(queries = [ 'FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack' ]),
-		(pattern = 'FoBaT')
-	)
+    areTwoArrayEqual(
+        camelMatch(
+            (queries = [
+                'uAxaqlzahfialcezsLfj',
+                'cAqlzyahaslccezssLfj',
+                'AqlezahjarflcezshLfj',
+                'AqlzofahaplcejuzsLfj',
+                'tAqlzahavslcezsLwzfj',
+                'AqlzahalcerrzsLpfonj',
+                'AqlzahalceaczdsosLfj',
+                'eAqlzbxahalcezelsLfj',
+            ]),
+            (pattern = 'AqlzahalcezsLfj'),
+        ),
+        [true, true, true, true, true, true, true, true],
+    ),
+); //[true,true,true,true,true,true,true,true]
+
+console.log(
+    areTwoArrayEqual(
+        camelMatch(
+            (queries = ['FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack']),
+            (pattern = 'FoBa'),
+        ),
+        [true, false, true, false, false],
+    ),
 );
 
 console.log(
-	camelMatch(
-		(queries = [ 'CompetitiveProgramming', 'CounterPick', 'ControlPanel' ]),
-		(pattern = 'CooP')
-	)
+    areTwoArrayEqual(camelMatch((queries = ['ForceFeedBack']), (pattern = 'FoBa')), [false]),
+);
+
+console.log(
+    camelMatch(
+        (queries = ['FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack']),
+        (pattern = 'FB'),
+    ),
+);
+console.log(
+    camelMatch(
+        (queries = ['FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack']),
+        (pattern = 'FoBaT'),
+    ),
+);
+console.log(
+    camelMatch(
+        (queries = ['FooBar', 'FooBarTest', 'FootBall', 'FrameBuffer', 'ForceFeedBack']),
+        (pattern = 'FoBaT'),
+    ),
 );

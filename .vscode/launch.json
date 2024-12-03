@@ -14,7 +14,7 @@
           },
           "name": "Init",
           "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/solutions/minimum-sum-of-squared-difference.js"
+          "program": "${workspaceFolder}/solutions/camelcase-matching.js"
       }
   ]
 }

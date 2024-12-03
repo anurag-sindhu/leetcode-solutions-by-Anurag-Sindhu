@@ -1,512 +1,1231 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array.js');
 
 class Heap {
-	constructor() {
-		this.heap = [];
-	}
-	swapElements(from, to) {
-		const save = this.heap[to];
-		this.heap[to] = this.heap[from];
-		this.heap[from] = save;
-		return;
-	}
-	findParentIndex(childIndex) {
-		const indexFind = (childIndex - 1) / 2;
-		if (indexFind !== parseInt(indexFind)) {
-			return (childIndex - 2) / 2;
-		}
-		return indexFind;
-	}
-	findChildIndex(parentIndex) {
-		return { leftChild: 2 * parentIndex + 1, rightChild: 2 * parentIndex + 2 };
-	}
-	insertMinHeap(element, index) {
-		this.heap.push({ value: element, index });
-		const length = this.heap.length;
-		if (length > 1) {
-			let currentIndex = length - 1;
-			while (currentIndex) {
-				const findParentIndex = this.findParentIndex(currentIndex);
-				if (this.heap[findParentIndex].value > this.heap[currentIndex].value) {
-					this.swapElements(currentIndex, findParentIndex);
-				}
-				currentIndex = findParentIndex;
-			}
-		}
-	}
-	getMinimumElement() {
-		return this.heap[0];
-	}
-	getMaximumElement() {
-		return this.heap[0];
-	}
-	extractMinimumElement() {
-		const length = this.heap.length;
-		let indexOfToBeRemovedElement = 0;
-		this.heap[indexOfToBeRemovedElement] = this.heap[length - 1];
-		this.heap = this.heap.splice(indexOfToBeRemovedElement, length - 1);
-		while (indexOfToBeRemovedElement < length) {
-			let { leftChild, rightChild } = this.findChildIndex(indexOfToBeRemovedElement);
-			let findIndexOfSmallChildElement = leftChild;
-			if (this.heap[rightChild]) {
-				findIndexOfSmallChildElement =
-					this.heap[leftChild].value > this.heap[rightChild].value
-						? rightChild
-						: leftChild;
-			}
-			if (
-				this.heap[findIndexOfSmallChildElement] &&
-				this.heap[indexOfToBeRemovedElement] &&
-				this.heap[findIndexOfSmallChildElement].value <
-					this.heap[indexOfToBeRemovedElement].value
-			) {
-				this.swapElements(indexOfToBeRemovedElement, findIndexOfSmallChildElement);
-				indexOfToBeRemovedElement = findIndexOfSmallChildElement;
-			} else {
-				return;
-			}
-		}
-	}
-	extractMaximumElement() {
-		const length = this.heap.length;
-		let indexOfToBeRemovedElement = 0;
-		this.heap[indexOfToBeRemovedElement] = this.heap[length - 1];
-		this.heap = this.heap.splice(indexOfToBeRemovedElement, length - 1);
-		while (indexOfToBeRemovedElement < length) {
-			let { leftChild, rightChild } = this.findChildIndex(indexOfToBeRemovedElement);
-			const findLargestIndex =
-				this.heap[leftChild] > this.heap[rightChild] ? leftChild : rightChild;
-			if (this.heap[findLargestIndex] > this.heap[indexOfToBeRemovedElement]) {
-				this.swapElements(indexOfToBeRemovedElement, findLargestIndex);
-				indexOfToBeRemovedElement = findLargestIndex;
-			} else {
-				return;
-			}
-		}
-	}
-	getHeap() {
-		return this.heap;
-	}
+    constructor() {
+        this.heap = [];
+    }
+    swapElements(from, to) {
+        const save = this.heap[to];
+        this.heap[to] = this.heap[from];
+        this.heap[from] = save;
+        return;
+    }
+    findParentIndex(childIndex) {
+        const indexFind = (childIndex - 1) / 2;
+        if (indexFind !== parseInt(indexFind)) {
+            return (childIndex - 2) / 2;
+        }
+        return indexFind;
+    }
+    findChildIndex(parentIndex) {
+        return { leftChild: 2 * parentIndex + 1, rightChild: 2 * parentIndex + 2 };
+    }
+    insertMinHeap(element, index) {
+        this.heap.push({ value: element, index });
+        const length = this.heap.length;
+        if (length > 1) {
+            let currentIndex = length - 1;
+            while (currentIndex) {
+                const findParentIndex = this.findParentIndex(currentIndex);
+                if (this.heap[findParentIndex].value > this.heap[currentIndex].value) {
+                    this.swapElements(currentIndex, findParentIndex);
+                }
+                currentIndex = findParentIndex;
+            }
+        }
+    }
+    getMinimumElement() {
+        return this.heap[0];
+    }
+    getMaximumElement() {
+        return this.heap[0];
+    }
+    extractMinimumElement() {
+        const length = this.heap.length;
+        let indexOfToBeRemovedElement = 0;
+        this.heap[indexOfToBeRemovedElement] = this.heap[length - 1];
+        this.heap = this.heap.splice(indexOfToBeRemovedElement, length - 1);
+        while (indexOfToBeRemovedElement < length) {
+            let { leftChild, rightChild } = this.findChildIndex(indexOfToBeRemovedElement);
+            let findIndexOfSmallChildElement = leftChild;
+            if (this.heap[rightChild]) {
+                findIndexOfSmallChildElement =
+                    this.heap[leftChild].value > this.heap[rightChild].value
+                        ? rightChild
+                        : leftChild;
+            }
+            if (
+                this.heap[findIndexOfSmallChildElement] &&
+                this.heap[indexOfToBeRemovedElement] &&
+                this.heap[findIndexOfSmallChildElement].value <
+                    this.heap[indexOfToBeRemovedElement].value
+            ) {
+                this.swapElements(indexOfToBeRemovedElement, findIndexOfSmallChildElement);
+                indexOfToBeRemovedElement = findIndexOfSmallChildElement;
+            } else {
+                return;
+            }
+        }
+    }
+    extractMaximumElement() {
+        const length = this.heap.length;
+        let indexOfToBeRemovedElement = 0;
+        this.heap[indexOfToBeRemovedElement] = this.heap[length - 1];
+        this.heap = this.heap.splice(indexOfToBeRemovedElement, length - 1);
+        while (indexOfToBeRemovedElement < length) {
+            let { leftChild, rightChild } = this.findChildIndex(indexOfToBeRemovedElement);
+            const findLargestIndex =
+                this.heap[leftChild] > this.heap[rightChild] ? leftChild : rightChild;
+            if (this.heap[findLargestIndex] > this.heap[indexOfToBeRemovedElement]) {
+                this.swapElements(indexOfToBeRemovedElement, findLargestIndex);
+                indexOfToBeRemovedElement = findLargestIndex;
+            } else {
+                return;
+            }
+        }
+    }
+    getHeap() {
+        return this.heap;
+    }
 }
-var NumberContainers = function() {
-	this.numberToIndexMapping = {};
-	this.indexToNumberMapping = {};
-	return null;
+var NumberContainers = function () {
+    this.numberToIndexMapping = {};
+    this.indexToNumberMapping = {};
+    this.inactiveNumberToIndexMapping = {};
+    return null;
 };
 
-NumberContainers.prototype.change = function(index, number) {
-	try {
-		if (!this.indexToNumberMapping[index]) {
-			this.indexToNumberMapping[index] = number;
-		} else {
-			const elementsRemoved = [];
-			let minimumElement = undefined;
-			if (
-				this.numberToIndexMapping[this.indexToNumberMapping[index]] &&
-				this.numberToIndexMapping[this.indexToNumberMapping[index]].heap.length
-			) {
-				minimumElement = this.numberToIndexMapping[
-					this.indexToNumberMapping[index]
-				].getMinimumElement().value;
-			}
-			while (minimumElement !== undefined && minimumElement !== index) {
-				elementsRemoved.push(minimumElement);
-				this.numberToIndexMapping[this.indexToNumberMapping[index]].extractMinimumElement();
-				minimumElement = undefined;
-				if (
-					this.numberToIndexMapping[this.indexToNumberMapping[index]] &&
-					this.numberToIndexMapping[this.indexToNumberMapping[index]].heap.length
-				) {
-					minimumElement = this.numberToIndexMapping[
-						this.indexToNumberMapping[index]
-					].getMinimumElement().value;
-				}
-			}
-			if (
-				this.numberToIndexMapping[this.indexToNumberMapping[index]] &&
-				this.numberToIndexMapping[this.indexToNumberMapping[index]].heap.length
-			) {
-				this.numberToIndexMapping[this.indexToNumberMapping[index]].extractMinimumElement();
-			}
-			for (const iterator of elementsRemoved) {
-				this.numberToIndexMapping[this.indexToNumberMapping[index]].insertMinHeap(iterator);
-			}
-		}
-		if (!this.numberToIndexMapping[number]) {
-			this.numberToIndexMapping[number] = new Heap();
-		}
-		this.numberToIndexMapping[number].insertMinHeap(index);
-		return null;
-	} catch (e) {
-		console.log({ e });
-	}
+NumberContainers.prototype.change = function (index, number) {
+    if (this.indexToNumberMapping[index] !== undefined) {
+        let tempIndex = index;
+        const currentNumberExistingAtIndex = this.indexToNumberMapping[tempIndex];
+        if (!this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex]) {
+            this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex] = {};
+        }
+        this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][tempIndex] = true;
+        let minIndexOfSameNumber = null;
+        if (this.numberToIndexMapping[currentNumberExistingAtIndex]) {
+            minIndexOfSameNumber =
+                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0].value;
+        }
+        while (
+            tempIndex === minIndexOfSameNumber &&
+            tempIndex != undefined &&
+            minIndexOfSameNumber != undefined
+        ) {
+            this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][tempIndex] = false;
+            this.numberToIndexMapping[currentNumberExistingAtIndex].extractMinimumElement(
+                tempIndex,
+            );
+            minIndexOfSameNumber =
+                this.numberToIndexMapping[currentNumberExistingAtIndex].heap &&
+                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0] &&
+                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0].value;
+            tempIndex =
+                (this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][
+                    minIndexOfSameNumber
+                ] &&
+                    this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][
+                        minIndexOfSameNumber
+                    ].true) ||
+                undefined;
+        }
+    }
+    if (this.numberToIndexMapping[number] === undefined) {
+        this.numberToIndexMapping[number] = new Heap();
+    }
+    this.numberToIndexMapping[number].insertMinHeap(index);
+    this.indexToNumberMapping[index] = number;
+    return null;
 };
 
-NumberContainers.prototype.find = function(number) {
-	try {
-		return (
-			(this.numberToIndexMapping[number] &&
-				this.numberToIndexMapping[number].heap.length &&
-				this.numberToIndexMapping[number].getMinimumElement().value) ||
-			-1
-		);
-	} catch (e) {
-		console.log('object');
-	}
+NumberContainers.prototype.find = function (number) {
+    if (
+        !this.numberToIndexMapping[number] ||
+        this.numberToIndexMapping[number].heap == undefined ||
+        this.numberToIndexMapping[number].heap[0] == undefined
+    ) {
+        return -1;
+    }
+    return this.numberToIndexMapping[number].heap[0].value == undefined
+        ? -1
+        : this.numberToIndexMapping[number].heap[0].value;
 };
 
 let obj;
 let res;
 let operations;
 let values;
-let output = [ null ];
+let output = [null];
 
 obj = new NumberContainers();
+output = [null];
 operations = [
-	'NumberContainers',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'change',
-	'find'
-];
-values = [ [], [ 10 ], [ 2, 10 ], [ 1, 10 ], [ 3, 10 ], [ 5, 10 ], [ 10 ], [ 1, 20 ], [ 10 ] ];
-
-for (let index = 1; index < operations.length; index++) {
-	output.push(obj[operations[index]](...values[index]));
-}
-
-//[-1,null,null,null,null,1,null,2]
-console.log({ output });
-obj = new NumberContainers();
-output = [ null ];
-operations = [
-	'NumberContainers',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'change',
-	'find'
+    'NumberContainers',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
 ];
 values = [
-	[],
-	[ 10 ],
-	[ 20, 10 ],
-	[ 10, 10 ],
-	[ 13, 10 ],
-	[ 50, 10 ],
-	[ 6, 10 ],
-	[ 70, 10 ],
-	[ 8, 10 ],
-	[ 10 ],
-	[ 1, 20 ],
-	[ 10 ]
+    [],
+    [158, 9],
+    [75, 85],
+    [75, 187],
+    [77],
+    [109, 113],
+    [184],
+    [77],
+    [17, 191],
+    [113],
+    [35],
+    [184],
+    [164, 119],
+    [9],
+    [19, 151],
+    [142, 50],
+    [77],
+    [85],
+    [35, 164],
+    [184],
+    [118, 164],
+    [3, 164],
+    [184],
+    [113],
+    [135],
+    [72, 105],
+    [9],
+    [187],
+    [34, 105],
+    [135],
+    [164],
+    [135],
+    [20, 164],
+    [187],
+    [158, 184],
+    [44, 50],
+    [191],
+    [164, 50],
+    [20, 191],
+    [158, 191],
+    [107, 113],
+    [187],
+    [158, 50],
+    [142, 9],
+    [151],
+    [35, 119],
+    [113],
+    [105],
+    [127, 77],
+    [164, 164],
+    [187],
+    [72, 191],
+    [113],
+    [132, 164],
+    [7, 9],
+    [85],
+    [71, 187],
+    [7, 187],
+    [9],
+    [20, 185],
+    [35],
+    [7, 151],
+    [119],
+    [135],
+    [77],
+    [155, 187],
+    [164],
+    [135],
+    [183, 151],
+    [110, 164],
+    [50],
+    [20, 85],
+    [19, 9],
+    [85],
+    [175, 9],
+    [116, 105],
+    [187],
+    [164],
+    [107, 35],
+    [185],
+    [147, 184],
+    [109, 184],
+    [35],
+    [184],
+    [187],
+    [113],
+    [178, 85],
+    [9],
+    [178, 151],
+    [85],
+    [107, 164],
+    [116, 135],
+    [113],
+    [107, 164],
+    [77],
+    [116, 35],
+    [172, 35],
+    [200, 187],
+    [142, 50],
+    [50],
+    [187],
+    [105],
+    [127, 9],
+    [34, 164],
+    [178, 135],
+    [183, 50],
+    [34, 35],
+    [184],
+    [147, 77],
+    [172, 35],
+    [132, 151],
+    [119],
+    [7, 185],
+    [109, 185],
+    [187],
+    [110, 135],
+    [175, 35],
+    [35],
+    [127, 187],
+    [71, 164],
+    [188, 9],
+    [35, 50],
+    [107, 191],
+    [158, 119],
+    [85],
+    [50],
+    [35],
+    [77],
+    [183, 164],
+    [119],
+    [9],
+    [77],
+    [50],
+    [164, 9],
+    [151],
+    [172, 77],
+    [50],
+    [135],
+    [113],
+    [77],
+    [200, 9],
+    [77],
+    [184],
+    [142, 105],
+    [119],
+    [9],
+    [75, 185],
+    [142, 113],
+    [127, 119],
+    [110, 85],
+    [7, 135],
+    [127, 185],
+    [185],
+    [77],
+    [200, 50],
+    [164, 164],
+    [19, 35],
+    [172, 113],
+    [135],
+    [178, 35],
+    [72, 35],
+    [142, 85],
+    [3, 113],
+    [109, 151],
+    [110, 77],
+    [35, 119],
+    [75, 164],
+    [105],
+    [142, 113],
+    [164],
+    [127, 105],
+    [119],
+    [110, 135],
+    [158, 35],
+    [35, 164],
+    [35, 9],
+    [135],
+    [178, 50],
+    [119],
+    [73, 185],
+    [19, 85],
+    [155, 151],
+    [44, 187],
+    [116, 191],
+    [158, 35],
+    [110, 191],
+    [72, 187],
+    [7, 9],
+    [17, 135],
+    [35],
+    [200, 185],
+    [142, 185],
+    [164],
+    [175, 187],
+    [188, 185],
+    [172, 50],
+    [9],
+    [119],
+    [110, 191],
+    [35],
+    [35],
 ];
 
 for (let index = 1; index < operations.length; index++) {
-	output.push(obj[operations[index]](...values[index]));
+    if (index === 134) {
+        console.log('object');
+    }
+    output.push(obj[operations[index]](...values[index]));
+}
+res = areTwoArrayEqual(output, [
+    null,
+    null,
+    null,
+    null,
+    -1,
+    null,
+    -1,
+    -1,
+    null,
+    109,
+    -1,
+    -1,
+    null,
+    158,
+    null,
+    null,
+    -1,
+    -1,
+    null,
+    -1,
+    null,
+    null,
+    -1,
+    109,
+    -1,
+    null,
+    158,
+    75,
+    null,
+    -1,
+    3,
+    -1,
+    null,
+    75,
+    null,
+    null,
+    17,
+    null,
+    null,
+    null,
+    null,
+    75,
+    null,
+    null,
+    19,
+    null,
+    107,
+    34,
+    null,
+    null,
+    75,
+    null,
+    107,
+    null,
+    null,
+    -1,
+    null,
+    null,
+    142,
+    null,
+    -1,
+    null,
+    35,
+    -1,
+    127,
+    null,
+    3,
+    -1,
+    null,
+    null,
+    44,
+    null,
+    null,
+    20,
+    null,
+    null,
+    71,
+    3,
+    null,
+    -1,
+    null,
+    null,
+    107,
+    109,
+    71,
+    -1,
+    null,
+    19,
+    null,
+    20,
+    null,
+    null,
+    -1,
+    null,
+    127,
+    null,
+    null,
+    null,
+    null,
+    44,
+    71,
+    34,
+    null,
+    null,
+    null,
+    null,
+    null,
+    109,
+    null,
+    null,
+    null,
+    35,
+    null,
+    null,
+    71,
+    null,
+    null,
+    34,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    20,
+    35,
+    34,
+    147,
+    null,
+    158,
+    19,
+    147,
+    35,
+    null,
+    132,
+    null,
+    35,
+    110,
+    -1,
+    147,
+    null,
+    147,
+    -1,
+    null,
+    158,
+    19,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    75,
+    147,
+    null,
+    null,
+    null,
+    null,
+    7,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    -1,
+    null,
+    71,
+    null,
+    35,
+    null,
+    null,
+    null,
+    null,
+    7,
+    null,
+    -1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    34,
+    null,
+    null,
+    71,
+    null,
+    null,
+    null,
+    7,
+    -1,
+    null,
+    34,
+    34,
+]);
+console.log({ res });
+
+obj = new NumberContainers();
+output = [null];
+operations = [
+    'NumberContainers',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+];
+values = [[], [10], [2, 10], [1, 10], [3, 10], [5, 10], [10], [1, 20], [10]];
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+}
+res = areTwoArrayEqual(output, [null, -1, null, null, null, null, 1, null, 2]);
+console.log({ res });
+
+obj = new NumberContainers();
+output = [null];
+operations = [
+    'NumberContainers',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+];
+values = [
+    [],
+    [10],
+    [20, 10],
+    [10, 10],
+    [13, 10],
+    [50, 10],
+    [6, 10],
+    [70, 10],
+    [8, 10],
+    [10],
+    [1, 20],
+    [10],
+];
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
 }
 
 //[null,-1,null,null,null,null,null,null,null,6,null,6]
 console.log({ output });
-output = [ null ];
+output = [null];
 obj = new NumberContainers();
 operations = [
-	'NumberContainers',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'find',
-	'change',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'find',
-	'find',
-	'find',
-	'find',
-	'find',
-	'change',
-	'find',
-	'find',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find',
-	'change',
-	'find',
-	'find',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'find',
-	'change',
-	'change',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change',
-	'change',
-	'find'
+    'NumberContainers',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
 ];
 values = [
-	[],
-	[ 26, 137 ],
-	[ 120, 170 ],
-	[ 182, 3 ],
-	[ 62, 170 ],
-	[ 170 ],
-	[ 39, 107 ],
-	[ 182, 137 ],
-	[ 137 ],
-	[ 137 ],
-	[ 62, 121 ],
-	[ 152, 16 ],
-	[ 23, 117 ],
-	[ 180 ],
-	[ 187 ],
-	[ 26, 30 ],
-	[ 9, 137 ],
-	[ 107 ],
-	[ 117 ],
-	[ 152, 54 ],
-	[ 39, 117 ],
-	[ 23, 178 ],
-	[ 92 ],
-	[ 16 ],
-	[ 170 ],
-	[ 10, 170 ],
-	[ 182, 30 ],
-	[ 9 ],
-	[ 45, 178 ],
-	[ 26, 191 ],
-	[ 78, 67 ],
-	[ 28, 137 ],
-	[ 30, 165 ],
-	[ 191 ],
-	[ 121 ],
-	[ 93 ],
-	[ 26, 117 ],
-	[ 109 ],
-	[ 39, 33 ],
-	[ 28, 165 ],
-	[ 168 ],
-	[ 177, 178 ],
-	[ 62, 30 ],
-	[ 22, 17 ],
-	[ 74, 18 ],
-	[ 22 ],
-	[ 191 ],
-	[ 9, 33 ],
-	[ 188 ],
-	[ 116 ],
-	[ 120, 67 ],
-	[ 133 ],
-	[ 78, 16 ],
-	[ 54 ],
-	[ 33 ],
-	[ 104 ],
-	[ 33 ],
-	[ 139 ],
-	[ 86, 33 ],
-	[ 178 ],
-	[ 67 ],
-	[ 69 ],
-	[ 186, 128 ],
-	[ 194, 3 ],
-	[ 92, 178 ],
-	[ 65, 87 ],
-	[ 62, 87 ],
-	[ 145, 118 ],
-	[ 25, 133 ],
-	[ 100, 186 ],
-	[ 186, 28 ],
-	[ 186 ],
-	[ 195, 178 ],
-	[ 67 ],
-	[ 67 ],
-	[ 157 ],
-	[ 128 ],
-	[ 25, 3 ],
-	[ 76 ],
-	[ 102, 78 ],
-	[ 170 ],
-	[ 54 ],
-	[ 120, 168 ],
-	[ 133 ],
-	[ 37, 137 ],
-	[ 16, 165 ],
-	[ 26, 117 ],
-	[ 18 ],
-	[ 35 ],
-	[ 65, 10 ],
-	[ 170 ],
-	[ 108 ],
-	[ 9, 18 ],
-	[ 145, 173 ],
-	[ 120, 14 ],
-	[ 173 ],
-	[ 195, 46 ],
-	[ 86, 78 ],
-	[ 45, 46 ],
-	[ 86, 121 ],
-	[ 182 ]
+    [],
+    [26, 137],
+    [120, 170],
+    [182, 3],
+    [62, 170],
+    [170],
+    [39, 107],
+    [182, 137],
+    [137],
+    [137],
+    [62, 121],
+    [152, 16],
+    [23, 117],
+    [180],
+    [187],
+    [26, 30],
+    [9, 137],
+    [107],
+    [117],
+    [152, 54],
+    [39, 117],
+    [23, 178],
+    [92],
+    [16],
+    [170],
+    [10, 170],
+    [182, 30],
+    [9],
+    [45, 178],
+    [26, 191],
+    [78, 67],
+    [28, 137],
+    [30, 165],
+    [191],
+    [121],
+    [93],
+    [26, 117],
+    [109],
+    [39, 33],
+    [28, 165],
+    [168],
+    [177, 178],
+    [62, 30],
+    [22, 17],
+    [74, 18],
+    [22],
+    [191],
+    [9, 33],
+    [188],
+    [116],
+    [120, 67],
+    [133],
+    [78, 16],
+    [54],
+    [33],
+    [104],
+    [33],
+    [139],
+    [86, 33],
+    [178],
+    [67],
+    [69],
+    [186, 128],
+    [194, 3],
+    [92, 178],
+    [65, 87],
+    [62, 87],
+    [145, 118],
+    [25, 133],
+    [100, 186],
+    [186, 28],
+    [186],
+    [195, 178],
+    [67],
+    [67],
+    [157],
+    [128],
+    [25, 3],
+    [76],
+    [102, 78],
+    [170],
+    [54],
+    [120, 168],
+    [133],
+    [37, 137],
+    [16, 165],
+    [26, 117],
+    [18],
+    [35],
+    [65, 10],
+    [170],
+    [108],
+    [9, 18],
+    [145, 173],
+    [120, 14],
+    [173],
+    [195, 46],
+    [86, 78],
+    [45, 46],
+    [86, 121],
+    [182],
 ];
 
 for (let index = 1; index < operations.length; index++) {
-	output.push(obj[operations[index]](...values[index]));
-}
-console.log({ output });
-//[null,null,null,null,null,62,null,null,26,26,null,null,null,-1,-1,null,null,39,23,null,null,null,-1,-1,120,null,null,-1,null,null,null,null,null,26,62,-1,null,-1,null,null,-1,null,null,null,null,-1,-1,null,-1,-1,null,-1,null,152,9,-1,9,-1,null,23,120,-1,null,null,null,null,null,null,null,null,null,100,null,120,120,-1,-1,null,-1,null,10,152,null,-1,null,null,null,74,-1,null,10,-1,null,null,null,145,null,null,null,null,-1]
-
-output = [ null ];
-obj = new NumberContainers();
-operations = [
-	'NumberContainers',
-	'change',
-	'change',
-	'find',
-	'find',
-	'find',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change',
-	'find',
-	'find',
-	'change',
-	'find',
-	'change',
-	'change',
-	'change'
-];
-values = [
-	[],
-	[ 25, 50 ],
-	[ 56, 31 ],
-	[ 50 ],
-	[ 50 ],
-	[ 43 ],
-	[ 30, 50 ],
-	[ 31 ],
-	[ 43 ],
-	[ 25, 20 ],
-	[ 50 ],
-	[ 56, 43 ],
-	[ 68, 31 ],
-	[ 56, 31 ],
-	[ 20 ],
-	[ 43 ],
-	[ 25, 43 ],
-	[ 43 ],
-	[ 56, 31 ],
-	[ 54, 43 ],
-	[ 63, 43 ]
-];
-
-for (let index = 1; index < operations.length; index++) {
-	output.push(obj[operations[index]](...values[index]));
+    output.push(obj[operations[index]](...values[index]));
 }
 res = areTwoArrayEqual(output, [
-	null,
-	null,
-	null,
-	25,
-	25,
-	-1,
-	null,
-	56,
-	-1,
-	null,
-	30,
-	null,
-	null,
-	null,
-	25,
-	-1,
-	null,
-	25,
-	null,
-	null,
-	null
+    null,
+    null,
+    null,
+    null,
+    null,
+    62,
+    null,
+    null,
+    26,
+    26,
+    null,
+    null,
+    null,
+    -1,
+    -1,
+    null,
+    null,
+    39,
+    23,
+    null,
+    null,
+    null,
+    -1,
+    -1,
+    120,
+    null,
+    null,
+    -1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    26,
+    62,
+    -1,
+    null,
+    -1,
+    null,
+    null,
+    -1,
+    null,
+    null,
+    null,
+    null,
+    -1,
+    -1,
+    null,
+    -1,
+    -1,
+    null,
+    -1,
+    null,
+    152,
+    9,
+    -1,
+    9,
+    -1,
+    null,
+    23,
+    120,
+    -1,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    100,
+    null,
+    120,
+    120,
+    -1,
+    -1,
+    null,
+    -1,
+    null,
+    10,
+    152,
+    null,
+    -1,
+    null,
+    null,
+    null,
+    74,
+    -1,
+    null,
+    10,
+    -1,
+    null,
+    null,
+    null,
+    145,
+    null,
+    null,
+    null,
+    null,
+    -1,
 ]);
 console.log({ res });
-output = [ null ];
+
+output = [null];
+obj = new NumberContainers();
+operations = [
+    'NumberContainers',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+];
+values = [
+    [],
+    [25, 50],
+    [56, 31],
+    [50],
+    [50],
+    [43],
+    [30, 50],
+    [31],
+    [43],
+    [25, 20],
+    [50],
+    [56, 43],
+    [68, 31],
+    [56, 31],
+    [20],
+    [43],
+    [25, 43],
+    [43],
+    [56, 31],
+    [54, 43],
+    [63, 43],
+];
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+}
+res = areTwoArrayEqual(output, [
+    null,
+    null,
+    null,
+    25,
+    25,
+    -1,
+    null,
+    56,
+    -1,
+    null,
+    30,
+    null,
+    null,
+    null,
+    25,
+    -1,
+    null,
+    25,
+    null,
+    null,
+    null,
+]);
+console.log({ res });

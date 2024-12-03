@@ -1,30 +1,4 @@
-var minimumCoins = function (prices) {
-    let cost = 0;
-    let freeEligibilityCount = 0;
-    let minCost = Infinity;
-    let minCostIndex = 0;
-    for (let index = 0; index < prices.length; index++) {
-        const element = prices[index];
-        if (freeEligibilityCount) {
-            if (minCost >= element) {
-                minCost = element;
-                minCostIndex = index;
-            }
-            freeEligibilityCount--;
-            continue;
-        }
-        if (minCost <= element) {
-            cost += minCost;
-            freeEligibilityCount = minCostIndex + 1;
-            minCost = Infinity;
-            index = minCostIndex;
-        } else {
-            cost += element;
-            freeEligibilityCount = index + 1;
-        }
-    }
-    return cost;
-};
+var minimumCoins = function (prices) {};
 
 console.log(
     minimumCoins(
