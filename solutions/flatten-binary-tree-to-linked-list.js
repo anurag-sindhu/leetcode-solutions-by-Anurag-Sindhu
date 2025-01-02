@@ -1,4 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 class Node {
     constructor(data) {
         this.val = data;

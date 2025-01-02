@@ -5,16 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-          "type": "node",
-          "request": "launch",
-          "env": {
-              "AWS_PROFILE": "bk",
-              "Order": "true",
-              "User": "true"
-          },
-          "name": "Init",
-          "skipFiles": ["<node_internals>/**"],
-          "program": "${workspaceFolder}/solutions/camelcase-matching.js"
-      }
+        "type": "node",
+        "request": "launch",
+        "env": {
+            "AWS_PROFILE": "bk",
+            "Order": "true",
+            "User": "true"
+        },
+        "name": "Init",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/solutions/number-of-longest-increasing-subsequence.js"
+    }
   ]
 }

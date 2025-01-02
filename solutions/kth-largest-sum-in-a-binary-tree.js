@@ -1,4 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 
 var kthLargestLevelSumOld = function (root, k) {
     const config = {};
@@ -28,17 +28,17 @@ var kthLargestLevelSumOld = function (root, k) {
                 arr[query[index]] += 1;
             }
         }
-        let sortedArray = []
+        let sortedArray = [];
         for (let index = 0; index < arr.length; index++) {
             for (let indexTemp = 0; indexTemp < arr[index]; indexTemp++) {
-                sortedArray.push(index)
+                sortedArray.push(index);
             }
         }
-        return sortedArray
+        return sortedArray;
     };
     const sorted = bucketSort(Object.values(config));
     if (sorted[Object.keys(config).length - k] === undefined) {
-        return -1
+        return -1;
     }
     return sorted[Object.keys(config).length - k] || -1;
 };
@@ -61,7 +61,7 @@ var kthLargestLevelSum = function (root, k) {
     kthLargestLevelSumHelper(root);
     const sorted = Object.values(config).sort((a, b) => a - b);
     if (sorted[Object.keys(config).length - k] === undefined) {
-        return -1
+        return -1;
     }
     return sorted[Object.keys(config).length - k] || -1;
 };

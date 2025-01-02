@@ -1,5 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
-
+const BinaryTree = require('../javascript/binary-tree.js');
 
 var sumOfLevels = function (root) {
     const levelMapping = {};
@@ -23,29 +22,29 @@ var sumOfLevels = function (root) {
 
 var replaceValueInTreeHelper = function (root, sumOfLevels, currentLevel = 0) {
     if (!root) {
-        return
+        return;
     }
     console.log(root.val);
 
-    replaceValueInTreeHelper(root.left, sumOfLevels, currentLevel + 1)
-    replaceValueInTreeHelper(root.right, sumOfLevels, currentLevel + 1)
+    replaceValueInTreeHelper(root.left, sumOfLevels, currentLevel + 1);
+    replaceValueInTreeHelper(root.right, sumOfLevels, currentLevel + 1);
     if (root.left === null && root.right === null) {
-        return
+        return;
     }
-    const sumToParent = ((root.left && root.left.val) || 0) + ((root.right && root.right.val) || 0)
+    const sumToParent = ((root.left && root.left.val) || 0) + ((root.right && root.right.val) || 0);
     if (root.left && root.left.val !== null) {
-        root.left.val = sumOfLevels[currentLevel + 1].sum - sumToParent
+        root.left.val = sumOfLevels[currentLevel + 1].sum - sumToParent;
     }
     if (root.right && root.right.val !== null) {
-        root.right.val = sumOfLevels[currentLevel + 1].sum - sumToParent
+        root.right.val = sumOfLevels[currentLevel + 1].sum - sumToParent;
     }
-    return root
+    return root;
 };
 
-var replaceValueInTree = function (root,) {
-    const response = replaceValueInTreeHelper(root, sumOfLevels(root))
-    response.val = 0
-    return response
+var replaceValueInTree = function (root) {
+    const response = replaceValueInTreeHelper(root, sumOfLevels(root));
+    response.val = 0;
+    return response;
 };
 
 let binaryTree;

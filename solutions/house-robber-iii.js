@@ -1,4 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 //[withRoot, withoutRoot]
 
 var process = function (root) {

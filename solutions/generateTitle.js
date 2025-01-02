@@ -5,6 +5,7 @@ function generateTitle(heading) {
     console.log(title.length);
     return title;
 }
+console.log(generateTitle(`Beats 100% trim-a-binary-search-tree`));
 console.log(generateTitle(`100% time and space complexity`));
 
 //tried-after-2-years-

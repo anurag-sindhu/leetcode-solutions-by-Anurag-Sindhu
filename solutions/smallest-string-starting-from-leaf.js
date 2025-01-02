@@ -1,80 +1,80 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 
 function isLeftCharsGreaterThanRight(leftChar = ``, rightChar = ``) {
-  if (leftChar === rightChar) {
-    return true;
-  }
-  const revLeftChar = leftChar.split('').reverse().join('');
-  const revRightChar = rightChar.split('').reverse().join('');
-
-  if (revLeftChar.length > revRightChar.length) {
-    for (let index = 0; index < revLeftChar.length; index++) {
-      if (revLeftChar[index] === revRightChar[index]) {
-        continue;
-      }
-      if (revRightChar[index] === undefined) {
+    if (leftChar === rightChar) {
         return true;
-      }
-      if (revLeftChar[index] < revRightChar[index]) {
-        return false;
-      }
-      return true;
     }
-  } else {
-    for (let index = 0; index < revRightChar.length; index++) {
-      if (revLeftChar[index] === revRightChar[index]) {
-        continue;
-      }
-      if (revLeftChar[index] === undefined) {
-        return false;
-      }
-      if (revLeftChar[index] < revRightChar[index]) {
-        return false;
-      }
-      return true;
+    const revLeftChar = leftChar.split('').reverse().join('');
+    const revRightChar = rightChar.split('').reverse().join('');
+
+    if (revLeftChar.length > revRightChar.length) {
+        for (let index = 0; index < revLeftChar.length; index++) {
+            if (revLeftChar[index] === revRightChar[index]) {
+                continue;
+            }
+            if (revRightChar[index] === undefined) {
+                return true;
+            }
+            if (revLeftChar[index] < revRightChar[index]) {
+                return false;
+            }
+            return true;
+        }
+    } else {
+        for (let index = 0; index < revRightChar.length; index++) {
+            if (revLeftChar[index] === revRightChar[index]) {
+                continue;
+            }
+            if (revLeftChar[index] === undefined) {
+                return false;
+            }
+            if (revLeftChar[index] < revRightChar[index]) {
+                return false;
+            }
+            return true;
+        }
     }
-  }
-  return;
+    return;
 }
 
 function convertNumberToCharacter(num) {
-  return String.fromCharCode(97 + num);
+    return String.fromCharCode(97 + num);
 }
 
 var smallestFromLeafHelper = function (root, path = ``) {
-  if (!root) {
-    return path;
-  }
-  const fromLeft = smallestFromLeafHelper(root.left, path + convertNumberToCharacter(root.val));
-  const fromRight = smallestFromLeafHelper(root.right, path + convertNumberToCharacter(root.val));
-  if (root.left && root.right) {
-    if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
-      return fromRight;
-    } else {
-      return fromLeft;
+    if (!root) {
+        return path;
     }
-  } else if (!root.left && !root.right) {
-    if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
-      return fromRight;
+    const fromLeft = smallestFromLeafHelper(root.left, path + convertNumberToCharacter(root.val));
+    const fromRight = smallestFromLeafHelper(root.right, path + convertNumberToCharacter(root.val));
+    if (root.left && root.right) {
+        if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
+            return fromRight;
+        } else {
+            return fromLeft;
+        }
+    } else if (!root.left && !root.right) {
+        if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
+            return fromRight;
+        } else {
+            return fromLeft;
+        }
+    } else if (root.left && root.right && root.left.val === null && root.right.val === null) {
+        if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
+            return fromRight;
+        } else {
+            return fromLeft;
+        }
+    } else if (root.left) {
+        return fromLeft;
     } else {
-      return fromLeft;
+        return fromRight;
     }
-  } else if (root.left && root.right && root.left.val === null && root.right.val === null) {
-    if (isLeftCharsGreaterThanRight(fromLeft, fromRight)) {
-      return fromRight;
-    } else {
-      return fromLeft;
-    }
-  } else if (root.left) {
-    return fromLeft;
-  } else {
-    return fromRight;
-  }
 };
 
 function smallestFromLeaf(root) {
-  const res = smallestFromLeafHelper(root);
-  return res.split('').reverse().join('');
+    const res = smallestFromLeafHelper(root);
+    return res.split('').reverse().join('');
 }
 
 let res;

@@ -1,4 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 
 function findDistanceFromRoot(root, target) {
     let hasFound = false;

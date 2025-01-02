@@ -1,6 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
-
-
+const BinaryTree = require('../javascript/binary-tree.js');
 
 var hasPathSum = function (root, targetSum) {
     let output = false;

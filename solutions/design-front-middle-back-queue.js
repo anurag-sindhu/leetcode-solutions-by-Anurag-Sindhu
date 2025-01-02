@@ -1,82 +1,75 @@
 var FrontMiddleBackQueue = function () {
-    this.arr = [];
-    this.frontStartIndex = null;
-    this.middleStartIndex = null;
-    this.middleEndIndex = null;
-    this.backEndIndex = null;
-};
-
-FrontMiddleBackQueue.prototype.pushMiddle = function (val) {
-    if (this.middleStartIndex === null) {
-        this.middleStartIndex = 2500;
-        this.middleEndIndex = 2500;
-    } else {
-        const totalSize =
-            (this.backEndIndex === null ? 0 : this.backEndIndex - 5000) +
-            (this.middleStartIndex === null ? 0 : this.middleEndIndex - this.middleStartIndex + 1) +
-            (this.frontStartIndex === null ? 0 : this.frontStartIndex * -1);
-        if (totalSize % 2 === 0) {
-            this.middleStartIndex -= 1;
-        } else {
-            this.middleEndIndex += 1;
-        }
-    }
-    this.arr[this.middleStartIndex] = val;
+    this.frontArr = [];
+    this.middleArr = [];
+    this.backArr = [];
 };
 
 FrontMiddleBackQueue.prototype.pushFront = function (val) {
-    if (this.frontStartIndex === null) {
-        this.frontStartIndex = -1;
-    } else {
-        this.frontStartIndex -= 1;
-    }
-    this.arr[this.frontStartIndex] = val;
+    this.frontArr.push(val);
+};
+
+FrontMiddleBackQueue.prototype.pushMiddle = function (val) {
+    this.middleArr.push(val);
 };
 
 FrontMiddleBackQueue.prototype.pushBack = function (val) {
-    if (this.backEndIndex === null) {
-        this.backEndIndex = 5001;
-    } else {
-        this.backEndIndex += 1;
-    }
-    this.arr[this.backEndIndex] = val;
+    this.backArr.push(val);
 };
 
 FrontMiddleBackQueue.prototype.popFront = function () {
-    if (this.frontStartIndex !== null) {
-        this.frontStartIndex += 1;
-        if (this.frontStartIndex === 0) {
-            this.frontStartIndex = null;
-        }
-    } else if (this.middleStartIndex !== null) {
-        const totalSize =
-            (this.backEndIndex === null ? 0 : this.backEndIndex - 5000) +
-            (this.middleStartIndex === null ? 0 : this.middleEndIndex - this.middleStartIndex + 1) +
-            (this.frontStartIndex === null ? 0 : this.frontStartIndex * -1);
-        if (totalSize % 2 === 0) {
-            this.middleStartIndex += 1;
-        } else {
-            this.middleEndIndex -= 1;
-        }
-        if (this.middleStartIndex === 2500 && this.middleStartIndex === 2500) {
-        }
-    } else if (this.backEndIndex !== null) {
-        this.backEndIndex -= 1;
-        if (this.backEndIndex === 5000) {
-            this.backEndIndex = null;
-        }
+    const totalLength = this.frontArr.length + this.middleArr.length + this.backArr.length;
+    if (totalLength <= 0) {
+        return -1;
     }
+    if (this.frontArr.length) {
+        return this.frontArr.pop();
+    }
+    // const arr = [];
+    // for (let index = this.frontArr.length - 1; index >= 0; index--) {
+    //     arr.push(this.frontArr[index]);
+    // }
+    // for (let index = this.middleArr.length - 1; index >= 0; index--) {
+    //     arr.push(this.middleArr[index]);
+    // }
+    // for (let index = this.backArr.length - 1; index >= 0; index--) {
+    //     arr.push(this.backArr[index]);
+    // }
+    if (this.middleArr.length) {
+        return this.middleArr.pop();
+    }
+
+    return this.backArr.shift();
 };
 
-/**
- * @return {number}
- */
-FrontMiddleBackQueue.prototype.popMiddle = function () {};
+FrontMiddleBackQueue.prototype.popMiddle = function () {
+    const totalLength = this.frontArr.length + this.middleArr.length + this.backArr.length;
+    const indexToBeRemoved = totalLength % 2 == 0 ? totalLength / 2 - 1 : parseInt(totalLength / 2);
 
-/**
- * @return {number}
- */
-FrontMiddleBackQueue.prototype.popBack = function () {};
+    if (totalLength <= 0) {
+        return -1;
+    }
+    if (this.frontArr.length > indexToBeRemoved) {
+        return this.middleArr.pop();
+    }
+    if (this.middleArr.length + this.frontArr.length > indexToBeRemoved) {
+        return this.middleArr.pop();
+    }
+    return this.backArr.shift();
+};
+
+FrontMiddleBackQueue.prototype.popBack = function () {
+    // const totalLength = this.frontArr.length + this.middleArr.length + this.backArr.length;
+    // if (totalLength <= 0) {
+    //     return -1;
+    // }
+    // if (this.backArr.length) {
+    //     return this.backArr.pop();
+    // } else if (this.middleArr.length) {
+    //     return this.middleArr.pop();
+    // } else {
+    //     return this.frontArr.pop();
+    // }
+};
 
 let obj;
 let res;

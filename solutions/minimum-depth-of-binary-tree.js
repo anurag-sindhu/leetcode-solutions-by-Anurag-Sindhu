@@ -1,4 +1,4 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 class Binary {
     findCompletedLevels(tree) {
         if (!tree) {
@@ -18,8 +18,7 @@ var minDepth = function (root) {
         return 0;
     }
     let getLeftLevels = new Binary().findCompletedLevels(root.left) || Infinity;
-    let getRightLevels =
-        new Binary().findCompletedLevels(root.right) || Infinity;
+    let getRightLevels = new Binary().findCompletedLevels(root.right) || Infinity;
     if (getLeftLevels === Infinity && getRightLevels === Infinity) {
         return 1;
     }

@@ -1,8 +1,8 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 
-var sumOfLeftLeaves = function(root) {
+var sumOfLeftLeaves = function (root) {
     let sum = 0;
-    var sumOfLeftLeavesHelper = function(root, side = null) {
+    var sumOfLeftLeavesHelper = function (root, side = null) {
         if (!root) {
             return;
         }
@@ -24,28 +24,28 @@ let binaryTree;
 let res;
 
 binaryTree = new BinaryTree();
-for (const iterator of [ 3, 4, 5, -7, -6, null, null, -7, null, -5, null, null, null, -4 ]) {
+for (const iterator of [3, 4, 5, -7, -6, null, null, -7, null, -5, null, null, null, -4]) {
     binaryTree.add(iterator);
 }
 res = sumOfLeftLeaves(binaryTree.tree);
 console.log(res === -11);
 
 binaryTree = new BinaryTree();
-for (const iterator of [ 3, 9, 20, null, null, 15, 7 ]) {
+for (const iterator of [3, 9, 20, null, null, 15, 7]) {
     binaryTree.add(iterator);
 }
 res = sumOfLeftLeaves(binaryTree.tree);
 console.log(res === 24);
 
 binaryTree = new BinaryTree();
-for (const iterator of [ -8, -6, 7, 6, null, null, null, null, 5 ]) {
+for (const iterator of [-8, -6, 7, 6, null, null, null, null, 5]) {
     binaryTree.add(iterator);
 }
 res = sumOfLeftLeaves(binaryTree.tree);
 console.log(res === 0);
 
 binaryTree = new BinaryTree();
-for (const iterator of [ 1 ]) {
+for (const iterator of [1]) {
     binaryTree.add(iterator);
 }
 res = sumOfLeftLeaves(binaryTree.tree);

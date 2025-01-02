@@ -1,71 +1,86 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+var findLongestChainOld = function (pairs) {
+    pairs.sort(([a], [b]) => a - b);
+    let count = 1;
+    let tempCount = 0;
+    let prevEnd = 0;
+    for (let index = 0; index < pairs.length; index++) {
+        tempCount = 1;
+        prevEnd = pairs[index][1];
+        for (let childIndex = index + 1; childIndex < pairs.length; childIndex++) {
+            if (prevEnd < pairs[childIndex][0]) {
+                tempCount += 1;
+                prevEnd = pairs[childIndex][1];
+            }
+        }
+        count = Math.max(count, tempCount);
+    }
+    return count;
+};
 
-var findLongestChain = function(pairs) {
-	const dp = {};
-	const config = (function() {
-		const config = {};
-		for (const [ from, to ] of pairs) {
-			if (!config[from]) {
-				config[from] = {};
-			}
-			config[from][to] = true;
-		}
-		return config;
-	})();
-	let tempStore = null;
-	let temp = 0;
-	function explore(fromKey, path = 0) {
-		if (dp[fromKey] !== undefined) {
-			return dp[fromKey];
-		}
-		for (const key in config) {
-			if (Number(fromKey) < Number(key)) {
-				for (const keyChild in config[key]) {
-					dp[keyChild] = Math.max(explore(keyChild, path + 1), dp[keyChild] || -Infinity);
-					console.log('object');
-				}
-			}
-		}
-		if (tempStore === null) {
-			tempStore = path;
-		}
-		return path;
-	}
-	for (const key in config) {
-		for (const keyChild in config[key]) {
-			temp = 0;
-			tempStore = null;
-			const resp = explore(keyChild);
-			console.log(resp);
-		}
-	}
-	return;
+var findLongestChain = function (pairs) {
+    pairs.sort(([a], [b]) => a - b);
+    let count = 1;
+    let tempCount = 0;
+    const arr = [];
+    function explore(index, prevStart = null) {
+        if (!(index >= 0)) {
+            return;
+        }
+        const start = pairs[index][0];
+        const end = pairs[index][1];
+        if (end < prevStart) {
+            for (let index = prevStart - 1; index > start; index--) {
+                arr[index] = arr[index + 1];
+            }
+            arr[start] = 1;
+        }
+        arr[start] = (arr[start] || 0) + 1;
+        explore(index - 1, start);
+    }
+    explore(pairs.length - 1);
+    return count;
 };
 
 console.log(
-	findLongestChain([
-		[ 7, 9 ],
-		[ 4, 5 ],
-		[ 7, 9 ],
-		[ -7, -1 ],
-		[ 0, 10 ],
-		[ 3, 10 ],
-		[ 3, 6 ],
-		[ 2, 3 ]
-	]) === 4
+    findLongestChain([
+        [-7, -1],
+        [0, 10],
+        [2, 3],
+        [3, 10],
+        [3, 6],
+        [4, 5],
+        [7, 9],
+    ]) === 4,
 );
 console.log(
-	findLongestChain([
-		[ -10, -8 ],
-		[ 8, 9 ],
-		[ -5, 0 ],
-		[ 6, 10 ],
-		[ -6, -4 ],
-		[ 1, 7 ],
-		[ 9, 10 ],
-		[ -4, 7 ]
-	]) === 4
+    findLongestChain([
+        [-10, -8],
+        [-6, -4],
+        [1, 7],
+        [6, 10],
+        [8, 9],
+        [9, 10],
+        [-5, 0],
+        [-4, 7],
+    ]) === 4,
 );
 
-console.log(findLongestChain((pairs = [ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ] ])) === 2);
-console.log(findLongestChain((pairs = [ [ 1, 2 ], [ 7, 8 ], [ 4, 5 ] ])) === 3);
+console.log(
+    findLongestChain(
+        (pairs = [
+            [1, 2],
+            [2, 3],
+            [3, 4],
+        ]),
+    ) === 2,
+);
+
+console.log(
+    findLongestChain(
+        (pairs = [
+            [1, 2],
+            [4, 5],
+            [7, 8],
+        ]),
+    ) === 3,
+);

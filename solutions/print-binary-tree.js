@@ -1,68 +1,97 @@
-const BinaryTree = require('../../js/binary-tree.js');
+const BinaryTree = require('../javascript/binary-tree.js');
 
-var getMatrix = function(rows, columns) {
-	const mat = [];
-	for (let rowsIndex = 0; rowsIndex < rows; rowsIndex++) {
-		if (!mat[rowsIndex]) {
-			mat[rowsIndex] = [];
-		}
-		for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
-			mat[rowsIndex][columnIndex] = '';
-		}
-	}
-	return mat;
-};
-var heightOfTree = function(root) {
-	if (!root) {
-		return 0;
-	}
-	const leftNode = heightOfTree(root.left);
-	return 1 + leftNode;
+var heightOfTree = function (root) {
+    if (!root) {
+        return 0;
+    }
+    const leftNode = heightOfTree(root.left);
+    return 1 + leftNode;
 };
 
-var printTreeHelper = function(
-	root,
-	rows,
-	columns,
-	mat,
-	treeHeight,
-	currentRow = 0,
-	currentColumn = (columns - 1) / 2
-) {
-	if (!root || root.val === null) {
-		return mat;
-	}
-	const val = root.val;
-	mat[currentRow][currentColumn] = val;
-	const leftChildColumn = currentColumn - Math.pow(2, treeHeight - 1 - currentRow - 1);
-	const rightChildColumn = currentColumn + Math.pow(2, treeHeight - 1 - currentRow - 1);
-	printTreeHelper(root.left, rows, columns, mat, treeHeight, currentRow + 1, leftChildColumn);
-	printTreeHelper(root.right, rows, columns, mat, treeHeight, currentRow + 1, rightChildColumn);
-	return mat;
-};
-
-var printTree = function(root) {
-	const treeHeight = heightOfTree(root);
-	const rows = treeHeight;
-	const columns = Math.pow(2, treeHeight) - 1;
-	const mat = getMatrix(rows, columns);
-	const res = printTreeHelper(root, rows, columns, mat, treeHeight);
-	return res;
+var printTree = function (root) {
+    const output = [];
+    const maxHeight = heightOfTree(root);
+    const totalNodes = Math.pow(2, maxHeight) - 1;
+    var printTreeHelper = function (root, height = 0, index = null, isLeft = null) {
+        if (!root || root.val == null) {
+            return;
+        }
+        if (!output[height]) {
+            output[height] = [];
+        }
+        if (index === null) {
+            index = (totalNodes - 1) / 2;
+            if (root.val != undefined) {
+                output[height][index] = String(root.val);
+            }
+        } else {
+            const temp = Math.pow(2, maxHeight - height - 1);
+            if (isLeft) {
+                index -= temp;
+                if (root.val != undefined) {
+                    output[height][index] = String(root.val);
+                }
+            } else {
+                index += temp;
+                if (root.val != undefined) {
+                    output[height][index] = String(root.val);
+                }
+            }
+        }
+        printTreeHelper(root.left, height + 1, index, true);
+        printTreeHelper(root.right, height + 1, index, false);
+    };
+    printTreeHelper(root);
+    for (let index = 0; index < maxHeight; index++) {
+        for (let nodesIndex = 0; nodesIndex < totalNodes; nodesIndex++) {
+            if (output[index][nodesIndex] == undefined) {
+                output[index][nodesIndex] = '';
+            }
+        }
+    }
+    return output;
 };
 
 let binaryTree;
-let res;
+let output;
 
 binaryTree = new BinaryTree();
-for (const iterator of [ 1, 2, 3, null, 4 ]) {
-	binaryTree.add(iterator);
+for (const iterator of [1, 2, 3, null, 4]) {
+    binaryTree.add(iterator);
 }
-res = printTree(binaryTree.tree, 1, 1);
+res = printTree(binaryTree.tree);
+output = [
+    ['', '', '', '', '', '', '', '1', '', '', '', '', '', '', ''],
+    ['', '', '', '2', '', '', '', '', '', '', '', '3', '', '', ''],
+    ['', '4', '', '', '', '5', '', '', '', '6', '', '', '', '7', ''],
+    ['8', '', '9', '', '10', '', '11', '', '12', '', '13', '', '14', '', '15'],
+];
 console.log(res);
 
 binaryTree = new BinaryTree();
-for (const iterator of [ 1, 2 ]) {
-	binaryTree.add(iterator);
+for (const iterator of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) {
+    binaryTree.add(iterator);
 }
-res = printTree(binaryTree.tree, 1, 1);
+res = printTree(binaryTree.tree);
+output = [
+    ['', '', '', '', '', '', '', '1', '', '', '', '', '', '', ''],
+    ['', '', '', '2', '', '', '', '', '', '', '', '3', '', '', ''],
+    ['', '4', '', '', '', '5', '', '', '', '6', '', '', '', '7', ''],
+    ['8', '', '9', '', '10', '', '11', '', '12', '', '13', '', '14', '', '15'],
+];
+
+console.log(res);
+
+binaryTree = new BinaryTree();
+for (const iterator of [1, 2]) {
+    binaryTree.add(iterator);
+}
+res = printTree(binaryTree.tree);
+console.log(res);
+
+binaryTree = new BinaryTree();
+for (const iterator of [1, 2, 3, null, 4]) {
+    binaryTree.add(iterator);
+}
+res = printTree(binaryTree.tree);
 console.log(res);

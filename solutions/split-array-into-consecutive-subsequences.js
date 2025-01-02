@@ -1,50 +1,47 @@
-var isPossible = function(nums) {
-	const firsArray = [];
-	let lastElement = null;
-	let index = 0;
-	for (; index < nums.length; index++) {
-		if (lastElement === null) {
-			lastElement = nums[index];
-			firsArray.push(nums[index]);
-		} else {
-			if (lastElement === nums[index]) {
-				continue;
-			} else {
-				if (lastElement + 1 === nums[index]) {
-					firsArray.push(nums[index]);
-					lastElement = nums[index];
-				}
-			}
-		}
-		if (firsArray.length === 3) {
-			index++;
-			break;
-		}
-	}
-	lastElement = null;
-	const secondArray = [];
-	for (; index < nums.length; index++) {
-		if (lastElement === null) {
-			lastElement = nums[index];
-			secondArray.push(nums[index]);
-		} else {
-			if (lastElement === nums[index]) {
-				continue;
-			} else {
-				if (lastElement + 1 === nums[index]) {
-					secondArray.push(nums[index]);
-					lastElement = nums[index];
-				}
-			}
-		}
-		if (secondArray.length === 3) {
-			return true;
-		}
-	}
-	return false;
+var isPossible = function (nums) {
+    const vacancyMap = {};
+    const config = (function () {
+        const config = {};
+        for (const element of nums) {
+            if (config[element] == undefined) {
+                config[element] = 0;
+            }
+            config[element] += 1;
+        }
+        return config;
+    })();
+    for (let index = 0; index < nums.length; index++) {
+        const element = nums[index];
+        if (config[element] > 0) {
+            if (vacancyMap[element]) {
+                vacancyMap[element] -= 1;
+                config[element] -= 1;
+                if (vacancyMap[element + 1] == undefined) {
+                    vacancyMap[element + 1] = 0;
+                }
+                vacancyMap[element + 1] += 1;
+            } else {
+                const firstElement = element;
+                const secondElement = element + 1;
+                const thirdElement = element + 1 + 1;
+                if (config[secondElement] && config[thirdElement]) {
+                    config[firstElement] -= 1;
+                    config[secondElement] -= 1;
+                    config[thirdElement] -= 1;
+                    if (vacancyMap[thirdElement + 1] == undefined) {
+                        vacancyMap[thirdElement + 1] = 0;
+                    }
+                    vacancyMap[thirdElement + 1] += 1;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 };
 
-console.log(isPossible((nums = [ 1, 2, 3 ])));
-console.log(isPossible((nums = [ 1, 2, 3, 3, 4, 5 ])));
-console.log(isPossible((nums = [ 1, 2, 3, 3, 4, 4, 5, 5 ])));
-console.log(isPossible((nums = [ 1, 2, 3, 4, 4, 5 ])));
+console.log(isPossible((nums = [1, 2, 3, 4, 4, 5])));
+console.log(isPossible((nums = [1, 2, 3, 3, 4, 4, 5, 5])));
+console.log(isPossible((nums = [1, 2, 3])));
+console.log(isPossible((nums = [1, 2, 3, 3, 4, 5])));
