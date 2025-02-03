@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/number-of-longest-increasing-subsequence.js"
+        "program": "${workspaceFolder}/solutions/exclusive-time-of-functions.js"
     }
   ]
 }

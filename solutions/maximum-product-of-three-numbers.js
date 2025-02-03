@@ -1,56 +1,61 @@
-function findThreeGreaterElement(arr) {
-	if (!arr.length) {
-		return [];
-	}
-	if (arr.length === 1) {
-		return [ arr[0] ];
-	}
-	if (arr.length === 2) {
-		if (arr[0] > arr[1]) {
-			return [ arr[0], arr[1] ];
-		}
-		return [ arr[1], arr[0] ];
-	}
-	let first = -Infinity,
-		second = -Infinity,
-		third = -Infinity;
-	for (const iterator of arr) {
-		if (first < iterator) {
-			if (third < second) {
-				third = second;
-			}
-			if (second < first) {
-				second = first;
-			}
-			first = iterator;
-		} else if (second < iterator && first !== second && third !== second) {
-			if (third < second) {
-				third = second;
-			}
-			second = iterator;
-		} else if (third < iterator && first !== second && third !== second) {
-			third = iterator;
-		}
-	}
-	return [ first, second, third ];
-}
-
-var maximumProduct = function(nums) {
-	if (nums.length === 3) {
-		return nums[0] * nums[1] * nums[2];
-	}
-	const lessThanZeroElements = nums.filter((value) => value < 0);
-	const tempResp = findThreeGreaterElement(lessThanZeroElements);
-	const greaterThanZeroElements = nums.filter((value) => value > 0);
-	findThreeGreaterElement(greaterThanZeroElements);
-	const ifZeroPresent = nums.some((value) => value === 0);
-	let max = -Infinity;
-
-	if (ifZeroPresent) {
-		max = 0;
-	}
+var maximumProduct = function (arr) {
+    if (arr.length === 3) {
+        return arr[0] * arr[1] * arr[2];
+    }
+    const negativeNumbers = [];
+    const positiveNumbers = [];
+    for (const element of arr) {
+        if (element < 0) {
+            negativeNumbers.push(element);
+        } else {
+            positiveNumbers.push(element);
+        }
+    }
+    negativeNumbers.sort((a, b) => a - b);
+    positiveNumbers.sort((a, b) => a - b);
+    if (positiveNumbers.length && negativeNumbers.length) {
+        if (positiveNumbers.length >= 3) {
+            if (negativeNumbers.length >= 2) {
+                return Math.max(
+                    negativeNumbers[0] *
+                        negativeNumbers[1] *
+                        positiveNumbers[positiveNumbers.length - 1],
+                    positiveNumbers[positiveNumbers.length - 1] *
+                        positiveNumbers[positiveNumbers.length - 2] *
+                        positiveNumbers[positiveNumbers.length - 3],
+                );
+            } else {
+                return (
+                    positiveNumbers[positiveNumbers.length - 1] *
+                    positiveNumbers[positiveNumbers.length - 2] *
+                    positiveNumbers[positiveNumbers.length - 3]
+                );
+            }
+        } else {
+            return (
+                negativeNumbers[0] *
+                negativeNumbers[1] *
+                positiveNumbers[positiveNumbers.length - 1]
+            );
+        }
+    } else {
+        if (positiveNumbers.length) {
+            return (
+                positiveNumbers[positiveNumbers.length - 1] *
+                positiveNumbers[positiveNumbers.length - 2] *
+                positiveNumbers[positiveNumbers.length - 3]
+            );
+        }
+        return (
+            negativeNumbers[negativeNumbers.length - 1] *
+            negativeNumbers[negativeNumbers.length - 2] *
+            negativeNumbers[negativeNumbers.length - 3]
+        );
+    }
 };
-console.log(maximumProduct([ -100, -98, -1, 2, 3, 4 ]) === 39200);
-console.log(maximumProduct([ 1, 2, 3 ]));
-console.log(maximumProduct([ 1, 2, 3, 4 ]));
-console.log(maximumProduct([ -1, -2, -3 ]));
+console.log(maximumProduct([-1, -2, -3, -4]) == -6);
+console.log(maximumProduct([-100, -2, -3, 1]) === 300);
+console.log(maximumProduct([1, 2, 3, 4]) == 24);
+console.log(maximumProduct([1, 2, 3]) == 6);
+console.log(maximumProduct([-100, -98, -1, 2, 3, 4]) === 39200);
+console.log(maximumProduct([-1, -2, -3]) == -6);

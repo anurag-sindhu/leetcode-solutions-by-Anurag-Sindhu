@@ -9,7 +9,6 @@
   },
   "author": "Anurag",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
   }
 }

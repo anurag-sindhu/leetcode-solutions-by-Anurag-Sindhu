@@ -7,44 +7,42 @@ class Node {
     }
 }
 
-var mergeTrees = function (root1, root2) {
-    if (!root1 && !root2) {
-        return null;
+var mergeTrees = function (t1, t2) {
+    if (t1 === null) {
+        return t2;
     }
-    const tempSum = ((root1 && root1.val) || 0) + ((root2 && root2.val) || 0);
-    if (!root1) {
-        return new Node(tempSum);
-    } else {
-        root1.val = tempSum;
+    if (t2 === null) {
+        return t1;
     }
-    root1.left = mergeTrees(root1 && root1.left, root2 && root2.left);
-    root1.right = mergeTrees(root1 && root1.right, root2 && root2.right);
-    return root1;
+    t1.val += t2.val;
+
+    t1.left = mergeTrees(t1.left, t2.left);
+    t1.right = mergeTrees(t1.right, t2.right);
+    return t1;
 };
 
-let binaryTree1;
-let binaryTree2;
 let res;
-binaryTree1 = new BinaryTree();
-for (const iterator of [1, 2, null, 3]) {
-    binaryTree1.add(iterator);
-}
 
-binaryTree2 = new BinaryTree();
-for (const iterator of [1, null, 2, null, 3]) {
-    binaryTree2.add(iterator);
-}
-res = mergeTrees(binaryTree1.tree, binaryTree2.tree);
+res = mergeTrees(
+    [1, 2, null, 3].reduce((acc, curr) => {
+        acc.add(curr);
+        return acc;
+    }, new BinaryTree()).tree,
+    [1, null, 2, null, 3].reduce((acc, curr) => {
+        acc.add(curr);
+        return acc;
+    }, new BinaryTree()).tree,
+);
 console.log(res);
 
-binaryTree1 = new BinaryTree();
-for (const iterator of [1, 3, 2, 5]) {
-    binaryTree1.add(iterator);
-}
-
-binaryTree2 = new BinaryTree();
-for (const iterator of [2, 1, 3, null, 4, null, 7]) {
-    binaryTree2.add(iterator);
-}
-res = mergeTrees(binaryTree1.tree, binaryTree2.tree);
+res = mergeTrees(
+    [1, 3, 2, 5].reduce((acc, curr) => {
+        acc.add(curr);
+        return acc;
+    }, new BinaryTree()).tree,
+    [2, 1, 3, null, 4, null, 7].reduce((acc, curr) => {
+        acc.add(curr);
+        return acc;
+    }, new BinaryTree()).tree,
+);
 console.log(res);
