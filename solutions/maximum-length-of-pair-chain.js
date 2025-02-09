@@ -1,43 +1,27 @@
-var findLongestChainOld = function (pairs) {
-    pairs.sort(([a], [b]) => a - b);
-    let count = 1;
-    let tempCount = 0;
-    let prevEnd = 0;
-    for (let index = 0; index < pairs.length; index++) {
-        tempCount = 1;
-        prevEnd = pairs[index][1];
-        for (let childIndex = index + 1; childIndex < pairs.length; childIndex++) {
-            if (prevEnd < pairs[childIndex][0]) {
-                tempCount += 1;
-                prevEnd = pairs[childIndex][1];
-            }
-        }
-        count = Math.max(count, tempCount);
-    }
-    return count;
-};
-
 var findLongestChain = function (pairs) {
     pairs.sort(([a], [b]) => a - b);
     let count = 1;
-    let tempCount = 0;
-    const arr = [];
-    function explore(index, prevStart = null) {
-        if (!(index >= 0)) {
-            return;
-        }
-        const start = pairs[index][0];
-        const end = pairs[index][1];
-        if (end < prevStart) {
-            for (let index = prevStart - 1; index > start; index--) {
-                arr[index] = arr[index + 1];
+    const indexCountMapping = {
+        [pairs.length - 1]: 1,
+    };
+    for (let index = pairs.length - 1 - 1; index >= 0; index--) {
+        const to = pairs[index][1];
+        let hasBroke = false;
+        for (let secondaryIndex = index; secondaryIndex < pairs.length; secondaryIndex++) {
+            const element = pairs[secondaryIndex];
+            if (to < element[0]) {
+                count = Math.max(count, indexCountMapping[secondaryIndex] + 1);
+                indexCountMapping[index] = count;
+                hasBroke = true;
+                break;
             }
-            arr[start] = 1;
         }
-        arr[start] = (arr[start] || 0) + 1;
-        explore(index - 1, start);
+        if (hasBroke == false) {
+            count = Math.max(count, 1);
+            indexCountMapping[index] = count;
+        }
     }
-    explore(pairs.length - 1);
+
     return count;
 };
 

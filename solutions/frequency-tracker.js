@@ -1,11 +1,11 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array');
 
-var FrequencyTracker = function() {
+var FrequencyTracker = function () {
     this.mapping = {};
     this.reverseMapping = {};
 };
 
-FrequencyTracker.prototype.add = function(number) {
+FrequencyTracker.prototype.add = function (number) {
     let frequency = 0;
     if (this.mapping[number]) {
         if (this.reverseMapping[this.mapping[number]] === 1) {
@@ -27,13 +27,13 @@ FrequencyTracker.prototype.add = function(number) {
     return null;
 };
 
-FrequencyTracker.prototype.deleteOne = function(number) {
+FrequencyTracker.prototype.deleteOne = function (number) {
     this.reverseMapping[this.mapping[number]] -= 1;
     this.mapping[number] -= 1;
     return null;
 };
 
-FrequencyTracker.prototype.hasFrequency = function(frequency) {
+FrequencyTracker.prototype.hasFrequency = function (frequency) {
     if (this.reverseMapping[frequency]) {
         return true;
     }

@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/exclusive-time-of-functions.js"
+        "program": "${workspaceFolder}/solutions/map-sum-pairs.js"
     }
   ]
 }

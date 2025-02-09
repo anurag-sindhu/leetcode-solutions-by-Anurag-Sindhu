@@ -1,4 +1,4 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array.js');
 
 var getSubarrayBeauty = function (nums, k, x) {
     /*

@@ -1,4 +1,4 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array.js');
 
 var RLEIterator = function (encoding) {
     this.currentIndex = -1;

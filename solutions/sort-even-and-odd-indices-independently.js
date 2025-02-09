@@ -1,6 +1,6 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array.js');
 
-var sortEvenOdd = function(nums) {
+var sortEvenOdd = function (nums) {
     const memoryForOdd = [];
     const memoryForEven = [];
     let totalElements = nums.length;

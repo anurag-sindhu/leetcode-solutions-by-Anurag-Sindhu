@@ -5,7 +5,7 @@ function generateTitle(heading) {
     console.log(title.length);
     return title;
 }
-console.log(generateTitle(`tried-after-2-years-maximum-distance-in-arrays`));
+console.log(generateTitle(`bulb-switcher-ii`));
 console.log(generateTitle(`Beats 100% trim-a-binary-search-tree`));
 console.log(generateTitle(`100% time and space complexity`));
 

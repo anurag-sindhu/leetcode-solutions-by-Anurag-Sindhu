@@ -1,4 +1,4 @@
-const { areTwoArrayEqual } = require('../../js/compare-two-array.js');
+const { areTwoArrayEqual } = require('../javascript/compare-two-array.js');
 
 function getNeighbors(array, rowIndex, columnIndex, storage) {
     const neighbors = {};
@@ -34,7 +34,7 @@ function getNeighbors(array, rowIndex, columnIndex, storage) {
     return neighbors;
 }
 
-var generateMatrix = function(size) {
+var generateMatrix = function (size) {
     const output = [];
     const storage = {};
     let count = 2;
