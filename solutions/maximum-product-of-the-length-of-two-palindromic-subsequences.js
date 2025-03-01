@@ -15,6 +15,7 @@ var subsets = function (nums) {
     }
     return output;
 };
+
 var maxProduct = function (s) {
     const { subset, subsetReverse } = (function () {
         const arr = [];

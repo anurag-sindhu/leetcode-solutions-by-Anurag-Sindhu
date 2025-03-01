@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 class Node {
     constructor(data) {
@@ -65,14 +65,10 @@ var sortedListToBST = function (head) {
     return tree.tree;
 };
 
-console.log(
-    sortedListToBST(singlyLinkedList((head = [-10, -3, 0, 5, 9])).head)
-);
+console.log(sortedListToBST(singlyLinkedList((head = [-10, -3, 0, 5, 9])).head));
 console.log(sortedListToBST(singlyLinkedList((head = [])).head));
 console.log(sortedListToBST(singlyLinkedList((head = [1])).head));
 console.log(sortedListToBST(singlyLinkedList((head = [1, 2])).head));
-console.log(
-    sortedListToBST(singlyLinkedList((head = [1, 2, 3, 4, 5, 6])).head)
-);
+console.log(sortedListToBST(singlyLinkedList((head = [1, 2, 3, 4, 5, 6])).head));
 console.log(sortedListToBST(singlyLinkedList((head = [1, 2, 3])).head));
 console.log(sortedListToBST(singlyLinkedList((head = [1, 2, 3, 4, 5])).head));

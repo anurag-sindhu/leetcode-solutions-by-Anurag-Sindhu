@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 class countList {
     constructor() {
         this.counting = 0;
@@ -19,7 +19,7 @@ class Node {
         this.next = next;
     }
 }
-var addTwoNumbers = function(l1, l2) {
+var addTwoNumbers = function (l1, l2) {
     const l1Count = new countList().count(l1);
     const l2Count = new countList().count(l2);
     function startExploring(list1, list2, grace) {

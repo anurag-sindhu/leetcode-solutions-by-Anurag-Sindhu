@@ -1,17 +1,44 @@
 var numberOfWeakCharacters = function (properties) {
     // properties.sort((a, b) => (a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]));
-    properties.sort((a, b) => b[0] - a[0]);
+    properties.sort((a, b) => (b[0] == a[0] ? a[1] - b[1] : b[0] - a[0]));
     let count = 0,
-        max = 0;
-    for (let arr of properties) {
-        if (arr[1] < max) {
-            count++;
+        lastMaxXForY = properties[0][0],
+        lastY = properties[0][1];
+    for (let index = 1; index < properties.length; index++) {
+        if (properties[index][1] < lastY && lastMaxXForY != properties[index][0]) {
+            count += 1;
+        } else if (properties[index][1] > lastY) {
+            lastY = properties[index][1];
+            lastMaxXForY = properties[index][0];
         }
-        max = Math.max(max, arr[1]);
     }
     return count;
 };
 
+console.log(
+    numberOfWeakCharacters(
+        (properties = [
+            [2, 5],
+            [4, 3],
+            [4, 9],
+            [1, 2],
+            [10, 4],
+        ]),
+    ) === 3,
+);
+
+console.log(
+    numberOfWeakCharacters(
+        (properties = [
+            [10, 7],
+            [10, 4],
+            [7, 9],
+            [7, 5],
+            [7, 10],
+            [6, 9],
+        ]),
+    ) === 2,
+);
 console.log(
     numberOfWeakCharacters(
         (properties = [
@@ -22,8 +49,9 @@ console.log(
             [7, 5],
             [7, 10],
         ]),
-    ) === 0,
+    ) === 2,
 );
+
 console.log(
     numberOfWeakCharacters(
         (properties = [
@@ -33,6 +61,7 @@ console.log(
         ]),
     ) === 0,
 );
+
 console.log(
     numberOfWeakCharacters(
         (properties = [

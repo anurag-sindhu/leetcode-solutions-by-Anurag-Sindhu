@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 var isPalindrome = function (head) {
   console.log(, "11")

@@ -1,3 +1,35 @@
+const binarySearchMinIndexGreaterThanSearch = (arr, search) => {
+    let left = 0,
+        right = arr.length - 1,
+        ans = null;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid] >= search) {
+            ans = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return ans;
+};
+
+const binarySearchMinIndexLessThanSearch = (arr, search) => {
+    let left = 0,
+        right = arr.length - 1,
+        ans = null;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid] <= search) {
+            ans = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return ans;
+};
+
 var RangeFreqQuery = function (arr) {
     this.arr = arr;
     this.length = arr.length;
@@ -8,98 +40,76 @@ var RangeFreqQuery = function (arr) {
         }
         this.obj[arr[index]].push(index);
     }
-    console.log('object');
+    return null;
 };
 
 RangeFreqQuery.prototype.query = function (left, right, value) {
-    let count = 0;
-    function binarySearchLeft(arr, search, endIndex, startIndex = 0, index = 0) {
-        const arrLength = startIndex + endIndex + 1;
-        if (arrLength === 1) {
-            if (arr[startIndex] === search) {
-                return startIndex;
-            }
-            if (arr[endIndex] < search) {
-                return endIndex;
-            }
-            return startIndex;
-        }
-        if (arrLength === 2) {
-            if (arr[startIndex] === search) {
-                return startIndex;
-            }
-            if (arr[endIndex] === search) {
-                return endIndex;
-            }
-            if (arr[endIndex] < search) {
-                return endIndex;
-            }
-            return startIndex;
-        }
-        const middleIndex = parseInt((startIndex + endIndex + 1) / 2);
-        const middleElement = arr[middleIndex];
-        if (middleElement === search) {
-            return index + middleIndex;
-        } else if (search < middleElement) {
-            return binarySearchLeft(arr, search, middleIndex, startIndex, index);
-        } else {
-            return binarySearchLeft(arr, search, endIndex, middleIndex, index);
-        }
-    }
-    function binarySearchRight(arr, search, endIndex, startIndex = 0, index = 0) {
-        const arrLength = startIndex + endIndex + 1;
-        if (arrLength === 1) {
-            if (arr[startIndex] === search) {
-                return startIndex;
-            }
-            if (arr[startIndex] > search) {
-                return startIndex;
-            }
-            return endIndex;
-        }
-        if (arrLength === 2) {
-            if (arr[startIndex] === search) {
-                return startIndex;
-            }
-            if (arr[endIndex] === search) {
-                return endIndex;
-            }
-            if (arr[endIndex] > search) {
-                return startIndex;
-            }
-            return endIndex;
-        }
-        const middleIndex = parseInt((startIndex + endIndex + 1) / 2);
-        const middleElement = arr[middleIndex];
-        if (middleElement === search) {
-            return index + middleIndex;
-        } else if (search < middleElement) {
-            return binarySearchRight(arr, search, middleIndex, startIndex, index);
-        } else {
-            return binarySearchRight(arr, search, endIndex, middleIndex, index);
-        }
-    }
-    if (!this.obj[value]) {
+    if (this.obj[value] == undefined) {
         return 0;
     }
-    const firstElement = this.obj[value][0];
-    const lastElement = this.obj[value][this.obj[value].length - 1];
-    if (left > lastElement) {
+    const firstElement = binarySearchMinIndexGreaterThanSearch(this.obj[value], left);
+    const lastElement = binarySearchMinIndexLessThanSearch(this.obj[value], right);
+    if (firstElement == null) {
         return 0;
     }
-    if (right < firstElement) {
+    if (firstElement > lastElement) {
         return 0;
     }
-    let leftIndex = binarySearchLeft(this.obj[value], left, this.obj[value].length - 1);
-    let rightIndex = binarySearchRight(this.obj[value], right, this.obj[value].length - 1);
-    if (leftIndex <= rightIndex) {
-        return rightIndex - leftIndex + 1;
+    if (firstElement == lastElement) {
+        if (this.obj[value][firstElement] >= left && this.obj[value][firstElement] <= right) {
+            return 1;
+        }
+        return 0;
     }
-    return 0;
+    if (lastElement == null) {
+        return 0;
+    }
+    return lastElement - firstElement + 1;
 };
 
 let obj;
 let values;
+let output;
+
+output = [null];
+values = [[[2, 2, 1, 2, 2]], [2, 4, 1], [1, 3, 1], [0, 2, 1]];
+operations = ['RangeFreqQuery', 'query', 'query', 'query'];
+obj = new RangeFreqQuery(values[0][0]);
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+    //[null,1,1,1]
+}
+console.log({ output });
+
+output = [null];
+values = [[[1, 1, 1, 2, 2]], [0, 1, 2], [0, 2, 1], [3, 3, 2], [2, 2, 1]];
+operations = ['RangeFreqQuery', 'query', 'query', 'query', 'query'];
+obj = new RangeFreqQuery(values[0][0]);
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+}
+console.log({ output }); //[null,0,3,1,1]
+
+output = [null];
+values = [[[12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]], [1, 9, 12], [0, 11, 33], [1, 2, 4]];
+operations = ['RangeFreqQuery', 'query', 'query', 'query'];
+obj = new RangeFreqQuery(values[0][0]);
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+    // [null,1,2,1]
+}
+console.log({ output });
+
+output = [null];
+values = [[[12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]], [0, 11, 33], [1, 2, 4], [1, 9, 12]];
+operations = ['RangeFreqQuery', 'query', 'query', 'query'];
+obj = new RangeFreqQuery(values[0][0]);
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+    // [null,2,1,1]
+}
+console.log({ output });
 
 values = [
     [[8, 5, 4, 2, 5, 4, 5, 8, 6, 2, 3]],
@@ -112,33 +122,13 @@ values = [
 ];
 operations = ['RangeFreqQuery', 'query', 'query', 'query', 'query', 'query', 'query'];
 obj = new RangeFreqQuery(values[0][0]);
+output = [null];
 
 for (let index = 1; index < operations.length; index++) {
-    console.log(obj[operations[index]](...values[index]));
-    //[null, 0, 3, 1, 1]; expected
+    if (index == 4) {
+        console.log('object');
+    }
+    output.push(obj[operations[index]](...values[index]));
+    //[null,0,1,0,0,0,1]
 }
-
-values = [[[1, 1, 1, 2, 2]], [0, 1, 2], [0, 2, 1], [3, 3, 2], [2, 2, 1]];
-operations = ['RangeFreqQuery', 'query', 'query', 'query', 'query'];
-obj = new RangeFreqQuery(values[0][0]);
-
-for (let index = 1; index < operations.length; index++) {
-    console.log(obj[operations[index]](...values[index]));
-    //[null, 0, 3, 1, 1]; expected
-}
-
-values = [[[12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]], [0, 11, 33], [1, 2, 4], [1, 9, 12]];
-operations = ['RangeFreqQuery', 'query', 'query', 'query'];
-obj = new RangeFreqQuery(values[0][0]);
-for (let index = 1; index < operations.length; index++) {
-    console.log(obj[operations[index]](...values[index]));
-    // [null,1,2]
-}
-
-values = [[[2, 2, 1, 2, 2]], [2, 4, 1], [1, 3, 1], [0, 2, 1]];
-operations = ['RangeFreqQuery', 'query', 'query', 'query'];
-obj = new RangeFreqQuery(values[0][0]);
-for (let index = 1; index < operations.length; index++) {
-    console.log(obj[operations[index]](...values[index]));
-    //[null,1,1,1]
-}
+console.log({ output });

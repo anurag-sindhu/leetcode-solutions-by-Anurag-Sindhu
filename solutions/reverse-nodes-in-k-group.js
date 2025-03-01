@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 class countList {
     constructor() {
         this.counting = 0;
@@ -53,7 +53,7 @@ function cutSubNodesAsPerTheSizeGiven(head, size, cutSubNodes = new Node()) {
     return { cutSubNodes: cutSubNodes.next, leftHead };
 }
 
-var reverseKGroup = function(head, size) {
+var reverseKGroup = function (head, size) {
     const totalNode = new countList().count(head);
     const lastNodesToBeSkipped = totalNode % size;
     function splitNodesAsPerSize(head, size, nodesExplored = 0) {

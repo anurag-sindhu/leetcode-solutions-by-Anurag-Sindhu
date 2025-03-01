@@ -1,9 +1,9 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 var deleteNode = function (node) {
-  node.val = node.next.val;
-  node.next = node.next.next;
-  return node;
+    node.val = node.next.val;
+    node.next = node.next.next;
+    return node;
 };
 
 console.log(deleteNode(singlyLinkedList([1, 2, 2, 1]).head));

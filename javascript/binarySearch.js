@@ -41,4 +41,36 @@ function binarySearch(arr, search, index = 0) {
         return binarySearch(arr.slice(0, middleIndex), search, index);
     }
 }
+const binarySearchMinIndexGreaterThanSearch = (arr, search) => {
+    let left = 0,
+        right = arr.length - 1,
+        ans = null;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid] >= search) {
+            ans = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return ans;
+};
+
+const binarySearchMinIndexLessThanSearch = (arr, search) => {
+    let left = 0,
+        right = arr.length - 1,
+        ans = null;
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+        if (arr[mid] <= search) {
+            ans = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return ans;
+};
+
 console.log(binarySearch({ arr: [1, 2, 3, 4, 5, 6, 7], search: 6 }));

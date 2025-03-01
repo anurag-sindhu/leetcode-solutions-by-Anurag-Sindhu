@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/map-sum-pairs.js"
+        "program": "${workspaceFolder}/solutions/range-frequency-queries.js"
     }
   ]
 }

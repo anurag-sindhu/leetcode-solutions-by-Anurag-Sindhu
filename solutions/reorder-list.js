@@ -1,28 +1,28 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 function getLastNode(head) {
-  if (!head.next) {
-    return null;
-  }
-  if (!head.next.next) {
-    const storeNode = head.next;
-    head.next = null;
-    return storeNode;
-  }
-  return getLastNode(head.next);
+    if (!head.next) {
+        return null;
+    }
+    if (!head.next.next) {
+        const storeNode = head.next;
+        head.next = null;
+        return storeNode;
+    }
+    return getLastNode(head.next);
 }
 
 var reorderList = function (head) {
-  if (!head) {
-    return null;
-  }
-  const lastNode = getLastNode(head);
-  if (lastNode) {
-    const secondPointer = head.next;
-    lastNode.next = secondPointer;
-    head.next = lastNode;
-  }
-  reorderList(head.next && head.next.next);
-  return head;
+    if (!head) {
+        return null;
+    }
+    const lastNode = getLastNode(head);
+    if (lastNode) {
+        const secondPointer = head.next;
+        lastNode.next = secondPointer;
+        head.next = lastNode;
+    }
+    reorderList(head.next && head.next.next);
+    return head;
 };
 let res = null;
 

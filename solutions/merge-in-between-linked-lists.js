@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 var mergeInBetween = function (list1, a, b, list2, count = 1) {
     if (!list1) {

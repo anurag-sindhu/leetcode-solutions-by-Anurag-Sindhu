@@ -1,59 +1,59 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 var mergeNodes1 = function (head) {
-  var mergeNodesWithZero = function (head) {
-    if (!head) {
-      return head;
-    }
-    if (head.val === 0) {
-      head.next = mergeNodesWithZero(head.next);
-    } else {
-      while (head.next.val) {
-        head.next.val = head.val + head.next.val;
-        head = head.next;
-      }
-      head.next = mergeNodesWithZero(head.next);
-    }
-    return head;
-  };
+    var mergeNodesWithZero = function (head) {
+        if (!head) {
+            return head;
+        }
+        if (head.val === 0) {
+            head.next = mergeNodesWithZero(head.next);
+        } else {
+            while (head.next.val) {
+                head.next.val = head.val + head.next.val;
+                head = head.next;
+            }
+            head.next = mergeNodesWithZero(head.next);
+        }
+        return head;
+    };
 
-  const removeZero = function (head) {
-    if (!head) {
-      return head;
-    }
-    if (head.val === 0) {
-      head = head.next;
-    }
-    if (!head) {
-      return head;
-    }
-    head.next = removeZero(head.next);
-    return head;
-  };
-  const getMergedNodesWithZero = mergeNodesWithZero(head);
-  const res = removeZero(getMergedNodesWithZero);
-  return res;
+    const removeZero = function (head) {
+        if (!head) {
+            return head;
+        }
+        if (head.val === 0) {
+            head = head.next;
+        }
+        if (!head) {
+            return head;
+        }
+        head.next = removeZero(head.next);
+        return head;
+    };
+    const getMergedNodesWithZero = mergeNodesWithZero(head);
+    const res = removeZero(getMergedNodesWithZero);
+    return res;
 };
 
 var mergeNodes = function (head) {
-  if (!head) {
+    if (!head) {
+        return head;
+    }
+    while (head.val === 0) {
+        head = head.next;
+        if (!head) {
+            return head;
+        }
+    }
+    while (head.next.val) {
+        head.next.val = head.val + head.next.val;
+        head = head.next;
+        if (!head) {
+            return head;
+        }
+    }
+    head.next = mergeNodes(head.next);
     return head;
-  }
-  while (head.val === 0) {
-    head = head.next;
-    if (!head) {
-      return head;
-    }
-  }
-  while (head.next.val) {
-    head.next.val = head.val + head.next.val;
-    head = head.next;
-    if (!head) {
-      return head;
-    }
-  }
-  head.next = mergeNodes(head.next);
-  return head;
 };
 
 let res;

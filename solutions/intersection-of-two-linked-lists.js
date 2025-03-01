@@ -1,4 +1,4 @@
-const singlyLinkedList = require('../../js/singlyLinkedList');
+const singlyLinkedList = require('../javascript/singlyLinkedList');
 
 function lengthOfLinkedList(head) {
     if (!head) {
@@ -42,6 +42,6 @@ var getIntersectionNode = function (headA, headB) {
 console.log(
     getIntersectionNode(
         singlyLinkedList([4, 1, 8, 4, 5]).head,
-        singlyLinkedList([5, 6, 1, 8, 4, 5]).head
-    )
+        singlyLinkedList([5, 6, 1, 8, 4, 5]).head,
+    ),
 );
