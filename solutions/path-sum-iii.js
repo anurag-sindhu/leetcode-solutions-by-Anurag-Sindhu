@@ -1,8 +1,10 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
 var pathSum = function (root, targetSum) {
-    let output = 0;
-    function helper(root, path = 0) {
+    let output = 0,
+        path = 0;
+
+    function helper1(root, path = 0) {
         if (!root || root.val === null) {
             return 0;
         }
@@ -12,18 +14,35 @@ var pathSum = function (root, targetSum) {
         helper(root.left, path + root.val);
         helper(root.right, path + root.val);
     }
+
+    function helper(root, path = 0) {
+        if (!root || root.val === null) {
+            return 0;
+        }
+        if (path + root.val == targetSum) {
+            output += 1;
+        } else if (path + root.val > targetSum) {
+            while (path + root.val > targetSum) {
+                helper1(root.left, path + root.val);
+                helper1(root.right, path + root.val);
+            }
+        }
+        helper(root.left, path + root.val);
+        helper(root.right, path + root.val);
+    }
     helper(root);
     return output;
 };
 
 let first;
-let binaryTree;
 
-binaryTree = new BinaryTree();
-for (const iterator of [10, 5, -3, 3, 2, null, 11, 3, -2, null, 1]) {
-    binaryTree.add(iterator);
-}
-first = pathSum(binaryTree.tree, 8);
+first = pathSum(
+    [10, 5, -3, 3, 2, null, 11, 3, -2, null, 1].reduce((acc, curr) => {
+        acc.add(curr);
+        return acc;
+    }, new BinaryTree()).tree,
+    8,
+);
 console.log(first);
 
 binaryTree = new BinaryTree();

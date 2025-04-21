@@ -1,8 +1,11 @@
 function isPrime(num) {
-    for (let index = 2; index < num / 2; index++) {
-        if (num % index === 0) {
-            return false;
-        }
+    if (num <= 1) return false;
+    if (num === 2) return true;
+    if (num % 2 === 0) return false;
+
+    const sqrt = Math.floor(Math.sqrt(num));
+    for (let i = 3; i <= sqrt; i += 2) {
+        if (num % i === 0) return false;
     }
     return true;
 }

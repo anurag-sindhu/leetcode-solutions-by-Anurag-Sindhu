@@ -1,70 +1,61 @@
-const aa = {
-    headers: { Employees: ['employee_id', 'name', 'manager_id', 'salary'] },
-    rows: {
-        Employees: [
-            [9, 'Kamiyah', 2, 65859],
-            [14, 'Russell', 10, 86740],
-            [11, 'Roger', 7, 85366],
-            [15, 'Alyson', null, 91743],
-            [17, 'Elyse', 12, 10115],
-            [3, 'Alivia', null, 53679],
-            [1, 'Reign', null, 77731],
-            [7, 'Brooks', 11, 89386],
-            [8, 'Ryland', 12, 61431],
-            [13, 'Charlee', null, 41084],
-        ],
-    },
-};
-
 function countPaths(n, roads) {
     var minTime = Infinity;
-    var noOfRoads = 0;
+    var costMapping = {};
+    var costMappingFreq = {};
     var map = {};
-
-    function dfs(node, map, vis, currTime) {
-        if (node === n - 1) {
-            if (currTime < minTime) {
-                minTime = currTime;
-                noOfRoads = 1;
-            } else if (currTime === minTime) {
-                noOfRoads++;
-            }
-            return;
-        }
-
-        if (currTime > minTime) return;
-
-        vis[node] = true;
-        var nebList = map[node];
-        if (nebList) {
-            for (var i = 0; i < nebList.length; i++) {
-                var neb = nebList[i];
-                var des = neb[0];
-                var time = neb[1];
-                if (!vis[des]) {
-                    dfs(des, map, vis, currTime + time);
-                }
-            }
-        }
-        vis[node] = false;
-    }
-
     roads.forEach(function (curr) {
         var src = curr[0];
         var des = curr[1];
         var time = curr[2];
 
-        if (!map[src]) map[src] = [];
-        if (!map[des]) map[des] = [];
-        map[src].push([des, time]);
-        map[des].push([src, time]);
+        if (map[src] == undefined) map[src] = {};
+        if (map[des] == undefined) map[des] = {};
+        map[src][des] = Math.min(map[src][des] || Infinity, time);
+        map[des][src] = Math.min(map[des][src] || Infinity, time);
     });
 
-    var vis = new Array(n).fill(false);
-    dfs(0, map, vis, 0);
-    return noOfRoads;
+    function dfs(node, currTime, visited = {}) {
+        if (costMapping[node] !== undefined) {
+            return costMapping[node];
+        }
+        visited[node] = true;
+        let smallestTime = Infinity;
+        for (const key in map[node]) {
+            if (visited[key] !== true) {count-days-without-meetings
+                const temp = dfs(key, currTime + map[node][key], visited);
+                smallestTime = Math.min(smallestTime, temp);
+            }
+        }
+        visited[node] = false;
+        costMapping[node] = smallestTime;
+        if (costMappingFreq[smallestTime] == undefined) {
+            costMappingFreq[smallestTime] = 1;
+        } else {
+            costMappingFreq[smallestTime] += 1;
+        }
+        return smallestTime;
+    }
+    dfs(n - 1, 0);
+    return costMappingFreq[minTime];
 }
-
+console.log(
+    countPaths(
+        (n = 7),
+        (roads = [
+            [0, 6, 7],
+            [0, 1, 2],
+            [1, 2, 3],
+            [1, 3, 3],
+            [6, 3, 3],
+            [3, 5, 1],
+            [6, 5, 1],
+            [2, 5, 1],
+            [0, 4, 5],
+            [4, 6, 2],
+        ]),
+    ) === 4,
+);
+console.log(countPaths((n = 2), (roads = [[1, 0, 10]])));
 console.log(
     countPaths(31, [
         [1, 0, 3720],
@@ -598,23 +589,6 @@ console.log(
 );
 console.log(
     countPaths(
-        (n = 7),
-        (roads = [
-            [0, 6, 7],
-            [0, 1, 2],
-            [1, 2, 3],
-            [1, 3, 3],
-            [6, 3, 3],
-            [3, 5, 1],
-            [6, 5, 1],
-            [2, 5, 1],
-            [0, 4, 5],
-            [4, 6, 2],
-        ]),
-    ),
-);
-console.log(
-    countPaths(
         (n = 18),
         (roads = [
             [0, 1, 3972],
@@ -735,4 +709,3 @@ console.log(
         ]),
     ),
 );
-console.log(countPaths((n = 2), (roads = [[1, 0, 10]])));

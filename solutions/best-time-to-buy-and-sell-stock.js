@@ -1,38 +1,31 @@
-var maxProfit1 = function(prices) {
-	let least = Number.MAX_SAFE_INTEGER;
-	let difference;
-	let element;
-	let profit = 0;
-	for (let index = 0; index < prices.length; index++) {
-		element = prices[index];
-		if (element < least) {
-			least = element;
-		}
-
-		difference = element - least;
-		if (difference > profit) {
-			profit = difference;
-		}
-	}
-	return profit;
+var maxProfit1 = function (prices) {
+    const maxi = [prices[prices.length - 1]];
+    const mini = [];
+    for (let index = prices.length - 1 - 1; index >= 0; index--) {
+        maxi.push(Math.max(maxi[maxi.length - 1], prices[index]));
+    }
+    maxi.reverse();
+    for (let index = 0; index < prices.length; index++) {
+        mini.push(Math.min(mini[mini.length - 1] || Infinity, prices[index]));
+    }
+    let diff = 0;
+    for (let index = 0; index < maxi.length; index++) {
+        diff = Math.max(maxi[index] - mini[index], diff);
+    }
+    return diff;
 };
 
-var maxProfit = function(prices) {
-	let difference;
-	let maxProfit = 0;
-	for (let index = 0; index < prices.length - 1; index++) {
-		for (let index1 = index + 1; index1 < prices.length; index1++) {
-			difference = prices[index1] - prices[index];
-			if (difference > maxProfit) {
-				maxProfit = difference;
-			}
-		}
-	}
-	return maxProfit;
+var maxProfit = function (prices) {
+    let minPrice = Infinity;
+    let diff = -Infinity;
+    for (const element of prices) {
+        minPrice = Math.min(minPrice, element);
+        diff = Math.max(element - minPrice, diff);
+    }
+    return diff;
 };
 
-console.log(maxProfit1([ 7, 1, 5, 3, 6, 4 ]));
-console.log(maxProfit1([ 1, 2 ]));
-console.log(maxProfit1([ 7, 6, 4, 3, 1 ]));
-console.log(maxProfit([ 7, 1, 5, 3, 6, 4 ]));
-console.log(maxProfit([ 7, 6, 4, 3, 1 ]));
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([1, 2]));
+console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(maxProfit([7, 6, 4, 3, 1]));

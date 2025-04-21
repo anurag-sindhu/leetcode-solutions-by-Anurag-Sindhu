@@ -1,26 +1,49 @@
-var maxProfit = function (array) {
-  const obj = {};
-  for (let index = 0; index < array.length; index++) {
-    if ((array[index - 1] || array[index - 1] === 0) && array[index] > array[index - 1]) {
-      obj[index] = array[index] - array[index - 1] + obj[index - 1];
-    } else {
-      obj[index] = 0;
+var maxProfit1 = function (prices) {
+    const obj = {};
+    let sum = 0;
+    let temp = 0;
+    for (let index = 0; index < prices.length; index++) {
+        if (prices[index] != undefined && prices[index] > prices[index - 1]) {
+            obj[index] = prices[index] - prices[temp];
+        } else {
+            obj[index] = 0;
+            temp = index;
+        }
     }
-  }
-  let max = 0;
-  let tempMax = 0;
-  for (const key in obj) {
-    const value = obj[key];
-    if (tempMax < value) {
-      tempMax = value;
-    } else {
-      max += tempMax;
-      tempMax = 0;
+    for (let index = 1; index < prices.length; index++) {
+        if (index === prices.length - 1) {
+            sum += obj[index];
+        } else {
+            if (obj[index] > 0 && obj[index + 1] == 0) {
+                sum += obj[index];
+            }
+        }
     }
-  }
-  return max + tempMax;
+    return sum;
 };
-console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+
+var maxProfit = function (prices) {
+    let sum = 0;
+    let buyPrice = null;
+    let tempSum = 0;
+    let lastPrice = null;
+    for (let index = 0; index < prices.length; index++) {
+        if (buyPrice == null) {
+            buyPrice = prices[index];
+        } else if (lastPrice > prices[index]) {
+            sum += tempSum;
+            tempSum = 0;
+            buyPrice = prices[index];
+        } else if (lastPrice <= prices[index]) {
+            tempSum = prices[index] - buyPrice;
+        }
+        lastPrice = prices[index];
+    }
+    sum += tempSum;
+    return sum;
+};
+console.log(7 == maxProfit([7, 1, 5, 3, 6, 4]));
+console.log(8 == maxProfit([7, 1, 5, 6, 3, 6, 4]));
 console.log(maxProfit([2, 1, 2, 0, 1]) === 2);
 console.log(maxProfit([1, 2, 3, 4, 5]));
 console.log(maxProfit([7, 6, 4, 3, 1]));

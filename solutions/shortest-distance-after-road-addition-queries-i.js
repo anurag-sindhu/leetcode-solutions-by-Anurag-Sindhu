@@ -1,50 +1,60 @@
-var shortestDistanceAfterQueries = function (n, queries) {
-    const arr = [];
-    const shortcuts = {};
-    const memoization = {};
-    let avoidMemoizationShortcutsPostPoint = null;
-    function start(nextIndex) {
-        if (n - 1 <= nextIndex) {
-            return 0;
+function countSTep(n, config) {
+    let min = Infinity;
+    function countSTepHelper(n, config, step = 0, currStep = 0) {
+        if (step >= min) {
+            return min;
         }
-        let nextStep = [nextIndex + 1];
-        if (shortcuts[nextIndex] != undefined) {
-            nextStep = [...nextStep, ...shortcuts[nextIndex]];
+        if (currStep >= n - 1) {
+            min = Math.min(step, min);
+            return min;
         }
-        let min = Infinity;
-        for (const element of nextStep) {
-            const aasa = start(element);
-            min = 1 + Math.min(min, start(element));
-            console.log(`from ${nextIndex} to ${element}:${min}`);
-            if (memoization[nextIndex] == undefined) {
-                memoization[nextIndex] = {};
+        let partA = Infinity;
+        if (config[currStep] != undefined) {
+            for (const element of config[currStep]) {
+                partA = Math.min(partA, countSTepHelper(n, config, step + 1, element));
             }
-            memoization[nextIndex][element] = Math.min(
-                (memoization[nextIndex] && memoization[nextIndex][element]) || Infinity,
-                min,
-            );
-            console.log({ min });
         }
+        const partB = countSTepHelper(n, config, step + 1, currStep + 1);
+        min = Math.min(partB, partA);
         return min;
     }
+    countSTepHelper(n, config);
+    return min;
+}
 
-    for (let index = 0; index < queries.length; index++) {
-        const [from, to] = queries[index];
-        if (shortcuts[from] === undefined) {
-            shortcuts[from] = [];
-        }
-        shortcuts[from].push(to);
-        arr.push(start(0));
+var shortestDistanceAfterQueries = function (n, queries) {
+    const out = [];
+    const arr = [];
+    const config = {};
+    for (let index = 0; index < n; index++) {
+        arr.push(n);
     }
-    return arr;
+    for (const [start, till] of queries) {
+        if (!config[start]) {
+            config[start] = [];
+        }
+        config[start].push(till);
+        const step = countSTep(n, config);
+        out.push(step);
+    }
+    return out;
 };
 
+console.log(
+    shortestDistanceAfterQueries(8, [
+        [0, 4],
+        [3, 6],
+        [2, 5],
+        [0, 3],
+    ]),
+); //[4,4,4,3]
 console.log(
     shortestDistanceAfterQueries(5, [
         [2, 4],
         [1, 4],
     ]),
-);
+); //[3,2]
+
 console.log(
     shortestDistanceAfterQueries(
         (n = 5),
@@ -54,7 +64,8 @@ console.log(
             [0, 4],
         ]),
     ),
-);
+); //[3,2,1]
+
 console.log(
     shortestDistanceAfterQueries(
         (n = 4),
@@ -63,4 +74,4 @@ console.log(
             [0, 2],
         ]),
     ),
-);
+); //[1,1]
