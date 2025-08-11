@@ -6,7 +6,7 @@ function generateTitle(heading) {
     return title;
 }
 console.log(generateTitle(`bulb-switcher-ii`));
-console.log(generateTitle(`Beats 100% trim-a-binary-search-tree`));
+console.log(generateTitle(`Beats 100% k-th-nearest-obstacle-queries`));
 console.log(generateTitle(`100% time and space complexity`));
 
 //tried-after-2-years-

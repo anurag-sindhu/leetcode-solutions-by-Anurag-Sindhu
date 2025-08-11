@@ -96,60 +96,47 @@ var NumberContainers = function () {
 };
 
 NumberContainers.prototype.change = function (index, number) {
-    if (this.indexToNumberMapping[index] !== undefined) {
-        let tempIndex = index;
-        const currentNumberExistingAtIndex = this.indexToNumberMapping[tempIndex];
-        if (!this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex]) {
-            this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex] = {};
-        }
-        this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][tempIndex] = true;
-        let minIndexOfSameNumber = null;
-        if (this.numberToIndexMapping[currentNumberExistingAtIndex]) {
-            minIndexOfSameNumber =
-                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0].value;
-        }
-        while (
-            tempIndex === minIndexOfSameNumber &&
-            tempIndex != undefined &&
-            minIndexOfSameNumber != undefined
-        ) {
-            this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][tempIndex] = false;
-            this.numberToIndexMapping[currentNumberExistingAtIndex].extractMinimumElement(
-                tempIndex,
-            );
-            minIndexOfSameNumber =
-                this.numberToIndexMapping[currentNumberExistingAtIndex].heap &&
-                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0] &&
-                this.numberToIndexMapping[currentNumberExistingAtIndex].heap[0].value;
-            tempIndex =
-                (this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][
-                    minIndexOfSameNumber
-                ] &&
-                    this.inactiveNumberToIndexMapping[currentNumberExistingAtIndex][
-                        minIndexOfSameNumber
-                    ].true) ||
-                undefined;
-        }
-    }
     if (this.numberToIndexMapping[number] === undefined) {
         this.numberToIndexMapping[number] = new Heap();
     }
+    if (this.indexToNumberMapping[index] == undefined) {
+        this.indexToNumberMapping[index] = number;
+    } else {
+        const numStored = this.indexToNumberMapping[index];
+        if (this.inactiveNumberToIndexMapping == undefined) {
+            this.inactiveNumberToIndexMapping[numStored] = {};
+        }
+        this.inactiveNumberToIndexMapping[numStored][index] = true;
+    }
+
+    if (!this.inactiveNumberToIndexMapping[number]) {
+        this.inactiveNumberToIndexMapping[number] = {};
+    }
+    this.inactiveNumberToIndexMapping[number][index] = false;
     this.numberToIndexMapping[number].insertMinHeap(index);
-    this.indexToNumberMapping[index] = number;
     return null;
 };
 
 NumberContainers.prototype.find = function (number) {
-    if (
-        !this.numberToIndexMapping[number] ||
-        this.numberToIndexMapping[number].heap == undefined ||
-        this.numberToIndexMapping[number].heap[0] == undefined
-    ) {
-        return -1;
+    if (this.numberToIndexMapping[number]) {
+        let findIndex = this.numberToIndexMapping[number].getMinimumElement();
+        if (findIndex == undefined) {
+            return -1;
+        }
+        let index = findIndex.value;
+        if (index !== undefined) {
+            while (this.inactiveNumberToIndexMapping[number][index] === true) {
+                this.numberToIndexMapping[number].extractMinimumElement();
+                findIndex = this.numberToIndexMapping[number].getMinimumElement();
+                if (findIndex == undefined) {
+                    return -1;
+                }
+                index = findIndex.value;
+            }
+            return index;
+        }
     }
-    return this.numberToIndexMapping[number].heap[0].value == undefined
-        ? -1
-        : this.numberToIndexMapping[number].heap[0].value;
+    return -1;
 };
 
 let obj;
@@ -157,6 +144,146 @@ let res;
 let operations;
 let values;
 let output = [null];
+
+output = [null];
+obj = new NumberContainers();
+operations = [
+    'NumberContainers',
+    'change',
+    'change',
+    'find',
+    'find',
+    'find',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+    'find',
+    'find',
+    'change',
+    'find',
+    'change',
+    'change',
+    'change',
+];
+values = [
+    [],
+    [25, 50],
+    [56, 31],
+    [50],
+    [50],
+    [43],
+    [30, 50],
+    [31],
+    [43],
+    [25, 20],
+    [50],
+    [56, 43],
+    [68, 31],
+    [56, 31],
+    [20],
+    [43],
+    [25, 43],
+    [43],
+    [56, 31],
+    [54, 43],
+    [63, 43],
+];
+
+for (let index = 1; index < operations.length; index++) {
+    if (index == 16) {
+        console.log('object');
+    }
+    output.push(obj[operations[index]](...values[index]));
+}
+res = areTwoArrayEqual(output, [
+    null,
+    null,
+    null,
+    25,
+    25,
+    -1,
+    null,
+    56,
+    -1,
+    null,
+    30,
+    null,
+    null,
+    null,
+    25,
+    -1,
+    null,
+    25,
+    null,
+    null,
+    null,
+]);
+console.log({ res });
+
+obj = new NumberContainers();
+output = [null];
+operations = [
+    'NumberContainers',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+];
+values = [
+    [],
+    [10],
+    [20, 10],
+    [10, 10],
+    [13, 10],
+    [50, 10],
+    [6, 10],
+    [70, 10],
+    [8, 10],
+    [10],
+    [1, 20],
+    [10],
+];
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+}
+
+//[null,-1,null,null,null,null,null,null,null,6,null,6]
+res = areTwoArrayEqual(output, [null, -1, null, null, null, null, null, null, null, 6, null, 6]);
+console.log({ res });
+
+obj = new NumberContainers();
+output = [null];
+operations = [
+    'NumberContainers',
+    'find',
+    'change',
+    'change',
+    'change',
+    'change',
+    'find',
+    'change',
+    'find',
+];
+values = [[], [10], [2, 10], [1, 10], [3, 10], [5, 10], [10], [1, 20], [10]];
+
+for (let index = 1; index < operations.length; index++) {
+    output.push(obj[operations[index]](...values[index]));
+}
+res = areTwoArrayEqual(output, [null, -1, null, null, null, null, 1, null, 2]);
+console.log({ res });
 
 obj = new NumberContainers();
 output = [null];
@@ -778,64 +905,6 @@ res = areTwoArrayEqual(output, [
 ]);
 console.log({ res });
 
-obj = new NumberContainers();
-output = [null];
-operations = [
-    'NumberContainers',
-    'find',
-    'change',
-    'change',
-    'change',
-    'change',
-    'find',
-    'change',
-    'find',
-];
-values = [[], [10], [2, 10], [1, 10], [3, 10], [5, 10], [10], [1, 20], [10]];
-
-for (let index = 1; index < operations.length; index++) {
-    output.push(obj[operations[index]](...values[index]));
-}
-res = areTwoArrayEqual(output, [null, -1, null, null, null, null, 1, null, 2]);
-console.log({ res });
-
-obj = new NumberContainers();
-output = [null];
-operations = [
-    'NumberContainers',
-    'find',
-    'change',
-    'change',
-    'change',
-    'change',
-    'change',
-    'change',
-    'change',
-    'find',
-    'change',
-    'find',
-];
-values = [
-    [],
-    [10],
-    [20, 10],
-    [10, 10],
-    [13, 10],
-    [50, 10],
-    [6, 10],
-    [70, 10],
-    [8, 10],
-    [10],
-    [1, 20],
-    [10],
-];
-
-for (let index = 1; index < operations.length; index++) {
-    output.push(obj[operations[index]](...values[index]));
-}
-
-//[null,-1,null,null,null,null,null,null,null,6,null,6]
-console.log({ output });
 output = [null];
 obj = new NumberContainers();
 operations = [
@@ -1150,82 +1219,5 @@ res = areTwoArrayEqual(output, [
     null,
     null,
     -1,
-]);
-console.log({ res });
-
-output = [null];
-obj = new NumberContainers();
-operations = [
-    'NumberContainers',
-    'change',
-    'change',
-    'find',
-    'find',
-    'find',
-    'change',
-    'find',
-    'find',
-    'change',
-    'find',
-    'change',
-    'change',
-    'change',
-    'find',
-    'find',
-    'change',
-    'find',
-    'change',
-    'change',
-    'change',
-];
-values = [
-    [],
-    [25, 50],
-    [56, 31],
-    [50],
-    [50],
-    [43],
-    [30, 50],
-    [31],
-    [43],
-    [25, 20],
-    [50],
-    [56, 43],
-    [68, 31],
-    [56, 31],
-    [20],
-    [43],
-    [25, 43],
-    [43],
-    [56, 31],
-    [54, 43],
-    [63, 43],
-];
-
-for (let index = 1; index < operations.length; index++) {
-    output.push(obj[operations[index]](...values[index]));
-}
-res = areTwoArrayEqual(output, [
-    null,
-    null,
-    null,
-    25,
-    25,
-    -1,
-    null,
-    56,
-    -1,
-    null,
-    30,
-    null,
-    null,
-    null,
-    25,
-    -1,
-    null,
-    25,
-    null,
-    null,
-    null,
 ]);
 console.log({ res });

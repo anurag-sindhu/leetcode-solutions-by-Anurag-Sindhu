@@ -1,101 +1,118 @@
-function checkWordPresence(board, word, rowIndex, columnIndex, wordIndex, engagedIndexes = {}) {
-  if (word[wordIndex]) {
-    if (
-      board[rowIndex + 1] &&
-      board[rowIndex + 1][columnIndex] &&
-      word[wordIndex] === board[rowIndex + 1][columnIndex] &&
-      !engagedIndexes[`${rowIndex + 1}_${columnIndex}`]
-    ) {
-      engagedIndexes[`${rowIndex + 1}_${columnIndex}`] = true;
-      return checkWordPresence(board, word, rowIndex + 1, columnIndex, ++wordIndex, engagedIndexes);
-    } else if (
-      board[rowIndex - 1] &&
-      board[rowIndex - 1][columnIndex] &&
-      word[wordIndex] === board[rowIndex - 1][columnIndex] &&
-      !engagedIndexes[`${rowIndex - 1}_${columnIndex}`]
-    ) {
-      engagedIndexes[`${rowIndex - 1}_${columnIndex}`] = true;
-      return checkWordPresence(board, word, rowIndex - 1, columnIndex, ++wordIndex, engagedIndexes);
-    } else if (
-      board[rowIndex] &&
-      board[rowIndex][columnIndex + 1] &&
-      word[wordIndex] === board[rowIndex][columnIndex + 1] &&
-      !engagedIndexes[`${rowIndex}_${columnIndex + 1}`]
-    ) {
-      engagedIndexes[`${rowIndex}_${columnIndex + 1}`] = true;
-      return checkWordPresence(board, word, rowIndex, columnIndex + 1, ++wordIndex, engagedIndexes);
-    } else if (
-      board[rowIndex] &&
-      board[rowIndex][columnIndex - 1] &&
-      word[wordIndex] === board[rowIndex][columnIndex - 1] &&
-      !engagedIndexes[`${rowIndex}_${columnIndex - 1}`]
-    ) {
-      engagedIndexes[`${rowIndex}_${columnIndex - 1}`] = true;
-      return checkWordPresence(board, word, rowIndex, columnIndex - 1, ++wordIndex, engagedIndexes);
-    } else {
-      return false;
+function getNeighbors(array, rowIndex, columnIndex) {
+    const neighbors = [];
+    if (array[rowIndex] && array[rowIndex][columnIndex - 1] !== undefined) {
+        neighbors.push({
+            rowIndex: rowIndex,
+            columnIndex: columnIndex - 1,
+        });
     }
-  } else {
-    return true;
-  }
+    if (array[rowIndex] && array[rowIndex][columnIndex + 1] !== undefined) {
+        neighbors.push({
+            rowIndex: rowIndex,
+            columnIndex: columnIndex + 1,
+        });
+    }
+    if (array[rowIndex - 1] && array[rowIndex - 1][columnIndex] !== undefined) {
+        neighbors.push({
+            rowIndex: rowIndex - 1,
+            columnIndex: columnIndex,
+        });
+    }
+    if (array[rowIndex + 1] && array[rowIndex + 1][columnIndex] !== undefined) {
+        neighbors.push({
+            rowIndex: rowIndex + 1,
+            columnIndex: columnIndex,
+        });
+    }
+    return neighbors;
 }
 
 var exist = function (board, word) {
-  for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
-    for (let columnIndex = 0; columnIndex < board[rowIndex].length; columnIndex++) {
-      if (word[0] === board[rowIndex][columnIndex]) {
-        if (
-          checkWordPresence(board, word, rowIndex, columnIndex, 1, {
-            [`${rowIndex}_${columnIndex}`]: true
-          })
-        ) {
-          return true;
+    let finalResult = false;
+    function existHelper(
+        board,
+        word,
+        wordIndex = 0,
+        addressed = {},
+        rowIndex = 0,
+        columnIndex = 0,
+    ) {
+        const key = `${rowIndex}_${columnIndex}`;
+        if (addressed[key]) {
+            return;
         }
-      }
+        if (board[rowIndex][columnIndex] === word[wordIndex]) {
+            if (wordIndex + 1 >= word.length) {
+                finalResult = true;
+                return;
+            }
+            const neighbors = getNeighbors(board, rowIndex, columnIndex);
+            addressed[key] = true;
+            for (const element of neighbors) {
+                if (!finalResult) {
+                    existHelper(
+                        board,
+                        word,
+                        wordIndex + 1,
+                        addressed,
+                        element.rowIndex,
+                        element.columnIndex,
+                    );
+                }
+            }
+            addressed[key] = false;
+        }
+        return;
     }
-  }
-  return false;
+
+    for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
+        for (let columnIndex = 0; columnIndex < board[rowIndex].length; columnIndex++) {
+            existHelper(board, word, 0, {}, rowIndex, columnIndex);
+        }
+    }
+
+    return finalResult;
 };
-
+console.log(exist((board = [['a']]), (word = 'a')) == true);
 console.log(
-  exist(
-    [
-      ['C', 'A', 'A'],
-      ['A', 'A', 'A'],
-      ['B', 'C', 'D']
-    ],
-    'AAB'
-  )
-);
-console.log(
-  exist(
-    [
-      ['A', 'B', 'C', 'E'],
-      ['S', 'F', 'C', 'S'],
-      ['A', 'D', 'E', 'E']
-    ],
-    (word = 'ABCB')
-  )
+    exist(
+        (board = [
+            ['A', 'B', 'C', 'E'],
+            ['S', 'F', 'C', 'S'],
+            ['A', 'D', 'E', 'E'],
+        ]),
+        (word = 'ABCCED'),
+    ),
 );
 
 console.log(
-  exist(
-    (board = [
-      ['A', 'B', 'C', 'E'],
-      ['S', 'F', 'C', 'S'],
-      ['A', 'D', 'E', 'E']
-    ]),
-    (word = 'SEE')
-  )
+    exist(
+        [
+            ['C', 'A', 'A'],
+            ['A', 'A', 'A'],
+            ['B', 'C', 'D'],
+        ],
+        'AAB',
+    ),
+);
+console.log(
+    exist(
+        [
+            ['A', 'B', 'C', 'E'],
+            ['S', 'F', 'C', 'S'],
+            ['A', 'D', 'E', 'E'],
+        ],
+        (word = 'ABCB'),
+    ),
 );
 
 console.log(
-  exist(
-    (board = [
-      ['A', 'B', 'C', 'E'],
-      ['S', 'F', 'C', 'S'],
-      ['A', 'D', 'E', 'E']
-    ]),
-    (word = 'ABCCED')
-  )
+    exist(
+        (board = [
+            ['A', 'B', 'C', 'E'],
+            ['S', 'F', 'C', 'S'],
+            ['A', 'D', 'E', 'E'],
+        ]),
+        (word = 'SEE'),
+    ),
 );

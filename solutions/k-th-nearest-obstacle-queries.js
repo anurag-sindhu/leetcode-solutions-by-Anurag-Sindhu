@@ -43,7 +43,7 @@ class MaxHeap {
         [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
     }
 
-    add(value) {
+    push(value) {
         this.heap.push(value);
         this.heapifyUp();
     }
@@ -56,7 +56,7 @@ class MaxHeap {
         }
     }
 
-    remove() {
+    pop() {
         if (this.heap.length === 0) {
             return null;
         }
@@ -86,7 +86,7 @@ class MaxHeap {
         }
     }
 
-    peek() {
+    top() {
         if (this.heap.length > 0) {
             return this.heap[0];
         }
@@ -102,19 +102,77 @@ class MaxHeap {
     }
 }
 
-const heap = new MaxHeap();
-heap.add(15);
-heap.add(20);
-heap.add(50);
-heap.add(30);
-heap.add(55);
-heap.add(10);
-heap.add(8);
-heap.add(16);
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
+var resultsArray = function (queries, k) {
+    const dist = [];
+    const out = [];
+    const heap = new MaxHeap();
+    for (let index = 0; index < queries.length; index++) {
+        const element = queries[index];
+        if (index == 10) {
+            console.log('object');
+        }
+        const temp = Math.abs(element[0]) + Math.abs(element[1]);
+        if (heap.heap.length >= k - 1) {
+            if (heap.heap.length < k) {
+                heap.push(temp);
+                out.push(heap.heap[0]);
+            } else {
+                const lastElement = heap.heap[0];
+                if (lastElement > temp) {
+                    heap.pop();
+                    heap.push(temp);
+                }
+                out.push(heap.heap[0]);
+            }
+            console.log('object');
+        } else {
+            heap.push(temp);
+            out.push(-1);
+        }
+    }
+    return out;
+};
+//[3 7 5 3] = > 3 3
+console.log(
+    resultsArray(
+        (queries = [
+            [7, 5],
+            [-3, -2],
+            [-1, -5],
+            [2, -1],
+            [-10, 6],
+            [-1, -4],
+            [9, -1],
+            [-1, 1],
+            [-9, -7],
+            [1, 6],
+            [-9, 0],
+            [9, -6],
+            [6, -10],
+            [2, 1],
+            [-9, -2],
+        ]),
+        (k = 11),
+    ),
+); //[-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,16,16,16,15,12]
+console.log(
+    resultsArray(
+        (queries = [
+            [1, 2],
+            [3, 4],
+            [2, 3],
+            [-3, 0],
+        ]),
+        (k = 2),
+    ),
+); //[-1,7,5,3]
+console.log(
+    resultsArray(
+        (queries = [
+            [5, 5],
+            [4, 4],
+            [3, 3],
+        ]),
+        (k = 1),
+    ),
+); //[10,8,6]

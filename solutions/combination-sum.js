@@ -1,32 +1,27 @@
-var startCombinationSum = function (candidates, target, sumArr = [], output = []) {
-  const arraySum = sumArr.reduce((accumulator, candidate) => accumulator + candidate, 0);
-  if (target === arraySum) {
-    output.push(sumArr);
-  }
-  if (target < arraySum) {
-    return;
-  }
-  for (const iterator of candidates) {
-    startCombinationSum(candidates, target, [...sumArr, iterator], output);
-  }
-  return output;
-};
-
 function combinationSum(candidates, target) {
-  const arr = startCombinationSum(candidates, target);
-  const obj = {};
-  for (const iterator of arr) {
-    const key = (function () {
-      const sortedIterator = iterator.sort((a, b) => a - b);
-      let str = ``;
-      for (const iterator of sortedIterator) {
-        str += `${iterator}_`;
-      }
-      return str;
-    })();
-    obj[key] = iterator;
-  }
-  return Object.values(obj);
+    const obj = {};
+    var startCombinationSum = function (candidates, target, sumArr = [], output = []) {
+        for (const element of candidates) {
+            if (target - element) {
+                sumArr.push(element);
+            }
+        }
+        console.log('object');
+    };
+    candidates.sort((a, b) => a - b);
+    const arr = startCombinationSum(candidates, target);
+    for (const iterator of arr) {
+        const key = (function () {
+            const sortedIterator = iterator.sort((a, b) => a - b);
+            let str = ``;
+            for (const iterator of sortedIterator) {
+                str += `${iterator}_`;
+            }
+            return str;
+        })();
+        obj[key] = iterator;
+    }
+    return Object.values(obj);
 }
 
 let res;

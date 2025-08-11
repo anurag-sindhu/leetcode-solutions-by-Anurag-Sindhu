@@ -1,59 +1,411 @@
-var wordBreakHelper = function (string, wordDictObject) {
-  if (!string) {
-    return true;
-  }
-  let tempStr = '';
-  for (let index = 0; index < string.length; index++) {
-    tempStr += string[index];
-    if (wordDictObject[tempStr]) {
-      const tempString = string.substring(index + 1);
-      const res = wordBreakHelper(tempString, wordDictObject);
-      if (res) {
-        return res;
-      }
-    }
-  }
-  return false;
-};
-
-var wordBreak = function (string, wordDict, wordDictObject = null) {
-  const dp = { [string.length]: true };
-  if (!wordDictObject) {
-    wordDictObject = (function () {
-      const obj = {};
-      for (let index = 0; index < wordDict.length; index++) {
-        obj[wordDict[index]] = wordDict[index];
-      }
-      return obj;
+var wordBreak = function (string, wordDict) {
+    const wordDictObject = (function () {
+        const obj = {};
+        for (let index = 0; index < wordDict.length; index++) {
+            obj[wordDict[index]] = wordDict[index];
+        }
+        return obj;
     })();
-  }
-
-  let str = '';
-  for (let index = string.length - 1; index >= 0; index--) {
-    str = string[index] + str;
-    if (wordDictObject[str]) {
-      const tempSubstring = string.substring(0, index);
-      dp[index] = dp[index + str.length] && wordBreak(tempSubstring, wordDict, wordDictObject);
-      str = '';
-    } else {
-      dp[index] = false;
+    const output = [{ index: 0, tempStr: '' }];
+    const visited = {};
+    while (output.length) {
+        const lastElement = output.shift();
+        let tempStr = lastElement.tempStr;
+        let index = lastElement.index;
+        if (!visited[index]) {
+            for (; index < string.length; index++) {
+                tempStr += string[index];
+                if (wordDictObject[tempStr]) {
+                    output.push({ index: index + 1, tempStr });
+                    if (index === string.length - 1) {
+                        return true;
+                    }
+                    tempStr = '';
+                }
+            }
+        }
+        visited[lastElement.index] = true;
     }
-  }
 
-  return dp[0];
+    return false;
 };
 
-console.log(wordBreak('aaaaaaa', ['aaaa', 'aaa']));
-console.log(wordBreak('applepenapple', ['apple', 'pen']));
-console.log(wordBreak('leetcode', ['leet', 'code']));
 console.log(
-  wordBreak(
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab',
-    ['a', 'aa', 'aaa', 'aaaa', 'aaaaa', 'aaaaaa', 'aaaaaaa', 'aaaaaaaa', 'aaaaaaaaa', 'aaaaaaaaaa']
-  )
+    wordBreak('fohhemkkaecojceoaejkkoedkofhmohkcjmkggcmnami', [
+        'kfomka',
+        'hecagbngambii',
+        'anobmnikj',
+        'c',
+        'nnkmfelneemfgcl',
+        'ah',
+        'bgomgohl',
+        'lcbjbg',
+        'ebjfoiddndih',
+        'hjknoamjbfhckb',
+        'eioldlijmmla',
+        'nbekmcnakif',
+        'fgahmihodolmhbi',
+        'gnjfe',
+        'hk',
+        'b',
+        'jbfgm',
+        'ecojceoaejkkoed',
+        'cemodhmbcmgl',
+        'j',
+        'gdcnjj',
+        'kolaijoicbc',
+        'liibjjcini',
+        'lmbenj',
+        'eklingemgdjncaa',
+        'm',
+        'hkh',
+        'fblb',
+        'fk',
+        'nnfkfanaga',
+        'eldjml',
+        'iejn',
+        'gbmjfdooeeko',
+        'jafogijka',
+        'ngnfggojmhclkjd',
+        'bfagnfclg',
+        'imkeobcdidiifbm',
+        'ogeo',
+        'gicjog',
+        'cjnibenelm',
+        'ogoloc',
+        'edciifkaff',
+        'kbeeg',
+        'nebn',
+        'jdd',
+        'aeojhclmdn',
+        'dilbhl',
+        'dkk',
+        'bgmck',
+        'ohgkefkadonafg',
+        'labem',
+        'fheoglj',
+        'gkcanacfjfhogjc',
+        'eglkcddd',
+        'lelelihakeh',
+        'hhjijfiodfi',
+        'enehbibnhfjd',
+        'gkm',
+        'ggj',
+        'ag',
+        'hhhjogk',
+        'lllicdhihn',
+        'goakjjnk',
+        'lhbn',
+        'fhheedadamlnedh',
+        'bin',
+        'cl',
+        'ggjljjjf',
+        'fdcdaobhlhgj',
+        'nijlf',
+        'i',
+        'gaemagobjfc',
+        'dg',
+        'g',
+        'jhlelodgeekj',
+        'hcimohlni',
+        'fdoiohikhacgb',
+        'k',
+        'doiaigclm',
+        'bdfaoncbhfkdbjd',
+        'f',
+        'jaikbciac',
+        'cjgadmfoodmba',
+        'molokllh',
+        'gfkngeebnggo',
+        'lahd',
+        'n',
+        'ehfngoc',
+        'lejfcee',
+        'kofhmoh',
+        'cgda',
+        'de',
+        'kljnicikjeh',
+        'edomdbibhif',
+        'jehdkgmmofihdi',
+        'hifcjkloebel',
+        'gcghgbemjege',
+        'kobhhefbbb',
+        'aaikgaolhllhlm',
+        'akg',
+        'kmmikgkhnn',
+        'dnamfhaf',
+        'mjhj',
+        'ifadcgmgjaa',
+        'acnjehgkflgkd',
+        'bjj',
+        'maihjn',
+        'ojakklhl',
+        'ign',
+        'jhd',
+        'kndkhbebgh',
+        'amljjfeahcdlfdg',
+        'fnboolobch',
+        'gcclgcoaojc',
+        'kfokbbkllmcd',
+        'fec',
+        'dljma',
+        'noa',
+        'cfjie',
+        'fohhemkka',
+        'bfaldajf',
+        'nbk',
+        'kmbnjoalnhki',
+        'ccieabbnlhbjmj',
+        'nmacelialookal',
+        'hdlefnbmgklo',
+        'bfbblofk',
+        'doohocnadd',
+        'klmed',
+        'e',
+        'hkkcmbljlojkghm',
+        'jjiadlgf',
+        'ogadjhambjikce',
+        'bglghjndlk',
+        'gackokkbhj',
+        'oofohdogb',
+        'leiolllnjj',
+        'edekdnibja',
+        'gjhglilocif',
+        'ccfnfjalchc',
+        'gl',
+        'ihee',
+        'cfgccdmecem',
+        'mdmcdgjelhgk',
+        'laboglchdhbk',
+        'ajmiim',
+        'cebhalkngloae',
+        'hgohednmkahdi',
+        'ddiecjnkmgbbei',
+        'ajaengmcdlbk',
+        'kgg',
+        'ndchkjdn',
+        'heklaamafiomea',
+        'ehg',
+        'imelcifnhkae',
+        'hcgadilb',
+        'elndjcodnhcc',
+        'nkjd',
+        'gjnfkogkjeobo',
+        'eolega',
+        'lm',
+        'jddfkfbbbhia',
+        'cddmfeckheeo',
+        'bfnmaalmjdb',
+        'fbcg',
+        'ko',
+        'mojfj',
+        'kk',
+        'bbljjnnikdhg',
+        'l',
+        'calbc',
+        'mkekn',
+        'ejlhdk',
+        'hkebdiebecf',
+        'emhelbbda',
+        'mlba',
+        'ckjmih',
+        'odfacclfl',
+        'lgfjjbgookmnoe',
+        'begnkogf',
+        'gakojeblk',
+        'bfflcmdko',
+        'cfdclljcg',
+        'ho',
+        'fo',
+        'acmi',
+        'oemknmffgcio',
+        'mlkhk',
+        'kfhkndmdojhidg',
+        'ckfcibmnikn',
+        'dgoecamdliaeeoa',
+        'ocealkbbec',
+        'kbmmihb',
+        'ncikad',
+        'hi',
+        'nccjbnldneijc',
+        'hgiccigeehmdl',
+        'dlfmjhmioa',
+        'kmff',
+        'gfhkd',
+        'okiamg',
+        'ekdbamm',
+        'fc',
+        'neg',
+        'cfmo',
+        'ccgahikbbl',
+        'khhoc',
+        'elbg',
+        'cbghbacjbfm',
+        'jkagbmfgemjfg',
+        'ijceidhhajmja',
+        'imibemhdg',
+        'ja',
+        'idkfd',
+        'ndogdkjjkf',
+        'fhic',
+        'ooajkki',
+        'fdnjhh',
+        'ba',
+        'jdlnidngkfffbmi',
+        'jddjfnnjoidcnm',
+        'kghljjikbacd',
+        'idllbbn',
+        'd',
+        'mgkajbnjedeiee',
+        'fbllleanknmoomb',
+        'lom',
+        'kofjmmjm',
+        'mcdlbglonin',
+        'gcnboanh',
+        'fggii',
+        'fdkbmic',
+        'bbiln',
+        'cdjcjhonjgiagkb',
+        'kooenbeoongcle',
+        'cecnlfbaanckdkj',
+        'fejlmog',
+        'fanekdneoaammb',
+        'maojbcegdamn',
+        'bcmanmjdeabdo',
+        'amloj',
+        'adgoej',
+        'jh',
+        'fhf',
+        'cogdljlgek',
+        'o',
+        'joeiajlioggj',
+        'oncal',
+        'lbgg',
+        'elainnbffk',
+        'hbdi',
+        'femcanllndoh',
+        'ke',
+        'hmib',
+        'nagfahhljh',
+        'ibifdlfeechcbal',
+        'knec',
+        'oegfcghlgalcnno',
+        'abiefmjldmln',
+        'mlfglgni',
+        'jkofhjeb',
+        'ifjbneblfldjel',
+        'nahhcimkjhjgb',
+        'cdgkbn',
+        'nnklfbeecgedie',
+        'gmllmjbodhgllc',
+        'hogollongjo',
+        'fmoinacebll',
+        'fkngbganmh',
+        'jgdblmhlmfij',
+        'fkkdjknahamcfb',
+        'aieakdokibj',
+        'hddlcdiailhd',
+        'iajhmg',
+        'jenocgo',
+        'embdib',
+        'dghbmljjogka',
+        'bahcggjgmlf',
+        'fb',
+        'jldkcfom',
+        'mfi',
+        'kdkke',
+        'odhbl',
+        'jin',
+        'kcjmkggcmnami',
+        'kofig',
+        'bid',
+        'ohnohi',
+        'fcbojdgoaoa',
+        'dj',
+        'ifkbmbod',
+        'dhdedohlghk',
+        'nmkeakohicfdjf',
+        'ahbifnnoaldgbj',
+        'egldeibiinoac',
+        'iehfhjjjmil',
+        'bmeimi',
+        'ombngooicknel',
+        'lfdkngobmik',
+        'ifjcjkfnmgjcnmi',
+        'fmf',
+        'aoeaa',
+        'an',
+        'ffgddcjblehhggo',
+        'hijfdcchdilcl',
+        'hacbaamkhblnkk',
+        'najefebghcbkjfl',
+        'hcnnlogjfmmjcma',
+        'njgcogemlnohl',
+        'ihejh',
+        'ej',
+        'ofn',
+        'ggcklj',
+        'omah',
+        'hg',
+        'obk',
+        'giig',
+        'cklna',
+        'lihaiollfnem',
+        'ionlnlhjckf',
+        'cfdlijnmgjoebl',
+        'dloehimen',
+        'acggkacahfhkdne',
+        'iecd',
+        'gn',
+        'odgbnalk',
+        'ahfhcd',
+        'dghlag',
+        'bchfe',
+        'dldblmnbifnmlo',
+        'cffhbijal',
+        'dbddifnojfibha',
+        'mhh',
+        'cjjol',
+        'fed',
+        'bhcnf',
+        'ciiibbedklnnk',
+        'ikniooicmm',
+        'ejf',
+        'ammeennkcdgbjco',
+        'jmhmd',
+        'cek',
+        'bjbhcmda',
+        'kfjmhbf',
+        'chjmmnea',
+        'ifccifn',
+        'naedmco',
+        'iohchafbega',
+        'kjejfhbco',
+        'anlhhhhg',
+    ]) === true,
 );
-console.log(wordBreak('applepenapple', ['apple', 'applepe', 'napple']));
-console.log(wordBreak('catsandog', ['cats', 'dog', 'sand', 'and', 'cat']));
-console.log(wordBreak('ab', ['a', 'b']));
-console.log(wordBreak('cars', ['car', 'ca', 'rs']));
-console.log(wordBreak('leetcode', ['let', 'code']));
+console.log(
+    wordBreak(
+        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab',
+        [
+            'a',
+            'aa',
+            'aaa',
+            'aaaa',
+            'aaaaa',
+            'aaaaaa',
+            'aaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaaa',
+            'aaaaaaaaaa',
+        ],
+    ) === false,
+);
+console.log(wordBreak('applepenapple', ['apple', 'applepe', 'napple']) === true);
+console.log(wordBreak('applepenapple', ['apple', 'pen']) === true);
+console.log(wordBreak('catsandog', ['cats', 'dog', 'sand', 'and', 'cat']) === false);
+console.log(wordBreak('leetcode', ['leet', 'code']) === true);
+console.log(wordBreak('aaaaaaa', ['aaaa', 'aaa']) === true);
+console.log(wordBreak('ab', ['a', 'b']) === true);
+console.log(wordBreak('cars', ['car', 'ca', 'rs']) === true);
+console.log(wordBreak('leetcode', ['let', 'code']) === false);

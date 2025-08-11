@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/find-the-power-of-k-size-subarrays-i.js"
+        "program": "${workspaceFolder}/solutions/house-robber.js"
     }
   ]
 }
