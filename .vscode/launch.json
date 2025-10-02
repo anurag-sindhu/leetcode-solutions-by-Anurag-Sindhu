@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/house-robber.js"
+        "program": "${workspaceFolder}/solutions/minimum-window-substring.js"
     }
   ]
 }

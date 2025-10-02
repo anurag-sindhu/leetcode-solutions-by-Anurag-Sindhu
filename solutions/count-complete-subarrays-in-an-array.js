@@ -1,33 +1,47 @@
 var countCompleteSubarrays = function (nums) {
-    let count = 0
-    let backwardIndex = 0
-    let subArrayUniqueElements = {}
+    let count = 0;
     let totalUniqueElements = (function () {
-        let object = {}
+        let object = {};
         for (const iterator of nums) {
-            object[iterator] = true
+            object[iterator] = true;
         }
-        return Object.keys(object).length
-    })()
-    for (let index = 0; index < nums.length; index++) {
-        if (!subArrayUniqueElements[nums[index]]) {
-            subArrayUniqueElements[nums[index]] = 0
-        }
-        subArrayUniqueElements[nums[index]] += 1
-        while (Object.keys(subArrayUniqueElements).length === totalUniqueElements) {
-            const restElements = nums.length - index - 1
-            count += 1 + restElements
-            subArrayUniqueElements[nums[backwardIndex]] -= 1
-            if (!subArrayUniqueElements[nums[backwardIndex]]) {
-                delete subArrayUniqueElements[nums[backwardIndex]]
+        return Object.keys(object).length;
+    })();
+    for (let sizeIndex = totalUniqueElements; sizeIndex <= nums.length; sizeIndex++) {
+        const uniqueObj = {};
+        let uniqueCount = 0;
+        for (let index = 0; index < sizeIndex - 1; index++) {
+            const element = nums[index];
+            if (uniqueObj[element] == undefined) {
+                uniqueObj[element] = 1;
+                uniqueCount += 1;
+            } else {
+                uniqueObj[element] += 1;
             }
-            backwardIndex += 1
+        }
+        for (let index = sizeIndex - 1; index < nums.length; index++) {
+            const element = nums[index];
+            if (uniqueObj[element] == undefined || uniqueObj[element] == 0) {
+                uniqueObj[element] = 1;
+                uniqueCount += 1;
+            } else {
+                uniqueObj[element] += 1;
+            }
+            if (uniqueCount == totalUniqueElements) {
+                count += 1;
+            }
+            const indexToBeRemoved = 1 + index - sizeIndex;
+            if (uniqueObj[nums[indexToBeRemoved]]) {
+                if (uniqueObj[nums[indexToBeRemoved]] === 1) {
+                    uniqueCount -= 1;
+                }
+                uniqueObj[nums[indexToBeRemoved]] -= 1;
+            }
         }
     }
-
-    return count
+    return count;
 };
 
-console.log(countCompleteSubarrays(nums = [1, 3, 1, 2, 2]) === 4);
-console.log(countCompleteSubarrays(nums = [5, 5, 5, 5]) === 10);
-console.log(countCompleteSubarrays(nums = [2, 4, 2, 4, 2]) === 10);
+console.log(countCompleteSubarrays((nums = [5, 5, 5, 5])) === 10);
+console.log(countCompleteSubarrays((nums = [1, 3, 1, 2, 2])) === 4);
+console.log(countCompleteSubarrays((nums = [2, 4, 2, 4, 2])) === 10);
