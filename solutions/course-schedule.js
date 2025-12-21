@@ -1,4 +1,4 @@
-var canFinish = function (numCourses, prerequisites) {
+var canFinish1 = function (numCourses, prerequisites) {
     const courseCompleted = {};
     const courseMustBeCompleted = {};
 
@@ -44,6 +44,70 @@ var canFinish = function (numCourses, prerequisites) {
     }
     return true;
 };
+
+var canFinish = function (numCourses, prerequisites) {
+    const courseStatus = {};
+    const courseMustBeCompleted = {};
+
+    for (const [mainCourse, prerequisiteCourse] of prerequisites) {
+        if (!courseMustBeCompleted[mainCourse]) {
+            courseMustBeCompleted[mainCourse] = [];
+        }
+        courseMustBeCompleted[mainCourse].push(prerequisiteCourse);
+    }
+
+    let canPossible = true;
+
+    function completingCourses(index) {
+        if (courseStatus[index] === -1) {
+            canPossible = false;
+            return false;
+        }
+        if (courseStatus[index] === 1) {
+            return true;
+        }
+        if (canPossible === false) {
+            return false;
+        }
+        courseStatus[index] = -1;
+        const courseNeedToComplete = courseMustBeCompleted[index];
+        if (Array.isArray(courseNeedToComplete)) {
+            for (const element of courseNeedToComplete) {
+                completingCourses(element);
+            }
+        }
+        courseStatus[index] = 1;
+        return true;
+    }
+
+    for (let index = 0; index < numCourses; index++) {
+        completingCourses(index, {});
+        if (canPossible == false) {
+            return false;
+        }
+    }
+    return true;
+};
+
+console.log(
+    canFinish(
+        2,
+        (prerequisites = [
+            [1, 0],
+            [0, 1],
+        ]),
+    ) === false,
+);
+
+console.log(
+    canFinish(
+        7,
+        (prerequisites = [
+            [1, 5],
+            [5, 2],
+        ]),
+    ) === true,
+);
 
 console.log(
     canFinish(
@@ -253,16 +317,6 @@ console.log(
     canFinish(
         7,
         (prerequisites = [
-            [1, 5],
-            [5, 2],
-        ]),
-    ) === true,
-);
-
-console.log(
-    canFinish(
-        7,
-        (prerequisites = [
             [1, 2],
             [1, 5],
             [5, 2],
@@ -283,15 +337,6 @@ console.log(
     ]) === false,
 );
 console.log(canFinish(2, (prerequisites = [[1, 0]])) === true);
-console.log(
-    canFinish(
-        2,
-        (prerequisites = [
-            [1, 0],
-            [0, 1],
-        ]),
-    ) === false,
-);
 
 console.log(
     canFinish(

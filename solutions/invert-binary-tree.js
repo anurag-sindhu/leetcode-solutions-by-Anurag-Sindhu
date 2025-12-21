@@ -9,6 +9,7 @@ var invertTree = function (root) {
     root.right = rightSide;
     return root;
 };
+
 let res;
 let binaryTree = new BinaryTree();
 for (const iterator of [2, 1, 3]) {

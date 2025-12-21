@@ -20,6 +20,18 @@ var rob11 = function (nums) {
 };
 
 var rob = function (nums) {
+    if (nums.length == 1) {
+        return nums[0];
+    }
+    if (nums.length == 2) {
+        return Math.max(nums[0], nums[1]);
+    }
+    if (nums.length == 3) {
+        return Math.max(nums[0], nums[1], nums[2]);
+    }
+    if (nums.length == 4) {
+        return Math.max(nums[0] + nums[2], nums[1] + nums[3]);
+    }
     for (let index = nums.length - 3; index >= 0; index--) {
         nums[index] +=
             nums[index + 3] !== undefined

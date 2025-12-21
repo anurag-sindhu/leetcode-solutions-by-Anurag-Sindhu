@@ -1,38 +1,27 @@
-
 var minimumTotal = function (triangle) {
-    let dpTriangle = [[triangle[0][0]]];
-    let sum = Infinity;
-    for (let index = 0; index < triangle.length - 1; index++) {
-        if (!dpTriangle[index + 1]) {
-            dpTriangle[index + 1] = [];
+    const dp = [];
+    function findMin(triangle, colIndex = 0, rowIndex = 0) {
+        if (dp[rowIndex] && dp[rowIndex][colIndex]) {
+            return dp[rowIndex][colIndex];
         }
-        for (let subIndex = 0; subIndex < triangle[index].length; subIndex++) {
-            const sameIndexSum = triangle[index + 1][subIndex] + dpTriangle[index][subIndex];
-            const besideIndexSum = triangle[index + 1][subIndex + 1] + dpTriangle[index][subIndex];
-            if (dpTriangle[index + 1][subIndex] !== undefined) {
-                dpTriangle[index + 1][subIndex] = Math.min(
-                    sameIndexSum,
-                    dpTriangle[index + 1][subIndex],
-                );
-            } else {
-                dpTriangle[index + 1][subIndex] = sameIndexSum;
-            }
-            if (dpTriangle[index + 1][subIndex + 1] !== undefined) {
-                dpTriangle[index + 1][subIndex + 1] = Math.min(
-                    besideIndexSum,
-                    dpTriangle[index + 1][subIndex + 1],
-                );
-            } else {
-                dpTriangle[index + 1][subIndex + 1] = besideIndexSum;
-            }
+        if (rowIndex == triangle.length - 1) {
+            return triangle[rowIndex][colIndex];
         }
+        const currNum = triangle[rowIndex][colIndex];
+        const first = findMin(triangle, colIndex, rowIndex + 1);
+        const second = findMin(triangle, colIndex + 1, rowIndex + 1);
+        const output = currNum + Math.min(first, second);
+        if (dp[rowIndex] == undefined) {
+            dp[rowIndex] = [];
+        }
+        dp[rowIndex][colIndex] = output;
+        return output;
     }
-    for (const iterator of dpTriangle[dpTriangle.length - 1]) {
-        sum = Math.min(sum, iterator);
-    }
-    return sum;
+    const resp = findMin(triangle, 0);
+    return resp;
 };
 
+console.log(minimumTotal((triangle = [[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]])) === 11);
 console.log(minimumTotal((triangle = [[2], [1, 3], [8, 9, 1], [4, 1, 8, 3]])) === 9);
 console.log(minimumTotal((triangle = [[-1], [2, 3], [1, -1, -3]])) === -1);
 console.log(minimumTotal((triangle = [[-10]])) === -10);

@@ -1,29 +1,36 @@
-var maxProfit = function (prices) {
-    const obj = {};
-    let sum = 0;
-    let temp = 0;
-    for (let index = 0; index < prices.length; index++) {
-        if (prices[index] != undefined && prices[index] > prices[index - 1]) {
-            obj[index] = prices[index] - prices[temp];
-        } else {
-            obj[index] = 0;
-            temp = index;
+var maxProfit = function (k, prices) {
+    const memo = {};
+
+    function helper(state, transaction, priceIndex, prices) {
+        if (memo[`${state}_${transaction}_${priceIndex}`] != undefined) {
+            return memo[`${state}_${transaction}_${priceIndex}`];
         }
-    }
-    for (let index = 1; index < prices.length; index++) {
-        if (index === prices.length - 1) {
-            sum += obj[index];
-        } else {
-            if (obj[index] > 0 && obj[index + 1] == 0) {
-                sum += obj[index];
-            }
+        if (transaction == 0 || priceIndex == prices.length) {
+            return 0;
         }
+        let resp;
+        if (state === 'buy') {
+            resp = Math.max(
+                helper('sell', transaction, priceIndex + 1, prices) - prices[priceIndex],
+                helper('buy', transaction, priceIndex + 1, prices),
+            );
+        } else {
+            resp = Math.max(
+                helper('buy', transaction - 1, priceIndex + 1, prices) + prices[priceIndex],
+                helper('sell', transaction, priceIndex + 1, prices),
+            );
+        }
+        memo[`${state}_${transaction}_${priceIndex}`] = resp;
+        return resp;
     }
-    return sum;
+
+    const resp = helper('buy', k, 0, prices);
+    return resp;
 };
 
-console.log(13 == maxProfit((prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0])));
-console.log(6 == maxProfit((prices = [3, 5, 0, 0, 3, 1, 4])));
-console.log(6 == maxProfit((prices = [3, 3, 5, 0, 0, 3, 1, 4])));
-console.log(0 == maxProfit((prices = [7, 6, 4, 3, 1])));
-console.log(4 == maxProfit((prices = [1, 2, 3, 4, 5])));
+console.log(2 == maxProfit(2, (prices = [2, 4, 1])));
+console.log(7 == maxProfit(2, (prices = [3, 2, 6, 5, 0, 3])));
+console.log(13 == maxProfit(1, (prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0])));
+console.log(6 == maxProfit(1, (prices = [3, 3, 5, 0, 0, 3, 1, 4])));
+console.log(0 == maxProfit(1, (prices = [7, 6, 4, 3, 1])));
+console.log(4 == maxProfit(1, (prices = [1, 2, 3, 4, 5])));

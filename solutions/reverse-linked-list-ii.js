@@ -1,71 +1,31 @@
 const singlyLinkedList = require('../javascript/singlyLinkedList');
 
-class Node {
-    constructor(data, next = null) {
-        this.val = data;
-        this.next = next;
+function reverseBetween(head, m, n) {
+    if (!head) return null;
+
+    let dummy = { val: 0, next: head };
+    let pre = dummy;
+
+    // Move `pre` to the node before the reversing position
+    for (let i = 0; i < m - 1; i++) {
+        pre = pre.next;
     }
-}
-class SinglyLinkedList {
-    constructor() {
-        this.head = null;
-        this.totalElements = 0;
-        this.reverseList = null;
-        this.isReversingDone = null;
+
+    let start = pre.next; // start of sublist to reverse
+    let then = start.next; // node to move
+
+    // Reverse the sublist from m to n
+    for (let i = 0; i < n - m; i++) {
+        start.next = then.next;
+        then.next = pre.next;
+        pre.next = then;
+        then = start.next;
     }
-    reverseLinkedListSpecifically(data, left, right) {
-        while (data) {
-            this.totalElements++;
-            const newNode = new Node(data.val);
-            data = data.next;
-            if (this.totalElements >= left && this.totalElements <= right) {
-                if (this.reverseList) {
-                    newNode.next = this.reverseList;
-                }
-                this.reverseList = newNode;
-                this.isReversingDone = true;
-            } else {
-                if (this.isReversingDone) {
-                    if (this.head) {
-                        let tempHead = this.head;
-                        while (tempHead.next !== null) {
-                            tempHead = tempHead.next;
-                        }
-                        tempHead.next = this.reverseList;
-                    } else {
-                        this.head = this.reverseList;
-                    }
-                    this.isReversingDone = false;
-                }
-                if (this.head) {
-                    let tempHead = this.head;
-                    while (tempHead.next !== null) {
-                        tempHead = tempHead.next;
-                    }
-                    tempHead.next = newNode;
-                } else {
-                    this.head = newNode;
-                }
-            }
-        }
-        if (this.isReversingDone) {
-            if (this.head) {
-                let tempHead = this.head;
-                while (tempHead.next !== null) {
-                    tempHead = tempHead.next;
-                }
-                tempHead.next = this.reverseList;
-            } else {
-                this.head = this.reverseList;
-            }
-            this.isReversingDone = false;
-        }
-        return this.head;
-    }
+
+    return dummy.next;
 }
 
-var reverseBetween = function (head, left, right) {
-    return new SinglyLinkedList().reverseLinkedListSpecifically(head, left, right);
-};
+console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5, 6, 7]).head, (left = 3), (right = 5)));
+console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5, 6, 7]).head, (left = 2), (right = 4)));
 console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5]).head, (left = 2), (right = 4)));
 console.log(reverseBetween(singlyLinkedList([5]).head, (left = 1), (right = 1)));

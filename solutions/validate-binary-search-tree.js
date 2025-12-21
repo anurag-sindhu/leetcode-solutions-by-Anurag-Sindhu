@@ -1,40 +1,63 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
-var startCheck = function (root, parent = null, from = null, till = null) {
-    if (root === null) {
-        return;
-    }
-    startCheck(root.left);
-    startCheck(root.right);
-    const rootVal = root.val;
-    const leftVal = root.left && root.left.val;
-    const rightVal = root.right && root.right.val;
-    if (leftVal !== null) {
-        if (leftVal > rootVal) {
-            throw false;
+var isValidBST1 = function (root) {
+    if (root === null) return true;
+
+    const stack = [];
+    let pre = null;
+
+    while (root !== null || stack.length > 0) {
+        while (root !== null) {
+            stack.push(root);
+            root = root.left;
         }
-    }
-    if (rightVal !== null) {
-        if (rightVal < rootVal) {
-            throw false;
+
+        root = stack.pop();
+
+        if (pre !== null && root.val <= pre.val) {
+            return false;
         }
+
+        pre = root;
+        root = root.right;
     }
+
     return true;
 };
+
 var isValidBST = function (root) {
-    try {
-        const resp = startCheck(root);
-        return resp;
-    } catch (e) {
-        return false;
+    let last = null;
+    let out = true;
+    function isValidBSTHelper(root) {
+        if (out == false) {
+            return;
+        }
+        if (!root) {
+            return null;
+        }
+        isValidBSTHelper(root.left);
+        if (last != null && last.val >= root.val) {
+            out = false;
+        }
+        last = root;
+        isValidBSTHelper(root.right);
     }
+    isValidBSTHelper(root);
+    return out;
 };
 
 let resp = null;
 let binaryTree;
 
 binaryTree = new BinaryTree();
-for (const iterator of [2, 1, 3]) {
+for (const iterator of [120, 70, 140, 50, 100, 130, 160, 20, 55, 75, 110, 119, 135, 150, 200]) {
+    binaryTree.add(iterator);
+}
+resp = isValidBST(binaryTree.tree);
+console.log(resp);
+
+binaryTree = new BinaryTree();
+for (const iterator of [5, 6, 4]) {
     binaryTree.add(iterator);
 }
 resp = isValidBST(binaryTree.tree);
@@ -48,7 +71,7 @@ resp = isValidBST(binaryTree.tree);
 console.log(resp);
 
 binaryTree = new BinaryTree();
-for (const iterator of [120, 70, 140, 50, 100, 130, 160, 20, 55, 75, 110, 119, 135, 150, 200]) {
+for (const iterator of [2, 1, 3]) {
     binaryTree.add(iterator);
 }
 resp = isValidBST(binaryTree.tree);

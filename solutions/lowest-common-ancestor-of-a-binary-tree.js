@@ -1,80 +1,74 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
-function findParentGraph(root, element, graph = []) {
-    if (!root) {
-        return graph;
-    }
-
-    if (root.val === element) {
-        graph.push(root.val);
-        return graph;
-    }
-    if (!graph.length) {
-        graph = findParentGraph(root.left, element, graph);
-    }
-    if (!graph.length) {
-        graph = findParentGraph(root.right, element, graph);
-    }
-    if (graph.length) {
-        graph.push(root.val);
-    }
-    return graph;
-}
-
 var lowestCommonAncestor = function (root, p, q) {
-    const parentGraphOfP = findParentGraph(root, p);
+    const isRootMatching = root === p || root === q;
+    if (isRootMatching) {
+        return root;
+    }
+    function explore(root) {
+        let isP = false;
+        let isQ = false;
+        function exploreHelper(root) {
+            if (!root) {
+                return;
+            }
+            if (p === root) {
+                isP = true;
+            }
+            if (q === root) {
+                isQ = true;
+            }
+            exploreHelper(root.left);
+            exploreHelper(root.right);
+        }
+        exploreHelper(root);
+        return { isP, isQ };
+    }
+    function exploreAgain(root) {
+        let reference = null;
+        function exploreHelper(root) {
+            if (!root) {
+                return;
+            }
+            if (p === root && reference == null) {
+                reference = root;
+            }
+            if (q === root && reference == null) {
+                reference = root;
+            }
+            exploreHelper(root.left);
+            exploreHelper(root.right);
+        }
+        exploreHelper(root);
+        return reference;
+    }
 
-    const parentGraphOfQ = findParentGraph(root, q);
-    const parentGraphOfPLength = parentGraphOfP.length;
-    const parentGraphOfQLength = parentGraphOfQ.length;
-    let parentIndexOfP = parentGraphOfPLength - 1;
-    let parentIndexOfQ = parentGraphOfQLength - 1;
-    let isFound = null;
-    while (
-        parentGraphOfP[parentIndexOfP] &&
-        parentGraphOfQ[parentIndexOfQ] &&
-        parentGraphOfP[parentIndexOfP] === parentGraphOfQ[parentIndexOfQ]
+    const leftNodeCount = explore(root.left);
+    if (
+        (leftNodeCount.isP && leftNodeCount.isQ === false) ||
+        (leftNodeCount.isQ && leftNodeCount.isP === false)
     ) {
-        parentIndexOfP--;
-        parentIndexOfQ--;
-        isFound = true;
+        return root;
     }
-    if (isFound) {
-        return parentGraphOfP[++parentIndexOfP];
+    if (leftNodeCount.isP && leftNodeCount.isQ) {
+        return exploreAgain(root.left);
     }
-
-    //Is both belongs to same family
-    let foundIndexOfP = null;
-    let foundIndexOfQ = null;
-    for (let index = 0; index < parentGraphOfP.length; index++) {
-        if (foundIndexOfP === null && parentGraphOfP[index] === p) {
-            foundIndexOfP = index;
-        }
-        if (foundIndexOfQ === null && parentGraphOfP[index] === p) {
-            foundIndexOfQ = index;
-        }
-    }
-    if (foundIndexOfP !== null && foundIndexOfQ !== null) {
-        const higherIndex = Math.max(foundIndexOfP, foundIndexOfQ);
-        return parentGraphOfP[higherIndex];
-    }
-    for (let index = 0; index < parentGraphOfQ.length; index++) {
-        if (!foundIndexOfP && parentGraphOfQ[index] === p) {
-            foundIndexOfP = index;
-        }
-        if (!foundIndexOfQ && parentGraphOfQ[index] === p) {
-            foundIndexOfQ = index;
-        }
-    }
-    if (foundIndexOfP !== null && foundIndexOfQ !== null) {
-        const higherIndex = Math.max(foundIndexOfP, foundIndexOfQ);
-        return foundIndexOfQ[higherIndex];
-    }
-    return;
+    return exploreAgain(root.right);
 };
 
 let binaryTree;
 let resp;
+binaryTree = new BinaryTree();
+for (const iterator of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
+    binaryTree.add(iterator);
+}
+resp = lowestCommonAncestor(
+    new BinaryTree().createFromArray([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).tree,
+    (p = 1),
+    (q = 2),
+);
+console.log(resp);
+
 binaryTree = new BinaryTree();
 for (const iterator of [1, 2]) {
     binaryTree.add(iterator);

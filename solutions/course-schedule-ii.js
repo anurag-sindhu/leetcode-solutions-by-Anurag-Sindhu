@@ -1,95 +1,49 @@
 var findOrder = function (numCourses, prerequisites) {
-    const output = [];
-    if (!prerequisites.length) {
-        while (numCourses) {
-            output.push(--numCourses);
+    const courseStatus = {};
+    const courseMustBeCompleted = {};
+
+    for (const [mainCourse, prerequisiteCourse] of prerequisites) {
+        if (!courseMustBeCompleted[mainCourse]) {
+            courseMustBeCompleted[mainCourse] = [];
         }
-        return output;
+        courseMustBeCompleted[mainCourse].push(prerequisiteCourse);
     }
 
-    let initCourse = null;
+    let canPossible = true;
+    const arr = [];
 
-    const config = (function () {
-        const obj = {};
-        for (const [forCourse, preReqCourse] of prerequisites) {
-            if (initCourse === null) {
-                initCourse = forCourse;
-            }
-            if (!obj[forCourse]) {
-                obj[forCourse] = {};
-            }
-            obj[forCourse][preReqCourse] = true;
+    function completingCourses(index) {
+        if (courseStatus[index] === -1) {
+            canPossible = false;
+            return false;
         }
-        return obj;
-    })();
-
-    const courseCompleted = {};
-    function completeCourse(course = null, expectingCourse = {}) {
-        if (course !== null) {
-            if (courseCompleted[course]) {
-                return;
-            }
-            if (!config[course]) {
-                courseCompleted[course] = true;
-                output.push(course);
-                return;
+        if (courseStatus[index] === 1) {
+            return true;
+        }
+        if (canPossible === false) {
+            return false;
+        }
+        courseStatus[index] = -1;
+        const courseNeedToComplete = courseMustBeCompleted[index];
+        if (Array.isArray(courseNeedToComplete)) {
+            for (const element of courseNeedToComplete) {
+                completingCourses(element);
             }
         }
+        arr.push(index);
+        courseStatus[index] = 1;
+        return true;
+    }
 
-        for (const childCourse in config[course]) {
-            if (expectingCourse[childCourse] && !courseCompleted[childCourse]) {
-                throw [];
-            }
-            expectingCourse[childCourse] = true;
-            completeCourse(childCourse, expectingCourse);
-            if (!courseCompleted[childCourse]) {
-                output.push(childCourse);
-                courseCompleted[childCourse] = true;
-            }
+    for (let index = 0; index < numCourses; index++) {
+        completingCourses(index, {});
+        if (canPossible == false) {
+            return [];
         }
     }
-    for (const parentCourse in config) {
-        if (!courseCompleted[parentCourse]) {
-            try {
-                completeCourse(parentCourse);
-            } catch (err) {
-                return err;
-            }
-        }
-        if (!courseCompleted[parentCourse]) {
-            output.push(parentCourse);
-            courseCompleted[parentCourse] = true;
-        }
-    }
-    if (numCourses !== output.length) {
-        const coursesDone = (function () {
-            const config = {};
-            for (const iterator of output) {
-                config[iterator] = true;
-            }
-            return config;
-        })();
-        for (let index = 0; index < numCourses; index++) {
-            if (!coursesDone[index]) {
-                output.push(index);
-            }
-        }
-    }
-    return output;
+    return arr;
 };
 
-console.log(
-    findOrder(
-        (numCourses = 3),
-        (prerequisites = [
-            [0, 1],
-            [0, 2],
-            [1, 2]
-        ])
-    )
-);
-console.log(findOrder((numCourses = 5), (prerequisites = [[1, 0]])));
-console.log(findOrder((numCourses = 1), (prerequisites = [])));
 console.log(
     findOrder(
         (numCourses = 4),
@@ -97,16 +51,28 @@ console.log(
             [1, 0],
             [2, 0],
             [3, 1],
-            [3, 2]
-        ])
-    )
+            [3, 2],
+        ]),
+    ),
 );
+console.log(
+    findOrder(
+        (numCourses = 3),
+        (prerequisites = [
+            [0, 1],
+            [0, 2],
+            [1, 2],
+        ]),
+    ),
+);
+console.log(findOrder((numCourses = 5), (prerequisites = [[1, 0]])));
+console.log(findOrder((numCourses = 1), (prerequisites = [])));
 
 console.log(
     findOrder(2, [
         [0, 1],
-        [1, 0]
-    ])
+        [1, 0],
+    ]),
 ); //[1,0]
 
 console.log(findOrder(2, [[0, 1]])); //[1,0]

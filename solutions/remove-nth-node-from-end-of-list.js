@@ -6,6 +6,7 @@ function totalListsCount(head) {
     }
     return 1 + totalListsCount(head.next);
 }
+
 function removeNodeList(head, index, currentIndex = 0) {
     if (index < currentIndex) {
         return head;
@@ -25,6 +26,7 @@ var removeNthFromEnd = function (head, n) {
     const count = totalListsCount(head);
     return removeNodeList(head, count - n);
 };
+
 console.log(removeNthFromEnd(singlyLinkedList([1, 2, 3, 4, 5]).head, 2));
 console.log(removeNthFromEnd(singlyLinkedList([1]).head, 1));
 console.log(removeNthFromEnd(singlyLinkedList([1, 2]).head, 1));

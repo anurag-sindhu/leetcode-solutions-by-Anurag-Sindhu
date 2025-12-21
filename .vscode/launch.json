@@ -14,7 +14,7 @@
         },
         "name": "Init",
         "skipFiles": ["<node_internals>/**"],
-        "program": "${workspaceFolder}/solutions/minimum-window-substring.js"
+        "program": "${workspaceFolder}/solutions/lru-cache copy.js"
     }
   ]
 }

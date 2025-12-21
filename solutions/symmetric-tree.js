@@ -22,22 +22,20 @@ var isSymmetric = function (root) {
     }
     return isLeftRightSymmetric(root.left, root.right);
 };
-let binaryTree = new BinaryTree();
-for (const iterator of [1, 2, 2, 3, 4, 4, 3, 5, 6, 7, 8, 8, 7, 6, 5]) {
-    binaryTree.add(iterator);
-}
-let first = isSymmetric(binaryTree.tree);
-console.log({ first });
+
+let binaryTree;
+
+
 
 binaryTree = new BinaryTree();
-for (const iterator of [1, 2, 2, 3, 4, 4, 3]) {
+for (const iterator of [1, 2, 2, 3, 4, 4, 3, 5, 8, 7, 6, 6, 7, 8, 5]) {
     binaryTree.add(iterator);
 }
 first = isSymmetric(binaryTree.tree);
 console.log({ first });
 
 binaryTree = new BinaryTree();
-for (const iterator of [1, 2, 2, 3, 4, 4, 3, 5, 8, 7, 6, 6, 7, 8, 5]) {
+for (const iterator of [1, 2, 2, 3, 4, 4, 3]) {
     binaryTree.add(iterator);
 }
 first = isSymmetric(binaryTree.tree);

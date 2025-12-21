@@ -14,6 +14,53 @@ const binarySearch = (arr, target) => {
     return l;
 };
 
+function nextGreaterIndex(arr, target) {
+    let left = 0,
+        right = arr.length - 1;
+    let ans = -1;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return mid; // target exists
+        }
+        if (arr[mid] > target) {
+            ans = mid; // potential answer
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return ans; // -1 if no greater element
+}
+
+function getClosestIndices(arr, target) {
+    let left = 0,
+        right = arr.length - 1;
+    let smaller = -1,
+        greater = -1;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return { target: mid, smaller: mid, greater: mid };
+        }
+
+        if (arr[mid] < target) {
+            smaller = mid; // best smaller so far
+            left = mid + 1;
+        } else {
+            greater = mid; // best greater so far
+            right = mid - 1;
+        }
+    }
+
+    return { smaller, greater };
+}
+
 const binarySearchChooseSmallerIndex = (arr, target) => {
     let l = 0,
         r = arr.length - 1;
@@ -55,6 +102,7 @@ function binarySearch(arr, search, index = 0) {
         return binarySearch(arr.slice(0, middleIndex), search, index);
     }
 }
+
 const binarySearchMinIndexGreaterThanSearch = (arr, search) => {
     let left = 0,
         right = arr.length - 1,

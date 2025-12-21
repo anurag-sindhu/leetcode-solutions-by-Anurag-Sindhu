@@ -1,96 +1,46 @@
 var minWindow = function (str, target) {
     const sourceConfig = (function () {
-        const config = [{}];
-        for (let index = 1; index <= str.length; index++) {
-            const temp = { ...config[index - 1] };
-            if (!temp[str[index - 1]]) {
-                temp[str[index - 1]] = 1;
+        const config = {};
+        for (let index = 0; index < target.length; index++) {
+            if (!config[target[index]]) {
+                config[target[index]] = 1;
             } else {
-                temp[str[index - 1]] += 1;
+                config[target[index]] += 1;
             }
-            config[index] = temp;
         }
-        return config.slice(1);
+        return config;
     })();
-    const destinationConfig = (function () {
-        const config = [{}];
-        for (let index = 1; index <= target.length; index++) {
-            const temp = { ...config[index - 1] };
-            if (!temp[target[index - 1]]) {
-                temp[target[index - 1]] = 1;
-            } else {
-                temp[target[index - 1]] += 1;
-            }
-            config[index] = temp;
-        }
-        return config[config.length - 1];
-    })();
-
-    function isFrequencyMatching(source) {
-        for (const iterator in destinationConfig) {
-            if (!source[iterator] || source[iterator] < destinationConfig[iterator]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function getBalancedFrequency(fromConfig, toConfig) {
-        const out = [];
-        for (const key in toConfig) {
-            const temp = toConfig[key] - ((fromConfig && fromConfig[key]) || 0);
-            if (temp > 0) {
-                out[key] = temp;
-            }
-        }
-        return out;
-    }
-    const output = [];
-    let leftIndex = -1;
-    let rightIndex = target.length - 1;
-    let isMatching = false;
+    let leftIndex = 0;
+    let rightIndex = 0;
     let minLen = Infinity;
     let leftIndexOut = null;
     let rightIndexOut = null;
+    let missing = target.length;
+
     while (rightIndex < str.length) {
-        const balance = getBalancedFrequency(sourceConfig[leftIndex], sourceConfig[rightIndex]);
-        isMatching = isFrequencyMatching(balance);
-        if (isMatching) {
-            const netLength = rightIndex - leftIndex;
+        if (sourceConfig[str[rightIndex]] > 0) {
+            missing -= 1;
+        }
+        sourceConfig[str[rightIndex]] = (sourceConfig[str[rightIndex]] || 0) - 1;
+        while (missing == 0) {
+            const netLength = rightIndex - leftIndex + 1;
             if (minLen > netLength) {
-                leftIndexOut = leftIndex + 1;
+                leftIndexOut = leftIndex;
                 rightIndexOut = rightIndex;
                 minLen = netLength;
             }
-            while (isMatching) {
-                leftIndex += 1;
-                const balance = getBalancedFrequency(
-                    sourceConfig[leftIndex],
-                    sourceConfig[rightIndex],
-                );
-                isMatching = isFrequencyMatching(balance);
-                if (isMatching) {
-                    const netLength = rightIndex - leftIndex;
-                    if (minLen > netLength) {
-                        leftIndexOut = leftIndex + 1;
-                        rightIndexOut = rightIndex;
-                        minLen = netLength;
-                    }
-                    output.push({ leftIndex: leftIndex + 1, rightIndex });
-                }
+            sourceConfig[str[leftIndex]] = (sourceConfig[str[leftIndex]] || 0) + 1;
+            if (sourceConfig[str[leftIndex]] > 0) {
+                missing += 1;
             }
+            leftIndex += 1;
         }
         rightIndex++;
     }
-    let out = '';
-    if (leftIndexOut !== null && rightIndexOut !== null) {
-        for (let index = leftIndexOut; index <= rightIndexOut; index++) {
-            out += str[index];
-        }
-    }
-    return out;
+    return minLen != Infinity ? str.substring(leftIndexOut, rightIndexOut + 1) : '';
 };
-console.log(minWindow((s = 'a'), (t = 'aa')));
+
 console.log(minWindow((s = 'ADOBECODEBANC'), (t = 'ABC')));
+console.log(minWindow((s = 'a'), (t = 'aa')));
 console.log(minWindow((s = 'ab'), (t = 'b')));
 console.log(minWindow((s = 'a'), (t = 'a')));

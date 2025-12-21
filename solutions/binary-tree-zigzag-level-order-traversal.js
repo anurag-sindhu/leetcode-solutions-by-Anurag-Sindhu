@@ -11,7 +11,7 @@ var zigzagLevelOrder = function (root, output = [], level = 0) {
         if (level % 2 === 0) {
             output[level].push(root.val);
         } else {
-            output[level] = [root.val, ...output[level]];
+            output[level].unshift(root.val);
         }
     }
 
@@ -24,6 +24,20 @@ let res;
 let binaryTree;
 
 binaryTree = new BinaryTree();
+for (const iterator of [3, 9, 20, 11, 12, 15, 7]) {
+    binaryTree.add(iterator);
+}
+res = zigzagLevelOrder(binaryTree.tree);
+console.log(res);
+
+binaryTree = new BinaryTree();
+for (const iterator of [3, 9, 20, null, null, 15, 7]) {
+    binaryTree.add(iterator);
+}
+res = zigzagLevelOrder(binaryTree.tree);
+console.log(res);
+
+binaryTree = new BinaryTree();
 for (const iterator of []) {
     binaryTree.add(iterator);
 }
@@ -32,13 +46,6 @@ console.log(res);
 
 binaryTree = new BinaryTree();
 for (const iterator of [1]) {
-    binaryTree.add(iterator);
-}
-res = zigzagLevelOrder(binaryTree.tree);
-console.log(res);
-
-binaryTree = new BinaryTree();
-for (const iterator of [3, 9, 20, null, null, 15, 7]) {
     binaryTree.add(iterator);
 }
 res = zigzagLevelOrder(binaryTree.tree);
