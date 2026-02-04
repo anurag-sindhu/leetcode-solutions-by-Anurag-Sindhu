@@ -1,39 +1,37 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
+var connect1 = function (root) {
+    let lastReference = null;
+    function explore(root) {
+        if (!root) {
+            return;
+        }
+        root.next = lastReference;
+        explore(root.right);
+        explore(root.left);
+        lastReference = root;
+    }
+    explore(root);
+    return root;
+};
+
 var connect = function (root) {
-    const levelReferenceMapping = {};
-    function collectLevelReferenceMapping(root, level = 1) {
-        if (!root) {
-            return;
+    if (!root) return null;
+
+    let levelStart = root;
+    while (levelStart.left) {
+        let current = levelStart;
+        while (current) {
+            //kind of BFS approach
+            current.left.next = current.right;
+            if (current.next) {
+                current.right.next = current.next.left;
+            }
+            current = current.next;
         }
-        collectLevelReferenceMapping(root.left, level + 1);
-        levelReferenceMapping[level] = root;
+        levelStart = levelStart.left;
     }
 
-    function insertLevelReferenceMapping(root, level = 1) {
-        if (!root) {
-            return;
-        }
-        insertLevelReferenceMapping(root.right, level + 1);
-        root.next = levelReferenceMapping[level];
-    }
-
-    function insertNullLevelReferenceMapping(root) {
-        if (!root) {
-            return;
-        }
-        if (!root.next) {
-            root.next = null;
-        }
-        if (root.left && root.left.next === undefined) {
-            root.left.next = root.right;
-        }
-        insertNullLevelReferenceMapping(root.left);
-        insertNullLevelReferenceMapping(root.right);
-    }
-    collectLevelReferenceMapping(root.right);
-    insertLevelReferenceMapping(root.left);
-    insertNullLevelReferenceMapping(root);
     return root;
 };
 

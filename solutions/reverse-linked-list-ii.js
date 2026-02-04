@@ -20,12 +20,13 @@ function reverseBetween(head, m, n) {
         then.next = pre.next;
         pre.next = then;
         then = start.next;
+        console.log('object');
     }
 
     return dummy.next;
 }
 
-console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5, 6, 7]).head, (left = 3), (right = 5)));
 console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5, 6, 7]).head, (left = 2), (right = 4)));
+console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5, 6, 7]).head, (left = 3), (right = 5)));
 console.log(reverseBetween(singlyLinkedList([1, 2, 3, 4, 5]).head, (left = 2), (right = 4)));
 console.log(reverseBetween(singlyLinkedList([5]).head, (left = 1), (right = 1)));

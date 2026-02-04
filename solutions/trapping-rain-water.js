@@ -14,6 +14,7 @@ var trap = function (array) {
     }
     return collect;
 };
+
 console.log(trap([4, 2, 0, 3, 2, 5]));
 console.log(trap([5, 4, 1, 2]) == 1);
 console.log(trap([0, 2, 0]));

@@ -82,8 +82,7 @@ var maxProfit = function (prices) {
     return diff;
 };
 
-
-
+console.log(13 == maxProfit((prices = [7, 1, 5, 3, 6, 4])));
 console.log(13 == maxProfit((prices = [1, 2, 4, 2, 5, 7, 2, 4, 9, 0])));
 console.log(6 == maxProfit((prices = [3, 3, 5, 0, 0, 3, 1, 4])));
 console.log(6 == maxProfit((prices = [3, 5, 0, 0, 3, 1, 4])));

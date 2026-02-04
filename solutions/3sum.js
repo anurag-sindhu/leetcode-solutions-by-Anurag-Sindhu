@@ -34,18 +34,58 @@ var threeSum1 = function (nums) {
     return Object.values(obj);
 };
 
-var threeSum = function (nums) {
-    let obj = {};
-    nums.sort((a, b) => a - b);
-    let pointerStart = 0;
-    let pointerMiddle = 0;
-    let pointerLast = 0;
-    while (pointerStart < pointerMiddle) {}
-    return Object.values(obj);
+var threeSum = function (array) {
+    const output = {};
+    const config = (function () {
+        const config = {};
+        for (let index = 0; index < array.length; index++) {
+            if (config[array[index]] == undefined) {
+                config[array[index]] = {};
+            }
+            config[array[index]][index] = true;
+        }
+        return config;
+    })();
+    for (let parentIndex = 0; parentIndex < array.length; parentIndex++) {
+        for (let childIndex = 0; childIndex < array.length; childIndex++) {
+            if (parentIndex != childIndex) {
+                const requiredNum = 0 - (array[parentIndex] + array[childIndex]);
+                if (config[requiredNum]) {
+                    if (config[requiredNum][parentIndex] || config[requiredNum][childIndex]) {
+                        if (config[requiredNum][parentIndex] && config[requiredNum][childIndex]) {
+                            const total = Object.keys(config[requiredNum]).length;
+                            if (total > 2) {
+                                const arr = [array[parentIndex], array[childIndex], requiredNum];
+                                arr.sort((a, b) => a - b);
+                                output[`${arr[0]}_${arr[1]}_${arr[2]}`] = true;
+                            }
+                        } else {
+                            const arr = [array[parentIndex], array[childIndex], requiredNum];
+                            arr.sort((a, b) => a - b);
+                            const total = Object.keys(config[requiredNum]).length;
+                            if (total > 1) {
+                                output[`${arr[0]}_${arr[1]}_${arr[2]}`] = true;
+                            }
+                        }
+                    } else {
+                        const arr = [array[parentIndex], array[childIndex], requiredNum];
+                        arr.sort((a, b) => a - b);
+                        output[`${arr[0]}_${arr[1]}_${arr[2]}`] = true;
+                    }
+                }
+            }
+        }
+    }
+    const finalOut = [];
+    for (const key in output) {
+        finalOut.push(key.split('_').map((value) => Number(value)));
+    }
+    return finalOut;
 };
 
 let res = null;
 res = threeSum([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]);
+
 console.log(
     areArraysEqual(res, [
         [-4, 0, 4],

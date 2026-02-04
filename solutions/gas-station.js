@@ -42,9 +42,9 @@ var canCompleteCircuit = function (gas, cost) {
 };
 
 console.log(canCompleteCircuit((gas = [3, 2, 1, 0]), (cost = [1, 2, 2, 1])) === 0);
+console.log(canCompleteCircuit((gas = [2, 1, 0, 1, 4]), (cost = [3, 2, 2, 2, 3])) === -1);
 console.log(canCompleteCircuit((gas = [7, 1, 0, 11, 5]), (cost = [5, 9, 1, 2, 5])) === 3);
 console.log(canCompleteCircuit((gas = [0, 2, 1, 3]), (cost = [1, 2, 2, 1])) === 3);
 console.log(canCompleteCircuit((gas = [1, 2, 3, 4, 5]), (cost = [3, 4, 5, 1, 2])) === 3);
 console.log(canCompleteCircuit((gas = [2, 3, 4]), (cost = [3, 4, 3])) === -1);
-console.log(canCompleteCircuit((gas = [2, 1, 0, 1, 4]), (cost = [3, 2, 2, 2, 3])) === -1);
 console.log(canCompleteCircuit((gas = [1, 2, 1, 0]), (cost = [1, 2, 2, 1])) === -1);

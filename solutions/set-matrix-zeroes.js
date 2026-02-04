@@ -28,37 +28,32 @@ var setZeroes1 = function (array) {
     }
 };
 
-function setZeroes(matrix) {
-    let col0 = 1;
-    const rows = matrix.length;
-    const cols = matrix[0].length;
+var setZeroes = function (matrix) {
+    let col0 = 1,
+        rows = matrix.length,
+        cols = matrix[0].length;
 
-    // Step 1: mark rows and cols
     for (let i = 0; i < rows; i++) {
-        if (matrix[i][0] === 0) {
-            // col0 = 0;
-        }
-        for (let j = 0; j < cols; j++) {
-            if (matrix[i][j] === 0) {
+        if (matrix[i][0] == 0) col0 = 0;
+        for (let j = 1; j < cols; j++) {
+            if (matrix[i][j] == 0) {
                 matrix[i][0] = 0;
                 matrix[0][j] = 0;
             }
         }
     }
 
-    // Step 2: set zeroes bottom-up
     for (let i = rows - 1; i >= 0; i--) {
         for (let j = cols - 1; j >= 1; j--) {
-            if (matrix[i][0] === 0 || matrix[0][j] === 0) {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
                 matrix[i][j] = 0;
             }
-        }
-        if (col0 === 0) {
-            // matrix[i][0] = 0;
+            if (col0 == 0) {
+                matrix[i][0] = 0;
+            }
         }
     }
-    return matrix;
-}
+};
 
 console.log(
     setZeroes([

@@ -43,79 +43,57 @@ var minMutation1 = function (start, end, bank) {
     return mutation;
 };
 
-function isSingleCharacterChange(from, end) {
-    const m = from.length;
-    const n = end.length;
+function isSingleCharacterChange(from, to) {
+    if (from.length !== to.length) return false;
 
-    // Length difference > 1 → impossible
-    if (Math.abs(m - n) > 1) return false;
-
-    let i = 0,
-        j = 0;
-    let changes = 0;
-
-    while (i < m && j < n) {
-        if (from[i] === end[j]) {
-            i++;
-            j++;
-        } else {
-            if (changes === 1) return false;
-            changes++;
-
-            if (m > n) {
-                i++; // deletion
-            } else if (m < n) {
-                j++; // insertion
-            } else {
-                i++;
-                j++; // replacement
-            }
-        }
+    let diff = 0;
+    for (let i = 0; i < from.length; i++) {
+        if (from[i] !== to[i]) diff++;
+        if (diff > 1) return false;
     }
-
-    // Extra char at the end
-    if (i < m || j < n) changes++;
-
-    return changes === 1;
-}
-
-function findSingleCharacterChangeArray(array, from) {
-    return array.filter((value) => isSingleCharacterChange(from, value) === true);
+    return diff === 1;
 }
 
 var minMutation = function (start, end, bank) {
-    const bankConfig = (function () {
-        const config = {};
-        for (const element of bank) {
-            config[element] = true;
-        }
-        return config;
-    })();
-
-    if (bankConfig[end] == undefined) {
-        return -1;
+    const bankMap = {};
+    for (const gene of bank) {
+        bankMap[gene] = true;
     }
 
-    function explore(exploring, inProgress = {}) {
-        let steps = Infinity;
-        const arr = findSingleCharacterChangeArray(bank, exploring);
-        for (const element of arr) {
-            if (element == end) {
-                return 1;
-            }
-            if (!inProgress[element]) {
-                inProgress[element] = true;
-                const temp = explore(element, inProgress);
-                steps = Math.min(steps, 1 + temp);
+    // end must exist in bank
+    if (!bankMap[end]) return -1;
+
+    let minSteps = Infinity;
+
+    function dfs(current, visited, steps) {
+        if (current === end) {
+            minSteps = Math.min(minSteps, steps);
+            return;
+        }
+
+        for (const gene of bank) {
+            if (!visited[gene] && isSingleCharacterChange(current, gene)) {
+                visited[gene] = true;
+                dfs(gene, visited, steps + 1);
+                delete visited[gene]; // backtrack
             }
         }
-        return steps;
     }
-    const resp = explore(start);
-    console.log({ resp });
-    return bankConfig;
+
+    const visited = {};
+    visited[start] = true;
+
+    dfs(start, visited, 0);
+
+    return minSteps === Infinity ? -1 : minSteps;
 };
 
+/**
+ * AAAACCCC -> [] -> 'AAAACCCA''AAACCCCC -> AAACCCCA 
+'AAAACCCA'
+'AACCCCCA'
+'AAACCCCC'
+ */
 console.log(
     minMutation('AAAACCCC', 'CCCCCCCC', [
         'AAAACCCA',
@@ -126,7 +104,7 @@ console.log(
         'CCCCCCCC',
         'AAACCCCC',
         'AACCCCCC',
-    ]) === 2,
+    ]) === 4,
 );
 console.log(minMutation((start = 'AACCGGTT'), (end = 'AACCGGTA'), (bank = ['AACCGGTA'])) === 1);
 

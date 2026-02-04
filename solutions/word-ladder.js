@@ -1,38 +1,58 @@
-function isConversionPossible(currentWord, toWord) {
-    let count = 0;
-    for (let index = 0; index < currentWord.length; index++) {
-        if (currentWord[index] !== toWord[index]) {
-            count++;
-        }
+function isSingleCharacterChange(from, to) {
+    if (from.length !== to.length) return false;
+
+    let diff = 0;
+    for (let i = 0; i < from.length; i++) {
+        if (from[i] !== to[i]) diff++;
+        if (diff > 1) return false;
     }
-    return count;
+    return diff === 1;
 }
 
 var ladderLength = function (beginWord, endWord, wordList) {
-    let count = 0;
-    let conversionCount = 0;
-    if (!wordList.includes(endWord)) {
-        return 0;
-    }
-    for (let index = 0; index < wordList.length; index++) {
-        conversionCount = isConversionPossible(beginWord, wordList[index])
-        if (conversionCount === 1) {
-            startInd = index;
-            startInd++;
-            break;
+    const set = new Set(wordList);
+    if (!set.has(endWord)) return 0;
+
+    const queue = [];
+    queue.push(beginWord);
+
+    const visited = new Set();
+    visited.add(beginWord);
+
+    let changes = 1;
+
+    while (queue.length > 0) {
+        const size = queue.length;
+
+        for (let i = 0; i < size; i++) {
+            const word = queue.shift();
+            if (word === endWord) {
+                return changes;
+            }
+
+            for (let j = 0; j < word.length; j++) {
+                for (let k = 97; k <= 122; k++) {
+                    const arr = word.split('');
+                    arr[j] = String.fromCharCode(k);
+                    const str = arr.join('');
+
+                    if (set.has(str) && !visited.has(str)) {
+                        queue.push(str);
+                        visited.add(str);
+                    }
+                }
+            }
         }
+        changes++;
     }
 
-    for (let index = startInd; index < wordList.length; index++) {
-        conversionCount = isConversionPossible(wordList[index], endWord);
-        if (!conversionCount) {
-            return ++count
-        } else if (conversionCount === 1) {
-            count++;
-        }
-
-    }
-
+    return 0;
 };
-
-console.log(ladderLength('hit', 'cog', ["hot", "dot", "dog", "lot", "log", "cog"]));
+console.log(ladderLength('hit', 'cog', ['hot', 'dot', 'dog', 'lot', 'log', 'cog']));
+console.log(
+    ladderLength(
+        (beginWord = 'hit'),
+        (endWord = 'cog'),
+        (wordList = ['hot', 'dot', 'dog', 'lot', 'log']),
+    ),
+);

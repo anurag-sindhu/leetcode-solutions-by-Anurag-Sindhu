@@ -5,7 +5,7 @@ class Node {
         this.next = next;
     }
 }
-var deleteDuplicates = function (orgHead) {
+var deleteDuplicates1 = function (orgHead) {
     let wasDuplicated = false;
     let head = orgHead;
     let newList = null;
@@ -44,8 +44,43 @@ var deleteDuplicates = function (orgHead) {
     return newList;
 };
 
-console.log(deleteDuplicates(singlyLinkedList([3, 3]).head));
+var deleteDuplicates = function (head) {
+    let dummy = { val: null, next: head };
+    let prev = dummy;
+    if (!prev) {
+        return head;
+    }
+    let now = dummy.next;
+    if (!now) {
+        return head;
+    }
+    let then = dummy.next.next;
+
+    if (!then && prev.val == now.val) {
+        return null;
+    }
+
+    while (now && prev && then) {
+        if (now.val == then.val) {
+            while (now.val == then.val) {
+                now = then;
+                then = then.next;
+            }
+            prev.next = then;
+            now = then;
+            then = then.next;
+        } else {
+            prev = now;
+            now = then;
+            then = then.next;
+        }
+    }
+    head = dummy.next;
+    console.log(head);
+};
+
 console.log(deleteDuplicates(singlyLinkedList([3, 3, 4, 4, 5]).head));
+console.log(deleteDuplicates(singlyLinkedList([3, 3]).head));
 console.log(deleteDuplicates(singlyLinkedList([1, 2, 3, 3, 4, 4, 5]).head));
 console.log(deleteDuplicates(singlyLinkedList([1, 1, 1, 2, 3]).head));
 console.log(deleteDuplicates(singlyLinkedList([3, 3, 3]).head));
