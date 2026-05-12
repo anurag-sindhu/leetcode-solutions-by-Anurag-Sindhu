@@ -4,6 +4,7 @@ var canCompleteCircuit = function (gas, cost) {
     let count = 0;
     let isStarting = true;
     let netGas = 0;
+
     // Is route Possible
     for (let index = 0; index < gas.length; index++) {
         if (!isStarting) {
@@ -12,6 +13,7 @@ var canCompleteCircuit = function (gas, cost) {
         netGas += gas[index];
         isStarting = false;
     }
+
     if (!(netGas - cost[gas.length - 1] >= 0)) {
         return -1;
     }
@@ -38,6 +40,7 @@ var canCompleteCircuit = function (gas, cost) {
         count++;
         index++;
     }
+
     return startIndex;
 };
 

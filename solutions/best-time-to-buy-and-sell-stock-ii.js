@@ -24,13 +24,11 @@ var maxProfit1 = function (prices) {
 
 var maxProfit = function (prices) {
     let sum = 0;
-    let buyPrice = null;
+    let buyPrice = prices[0];
     let tempSum = 0;
     let lastPrice = null;
     for (let index = 0; index < prices.length; index++) {
-        if (buyPrice == null) {
-            buyPrice = prices[index];
-        } else if (lastPrice > prices[index]) {
+        if (lastPrice > prices[index]) {
             sum += tempSum;
             tempSum = 0;
             buyPrice = prices[index];
@@ -42,6 +40,7 @@ var maxProfit = function (prices) {
     sum += tempSum;
     return sum;
 };
+
 console.log(7 == maxProfit([7, 1, 5, 3, 6, 4]));
 console.log(8 == maxProfit([7, 1, 5, 6, 3, 6, 4]));
 console.log(maxProfit([2, 1, 2, 0, 1]) === 2);

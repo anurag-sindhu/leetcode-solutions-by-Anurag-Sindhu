@@ -1,4 +1,4 @@
-var minFlips1 = function (s) {
+var minOperations1 = function (s) {
     let prevCharacter = s[0];
     let flip = 0;
     for (let index = 1; index < s.length; index++) {
@@ -16,7 +16,7 @@ var minFlips1 = function (s) {
     return flip;
 };
 
-var minFlips = function (s) {
+var minOperations = function (s) {
     const possibleOut = [0, 1];
     let inttt = Infinity;
     for (const outElement of possibleOut) {
@@ -58,56 +58,22 @@ var minFlips = function (s) {
                 ++innnnn;
             }
         }
-        for (let index = 0; index < s.length; index++) {
-            if (s.length % 2) {
-                //odd
-                if (isZero) {
-                    if (index % 2 == 0) {
-                        currentExpectedBoolean = 0;
-                        nextExpectedBoolean = 1;
-                    } else {
-                        currentExpectedBoolean = 1;
-                        nextExpectedBoolean = 0;
-                    }
-                } else {
-                    if (index % 2 == 0) {
-                        currentExpectedBoolean = 1;
-                        nextExpectedBoolean = 0;
-                    } else {
-                        currentExpectedBoolean = 0;
-                        nextExpectedBoolean = 1;
-                    }
-                }
-            } else {
-                //even
-                if (index % 2 == 0) {
-                    currentExpectedBoolean = isZero ? 0 : 1;
-                } else {
-                    currentExpectedBoolean = isZero ? 1 : 0;
-                }
-                nextExpectedBoolean = currentExpectedBoolean;
-            }
-
-            if (s[index] != currentExpectedBoolean) {
-                innnnn -= 1;
-            }
-            if (s[index] != nextExpectedBoolean) {
-                innnnn += 1;
-            }
-            inttt = Math.min(innnnn, inttt);
-        }
+        inttt = Math.min(innnnn, inttt);
         // console.log('object');
     }
 
     return inttt;
 };
 
-console.log(minFlips((s = '10010011010')) === 2);
-console.log(minFlips((s = '111000')) === 2);
-console.log(minFlips((s = '010')) === 0);
-console.log(minFlips((s = '1110')) === 1);
-console.log(minFlips((s = '001000000010')) === 4);
-console.log(minFlips((s = '10011010100')) === 2);
-console.log(minFlips((s = '01001101010')) === 2);
-console.log(minFlips((s = '00100110101')) === 2);
-console.log(minFlips((s = '01001001101')) === 2);
+console.log(minOperations((s = '0100')) === 1);
+console.log(minOperations((s = '10')) === 0);
+console.log(minOperations((s = '1111')) === 2);
+console.log(minOperations((s = '10010011010')) === 2);
+console.log(minOperations((s = '111000')) === 2);
+console.log(minOperations((s = '010')) === 0);
+console.log(minOperations((s = '1110')) === 1);
+console.log(minOperations((s = '001000000010')) === 4);
+console.log(minOperations((s = '10011010100')) === 2);
+console.log(minOperations((s = '01001101010')) === 2);
+console.log(minOperations((s = '00100110101')) === 2);
+console.log(minOperations((s = '01001001101')) === 2);

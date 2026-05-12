@@ -1,35 +1,29 @@
-var wordBreak = function (string, wordDict) {
-    const wordDictObject = (function () {
-        const obj = {};
-        for (let index = 0; index < wordDict.length; index++) {
-            obj[wordDict[index]] = wordDict[index];
-        }
-        return obj;
-    })();
-    const output = [{ index: 0, tempStr: '' }];
-    const visited = {};
-    while (output.length) {
-        const lastElement = output.shift();
-        let tempStr = lastElement.tempStr;
-        let index = lastElement.index;
-        if (!visited[index]) {
-            for (; index < string.length; index++) {
-                tempStr += string[index];
-                if (wordDictObject[tempStr]) {
-                    output.push({ index: index + 1, tempStr });
-                    if (index === string.length - 1) {
-                        return true;
-                    }
-                    tempStr = '';
+const wordBreak = (s, wordDict) => {
+    if (wordDict == null || wordDict.length === 0) return false;
+    const set = new Set(wordDict);
+
+    // When s = 'catsandog', wordDict = ['cats', 'ca', 'ts']
+    // After 'cats' and 'ca', it will become 'andog', 'tsandog'
+    // For 'tsandog', after 'ts', it will become 'andog' again, visited set here is for memoization
+    const visited = new Set();
+    const q = [0];
+
+    while (q.length) {
+        const start = q.shift();
+
+        if (!visited.has(start)) {
+            for (let end = start + 1; end <= s.length; end++) {
+                if (set.has(s.slice(start, end))) {
+                    if (end === s.length) return true;
+                    q.push(end);
                 }
             }
+            visited.add(start);
         }
-        visited[lastElement.index] = true;
     }
-
     return false;
 };
-
+console.log(wordBreak('applepenapple', ['apple', 'applepe', 'napple']) === true);
 console.log(
     wordBreak('fohhemkkaecojceoaejkkoedkofhmohkcjmkggcmnami', [
         'kfomka',
@@ -401,7 +395,6 @@ console.log(
         ],
     ) === false,
 );
-console.log(wordBreak('applepenapple', ['apple', 'applepe', 'napple']) === true);
 console.log(wordBreak('applepenapple', ['apple', 'pen']) === true);
 console.log(wordBreak('catsandog', ['cats', 'dog', 'sand', 'and', 'cat']) === false);
 console.log(wordBreak('leetcode', ['leet', 'code']) === true);

@@ -1,43 +1,22 @@
 var longestCommonPrefix = function (strs) {
-  const words = [];
-  let tempWord = [];
-  let smallestLength = 0;
-  for (const iterator of strs) {
-    if (!iterator.length) {
-      return ``;
+    if (strs.length === 0) {
+        return '';
     }
-    tempWord = [];
-    if (!smallestLength || smallestLength > iterator.length) {
-      smallestLength = iterator.length;
-    }
-    for (let index = 0; index < iterator.length; index++) {
-      tempWord.push(iterator[index]);
-    }
-    words.push(tempWord);
-  }
-
-  let prefix = '';
-  let tempWord2 = '';
-  for (let index = 0; index < smallestLength; index++) {
-    tempWord2 = '';
-    if (words.length) {
-      for (const iterator of words) {
-        if (!tempWord2) {
-          tempWord2 = iterator[index];
+    let prefix = strs[0];
+    for (let i = 1; i < strs.length; i++) {
+        //is it marching
+        while (strs[i].indexOf(prefix) !== 0) {
+            //if not, trim from right side, until matched or left with nothing
+            prefix = prefix.slice(0, -1);
+            if (!prefix) {
+                return '';
+            }
         }
-        if (iterator[index] !== tempWord2) {
-          return prefix;
-        }
-      }
-      prefix += tempWord2;
-    } else {
-      return '';
     }
-  }
-  return prefix;
+    return prefix;
 };
 
+console.log(longestCommonPrefix(['flower', 'flow', 'flight', 'flight']));
 console.log(longestCommonPrefix(['', 'b']));
 console.log(longestCommonPrefix(['']));
 console.log(longestCommonPrefix(['dog', 'racecar', 'car']));
-console.log(longestCommonPrefix(['flower', 'flow', 'flight']));

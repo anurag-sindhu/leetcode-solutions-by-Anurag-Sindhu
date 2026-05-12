@@ -1,20 +1,17 @@
 var productExceptSelf = function (nums) {
-    let isZeroPresent = false;
-    let zeroCount = false;
+    let zeroCount = 0;
     const total = nums.reduce((acc, curr) => {
         if (curr != 0) {
             return curr * acc;
         }
         zeroCount += 1;
-        isZeroPresent = true;
         return acc;
     }, 1);
-    console.log(total);
     for (let index = 0; index < nums.length; index++) {
         if (zeroCount > 1) {
             nums[index] = 0;
         } else {
-            if (isZeroPresent) {
+            if (zeroCount) {
                 if (nums[index] == 0) {
                     nums[index] = total;
                 } else {

@@ -2,7 +2,7 @@
  * Z-Algorithm
  */
 
-var strStr = function (haystack, needle) {
+var strStr1 = function (haystack, needle) {
     if (haystack.length === needle.length && haystack.length === needle.length) {
         if (haystack === needle) {
             return 0;
@@ -24,6 +24,23 @@ var strStr = function (haystack, needle) {
     }
     if (newString[newStringIndex] === `$`) {
         return index - needle.length - needle.length - 1;
+    }
+    return -1;
+};
+
+var strStr = function (haystack, needle) {
+    let haystackLength = haystack.length;
+    let needleLength = needle.length;
+    if (haystackLength < needleLength) return -1;
+
+    let matchingIndex = 0;
+    for (let i = 0; i < haystackLength; i++) {
+        if (needle[i - matchingIndex] !== haystack[i]) {
+            i = matchingIndex;
+            matchingIndex = i + 1;
+        } else if (i - matchingIndex == needleLength - 1) {
+            return matchingIndex;
+        }
     }
     return -1;
 };
