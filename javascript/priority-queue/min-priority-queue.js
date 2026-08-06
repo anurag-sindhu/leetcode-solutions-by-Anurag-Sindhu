@@ -1,4 +1,4 @@
-class MinHeap {
+class MinPriorityQueue {
     constructor() {
         this.heap = [];
     }
@@ -20,11 +20,15 @@ class MinHeap {
         };
     }
 
-    getLength() {
+    size() {
         return this.heap.length;
     }
 
-    add(element) {
+    front() {
+        return this.heap[0];
+    }
+
+    enqueue(element) {
         this.heap.push(element);
         let currentWorkingIndex = this.heap.length - 1;
         while (currentWorkingIndex > 0) {
@@ -38,7 +42,7 @@ class MinHeap {
         }
     }
 
-    remove() {
+    dequeue() {
         const smallestElement = this.heap[0];
         if (this.heap.length === 1) {
             this.heap = [];
@@ -75,19 +79,19 @@ class MinHeap {
     }
 }
 
-const heap = new MinHeap();
-heap.add(15);
-heap.add(20);
-heap.add(50);
-heap.add(30);
-heap.add(55);
-heap.add(10);
-heap.add(8);
-heap.add(16);
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
+const heap = new MinPriorityQueue();
+heap.enqueue(15);
+heap.enqueue(20);
+heap.enqueue(50);
+heap.enqueue(30);
+heap.enqueue(55);
+heap.enqueue(10);
+heap.enqueue(8);
+heap.enqueue(16);
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();

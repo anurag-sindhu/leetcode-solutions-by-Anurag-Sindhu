@@ -1,33 +1,27 @@
 var maxSlidingWindow = function (nums, k) {
-    const output = [];
-    const dequeue = [];
-    let numsIndex = 0;
-    let numsInDequeIndex = 0;
-    while (numsIndex < nums.length) {
-        if (numsInDequeIndex >= k) {
-            dequeue.shift();
-        } else {
-            numsInDequeIndex += 1;
+    const q = []; // stores *indices*
+    const res = [];
+    for (let i = 0; i < nums.length; i++) {
+        while (q && nums[q[q.length - 1]] <= nums[i]) {
+            q.pop();
         }
-        let lastElementOfDeque = nums[numsIndex];
-        let lastToLastElementOfDeque = dequeue[dequeue.length - 1];
-        while (lastElementOfDeque > lastToLastElementOfDeque) {
-            dequeue.pop();
-            numsInDequeIndex--;
-            lastToLastElementOfDeque = dequeue[dequeue.length - 1];
+        q.push(i);
+        // remove first element if it's outside the window
+        if (q[0] === i - k) {
+            q.shift();
         }
-        dequeue.push(nums[numsIndex]);
-        output.push(dequeue[0]);
-        numsIndex += 1;
+        // if window has k elements add to results (first k-1 windows have < k elements because we start from empty window and add 1 element each iteration)
+        if (i >= k - 1) {
+            res.push(nums[q[0]]);
+        }
     }
-    output.splice(0, k - 1);
-    return output;
+    return res;
 };
 
+console.log(maxSlidingWindow((nums = [1, 3, -1, -3, 5, 3, 6, 7]), (k = 3)));
 console.log(maxSlidingWindow((nums = [1, 3, 1, 2, 0, 5]), (k = 3))); //[3,3,2,5]
 console.log(maxSlidingWindow((nums = [4, 2, 3, 7, 8, 9]), (k = 2)));
 console.log(maxSlidingWindow((nums = [1, 3, 4, -3, 5, 3, 6, 7]), (k = 2)));
-console.log(maxSlidingWindow((nums = [1, 3, -1, -3, 5, 3, 6, 7]), (k = 3)));
 console.log(maxSlidingWindow((nums = [4, 2, 1, 7, 8, 9]), (k = 2)));
 console.log(maxSlidingWindow((nums = [2, 7, 8, 9]), (k = 2)));
 console.log(maxSlidingWindow((nums = [7, 2, 4]), (k = 2)));

@@ -44,6 +44,7 @@ var maxProduct = function (nums) {
   return finalMax;
 };
 
+console.log(maxProduct((nums = [-3, 5, -3, 6])));
 console.log(maxProduct((nums = [2, 3, 0, 5, 6])));
 console.log(maxProduct((nums = [-2, 0, -1])));
 console.log(maxProduct((nums = [2, 3, -2, 4])));

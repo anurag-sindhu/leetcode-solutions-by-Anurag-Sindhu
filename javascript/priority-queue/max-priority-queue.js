@@ -1,4 +1,4 @@
-class MaxHeap {
+class MaxPriorityQueue {
     constructor() {
         this.heap = [];
     }
@@ -11,11 +11,7 @@ class MaxHeap {
         return 2 * i + 1;
     }
 
-    getLength() {
-        return this.heap.length;
-    }
-
-    getRoot() {
+    front() {
         return this.heap[0];
     }
 
@@ -51,7 +47,7 @@ class MaxHeap {
         [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
     }
 
-    add(value) {
+    enqueue(value) {
         this.heap.push(value);
         this.heapifyUp();
     }
@@ -64,7 +60,7 @@ class MaxHeap {
         }
     }
 
-    remove() {
+    dequeue() {
         if (this.heap.length === 0) {
             return null;
         }
@@ -110,19 +106,19 @@ class MaxHeap {
     }
 }
 
-const heap = new MaxHeap();
-heap.add(15);
-heap.add(20);
-heap.add(50);
-heap.add(30);
-heap.add(55);
-heap.add(10);
-heap.add(8);
-heap.add(16);
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
-heap.remove();
+const heap = new MaxPriorityQueue();
+heap.enqueue(15);
+heap.enqueue(20);
+heap.enqueue(50);
+heap.enqueue(30);
+heap.enqueue(55);
+heap.enqueue(10);
+heap.enqueue(8);
+heap.enqueue(16);
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
+heap.dequeue();
