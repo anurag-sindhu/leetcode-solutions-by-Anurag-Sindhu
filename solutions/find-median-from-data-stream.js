@@ -197,13 +197,15 @@ var MedianFinder = function () {
 
 MedianFinder.prototype.addNum = function (num) {
     this.minHeap.enqueue(num);
+    this.maxHeap.enqueue(this.minHeap.dequeue());
     let minHeapRoot = this.minHeap.size() ? this.minHeap.front() : Infinity;
     let maxHeapRoot = this.maxHeap.size() ? this.maxHeap.front() : -Infinity;
     let lengthOfMinHeap = this.minHeap.size();
     let lengthOfMaxHeap = this.maxHeap.size();
-    if (lengthOfMinHeap - lengthOfMaxHeap > 1) {
-        this.minHeap.size() && this.minHeap.dequeue();
-        this.maxHeap.enqueue(minHeapRoot);
+    if (lengthOfMinHeap < lengthOfMaxHeap) {
+        this.minHeap.enqueue(this.maxHeap.dequeue());
+    } else {
+        console.log('');
     }
     return null;
 };
@@ -213,10 +215,10 @@ MedianFinder.prototype.findMedian = function () {
     let maxHeapRoot = this.maxHeap.size() && this.maxHeap.front();
     let lengthOfMinHeap = this.minHeap.size();
     let lengthOfMaxHeap = this.maxHeap.size();
-    if ((lengthOfMinHeap + lengthOfMaxHeap) % 2 === 0) {
-        return (minHeapRoot + maxHeapRoot) / 2;
+    if (lengthOfMinHeap > lengthOfMaxHeap) {
+        return minHeapRoot;
     } else {
-        return maxHeapRoot;
+        return (minHeapRoot + maxHeapRoot) / 2; // 21 and 34 example, pop 1 and 3 and find average
     }
 };
 let obj;
