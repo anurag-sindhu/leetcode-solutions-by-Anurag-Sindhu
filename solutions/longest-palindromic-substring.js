@@ -13,7 +13,7 @@ function isPalindrome(str) {
     return true;
 }
 
-var longestPalindrome = function (str) {
+var longestPalindrome1 = function (str) {
     if (str.length === 1) {
         return str;
     }
@@ -58,7 +58,44 @@ var longestPalindrome = function (str) {
     }
     return output;
 };
+/**
+https://youtu.be/UflHuQj6MVA?t=461
+ */
+var longestPalindrome = function (s) {
+    const n = s.length;
+    if (n === 0) return '';
 
+    let start = 0,
+        maxLength = 1;
+    const dp = Array.from({ length: n }, () => Array(n).fill(false));
+
+    for (let i = 0; i < n; i++) {
+        dp[i][i] = true; // Single chars are palindromes
+    }
+
+    for (let length = 2; length <= n; length++) {
+        for (let startIndex = 0; startIndex <= n - length; startIndex++) {
+            const endIndex = startIndex + length - 1;
+            if (s[startIndex] === s[endIndex]) {
+                if (length === 2) {
+                    dp[startIndex][endIndex] = true;
+                } else {
+                    const helpStartIndex = startIndex + 1;
+                    const helpEndIndex = endIndex - 1;
+                    dp[startIndex][endIndex] = dp[helpStartIndex][helpEndIndex];
+                }
+                if (dp[startIndex][endIndex] && length > maxLength) {
+                    start = startIndex;
+                    maxLength = length;
+                }
+            }
+        }
+    }
+
+    return s.substring(start, start + maxLength);
+};
+
+console.log(longestPalindrome('bbbab') === 'bbb');
 console.log(
     longestPalindrome(
         'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
@@ -72,7 +109,6 @@ console.log(longestPalindrome('abreguieariwlbgrsaleieasgh') === 'eie');
 console.log(longestPalindrome('caddac') === 'caddac');
 console.log(longestPalindrome('babadbabad') === 'bab');
 console.log(longestPalindrome('cbbd') === 'bb');
-console.log(longestPalindrome('bbbab') === 'bbb');
 console.log(longestPalindrome('cbbd') === 'bb');
 
 var longestPalindrome1 = function (str) {

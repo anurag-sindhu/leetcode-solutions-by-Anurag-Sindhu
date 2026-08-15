@@ -1,36 +1,29 @@
 var minDistance = function (word1, word2) {
-    const arr = [];
-    for (let indexWord2 = 0; indexWord2 <= word2.length; indexWord2++) {
-        arr[indexWord2] = [];
-        for (let indexWord1 = 0; indexWord1 <= word1.length; indexWord1++) {
-            if (indexWord1 == 0) {
-                arr[indexWord2].push(indexWord2);
-                continue;
-            }
-            if (indexWord2 == 0) {
-                arr[indexWord2].push(indexWord1);
-                continue;
-            }
-            if (word1[indexWord1 - 1] == word2[indexWord2 - 1]) {
-                arr[indexWord2][indexWord1] = Math.min(
-                    arr[indexWord2 - 1][indexWord1 - 1],
-                    arr[indexWord2 - 1][indexWord1],
-                    arr[indexWord2][indexWord1 - 1],
-                );
+    const m = word1.length;
+    const n = word2.length;
+    const dp = new Array(m + 1).fill(null).map(() => new Array(n + 1).fill(null));
+
+    for (let i = 0; i <= m; i++) {
+        dp[i][0] = i;
+    }
+
+    for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
+    }
+
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (word1[i - 1] === word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
             } else {
-                arr[indexWord2][indexWord1] =
-                    1 +
-                    Math.min(
-                        arr[indexWord2 - 1][indexWord1 - 1],
-                        arr[indexWord2 - 1][indexWord1],
-                        arr[indexWord2][indexWord1 - 1],
-                    );
+                dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
             }
         }
     }
-    return arr[arr.length - 1][arr[0].length - 1];
+
+    return dp[m][n];
 };
 
+console.log(minDistance((word1 = 'horse'), (word2 = 'ros')));
 console.log(minDistance((word1 = 'zoologicoarchaeologist'), (word2 = 'zoogeologist')));
 console.log(minDistance((word1 = 'intention'), (word2 = 'execution')));
-console.log(minDistance((word1 = 'horse'), (word2 = 'ros')));
