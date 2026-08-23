@@ -15,10 +15,13 @@ function getRowColFromLabel(board, num) {
 var snakesAndLadders = function (board) {
     const query = [[1, 0]];
     const rowCount = board.length;
-    const labelAdd = { 1: 0 };
-    let minSteps = Infinity;
+    const labelAdd = {};
+    let minSteps = -1;
     while (query.length) {
         const [label, steps] = query.shift();
+        if (labelAdd[label] == undefined) {
+            labelAdd[label] = {};
+        }
         if (label > rowCount * rowCount) {
             continue;
         }
@@ -29,23 +32,45 @@ var snakesAndLadders = function (board) {
         const { rowIndex, columnIndex } = rowCol;
         if (board[rowIndex] && board[rowIndex][columnIndex] !== -1) {
             const rowCol = getRowColFromLabel(board, board[rowIndex][columnIndex]);
-            if (labelAdd[board[rowIndex][columnIndex]] < steps + 1) {
+            if (labelAdd[label][board[rowIndex][columnIndex]] <= steps) {
                 continue;
             }
-            labelAdd[board[rowIndex][columnIndex]] = steps + 1;
-            query.push([board[rowIndex][columnIndex], steps + 1]);
+            labelAdd[label][board[rowIndex][columnIndex]] = steps;
+            query.push([board[rowIndex][columnIndex], steps]);
         }
-        for (let index = label + 1; index <= Math.min(label + 6, rowCount * rowCount); index++) {
-            if (labelAdd[index] <= steps + 1) {
+        const till = Math.min(label + 6, rowCount * rowCount);
+        for (let index = label + 1; index <= till; index++) {
+            if (labelAdd[label][index] <= steps + 1) {
                 continue;
             }
-            labelAdd[index] = steps + 1;
+            labelAdd[label][index] = steps + 1;
             query.push([index, steps + 1]);
         }
-        console.log('');
     }
     return minSteps;
 };
+
+console.log(
+    -1 ===
+        snakesAndLadders(
+            (board = [
+                [1, 1, -1],
+                [1, 1, 1],
+                [-1, 1, 1],
+            ]),
+        ),
+);
+
+console.log(
+    2 ===
+        snakesAndLadders(
+            (board = [
+                [-1, 4, -1],
+                [6, 2, 6],
+                [-1, 3, -1],
+            ]),
+        ),
+);
 
 console.log(
     snakesAndLadders(
@@ -75,17 +100,6 @@ console.log(
             [-1, 1],
         ]),
     ),
-);
-
-console.log(
-    2 ===
-        snakesAndLadders(
-            (board = [
-                [-1, 4, -1],
-                [6, 2, 6],
-                [-1, 3, -1],
-            ]),
-        ),
 );
 
 console.log(
