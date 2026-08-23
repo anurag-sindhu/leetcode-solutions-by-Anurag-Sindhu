@@ -1,58 +1,54 @@
 const singlyLinkedList = require('../javascript/singlyLinkedList');
-class Node {
-    constructor(val) {
+class ListNode {
+    constructor(val, next = null) {
         this.val = val;
-        this.next = null;
+        this.next = next;
     }
 }
+
 var sortList = function (head) {
-    if (head === null || head.next === null) {
+    if (!head || !head.next) {
         return head;
     }
-    const [left, right] = split(head);
-    const root = new Node(null);
-    return merge(root, sortList(left), sortList(right));
-};
 
-function split(node) {
-    let slow = node;
-    let fast = node;
-    while (fast.next && fast.next.next) {
+    let slow = head,
+        fast = head,
+        prev = null;
+    while (fast && fast.next) {
+        prev = slow;
         slow = slow.next;
         fast = fast.next.next;
     }
+    prev.next = null;
 
-    const left = node;
-    const right = slow.next;
-    slow.next = null;
+    const left = sortList(head);
+    const right = sortList(slow);
 
-    return [left, right];
-}
+    return merge(left, right);
+};
 
-function merge(root = null, left, right) {
-    let pointer = root;
-    while (left !== null || right !== null) {
-        if (!left) {
-            pointer.next = right;
-            right = right.next;
-        } else if (!right) {
-            pointer.next = left;
-            left = left.next;
-        } else if (left.val > right.val) {
-            pointer.next = right;
-            right = right.next;
+function merge(l1, l2) {
+    const dummy = new ListNode(0);
+    let current = dummy;
+
+    while (l1 && l2) {
+        if (l1.val < l2.val) {
+            current.next = l1;
+            l1 = l1.next;
         } else {
-            pointer.next = left;
-            left = left.next;
+            current.next = l2;
+            l2 = l2.next;
         }
-        if (pointer.next.next) {
-            pointer.next.next = null;
-        }
-        pointer = pointer.next;
+        current = current.next;
     }
-    return root.next;
+
+    current.next = l1 || l2;
+    return dummy.next;
 }
 let res;
+
+res = sortList(singlyLinkedList([4, 3, 2, 1, 6, 7, 8]).head);
+console.log(res);
 
 res = sortList(singlyLinkedList([4, 2, 1, 3, 5, 6, 7, 8, 9]).head);
 console.log(res);

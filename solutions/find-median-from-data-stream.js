@@ -198,8 +198,6 @@ var MedianFinder = function () {
 MedianFinder.prototype.addNum = function (num) {
     this.minHeap.enqueue(num);
     this.maxHeap.enqueue(this.minHeap.dequeue());
-    let minHeapRoot = this.minHeap.size() ? this.minHeap.front() : Infinity;
-    let maxHeapRoot = this.maxHeap.size() ? this.maxHeap.front() : -Infinity;
     let lengthOfMinHeap = this.minHeap.size();
     let lengthOfMaxHeap = this.maxHeap.size();
     if (lengthOfMinHeap < lengthOfMaxHeap) {

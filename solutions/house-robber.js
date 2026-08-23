@@ -19,6 +19,10 @@ var rob11 = function (nums) {
     return Math.max(nums[0], nums[1] || 0);
 };
 
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
 var rob = function (nums) {
     if (nums.length == 1) {
         return nums[0];
@@ -26,21 +30,15 @@ var rob = function (nums) {
     if (nums.length == 2) {
         return Math.max(nums[0], nums[1]);
     }
-    if (nums.length == 3) {
-        return Math.max(nums[0], nums[1], nums[2]);
+
+    for (let index = nums.length - 1 - 1 - 1; index >= 0; index--) {
+        nums[index] = nums[index] + Math.max(nums[index + 2], nums[index + 3] || 0);
     }
-    if (nums.length == 4) {
-        return Math.max(nums[0] + nums[2], nums[1] + nums[3]);
-    }
-    for (let index = nums.length - 3; index >= 0; index--) {
-        nums[index] +=
-            nums[index + 3] !== undefined
-                ? Math.max(nums[index + 2], nums[index + 3])
-                : nums[index + 2];
-    }
-    return Math.max(nums[0], nums[1] || 0);
+    console.log(nums);
+    return Math.max(nums[0], nums[1]);
 };
 
 console.log(rob((nums = [2, 7, 9, 3, 1])));
+console.log(rob((nums = [1, 2, 3])));
 console.log(rob((nums = [2, 1, 1, 2])));
 console.log(rob((nums = [1, 2, 3, 1])));

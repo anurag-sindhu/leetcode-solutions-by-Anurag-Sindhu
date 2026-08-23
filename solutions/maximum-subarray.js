@@ -1,17 +1,20 @@
-var maxSubArrayHelper = function (nums) {
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function (nums) {
     let currentSum = 0;
     let finalSum = -Infinity;
     for (let index = 0; index < nums.length; index++) {
         currentSum += nums[index];
-        finalSum = Math.max(finalSum, currentSum);
-    }
-    return finalSum;
-};
 
-var maxSubArray = function (nums) {
-    let midIndex = parseInt(nums.length / 2);
-    let sum1 = maxSubArrayHelper(nums.splice(0, midIndex));
-    let sum2 = maxSubArrayHelper(nums.splice(midIndex));
+        if (finalSum < currentSum) {
+            finalSum = currentSum;
+        }
+        if (currentSum < 0) {
+            currentSum = 0;
+        }
+    }
     return finalSum;
 };
 console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));

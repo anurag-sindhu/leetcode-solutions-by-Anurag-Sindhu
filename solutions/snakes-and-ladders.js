@@ -1,92 +1,64 @@
 function getRowColFromLabel(board, num) {
-    const rows = board.length;
-    const cols = board[0].length;
-
+    const n = board.length;
     const idx = num - 1;
-    const rowFromBottom = Math.floor(idx / cols);
-    const rowIndex = rows - rowFromBottom - 1;
-    const offset = idx % cols;
 
-    let columnIndex;
+    // Calculate row from top
+    const rowFromBottom = Math.floor(idx / n);
+    const rowIndex = n - 1 - rowFromBottom;
 
-    if (rows % 2 === 1) {
-        if (rowFromBottom % 2 === 0) {
-            columnIndex = offset;
-        } else {
-            columnIndex = cols - offset - 1;
-        }
-    } else {
-        if (rowFromBottom % 2 === 0) {
-            columnIndex = cols - offset - 1;
-        } else {
-            columnIndex = offset;
-        }
-    }
+    // Alternating column logic based on row from the bottom
+    const columnIndex = rowFromBottom % 2 === 0 ? idx % n : n - 1 - (idx % n);
 
     return { rowIndex, columnIndex };
 }
 
-function getLabel(board, rowIndex, columnIndex) {
-    let resp = 0;
-    if (board.length % 2) {
-        if ((rowIndex + 1) % 2 !== 0) {
-            resp = (board.length - rowIndex - 1) * board[0].length + columnIndex + 1;
-        } else {
-            resp =
-                (board.length - rowIndex - 1) * board[0].length + (board[0].length - columnIndex);
-        }
-    } else {
-        if ((rowIndex + 1) % 2 == 0) {
-            resp = (board.length - rowIndex - 1) * board[0].length + columnIndex + 1;
-        } else {
-            resp =
-                (board.length - rowIndex - 1) * board[0].length + (board[0].length - columnIndex);
-        }
-    }
-    return resp;
-}
-
 var snakesAndLadders = function (board) {
-    let rowIndex = board.length - 1;
-    let columnIndex = 0;
-    const inProgress = {};
-    const addressed = {};
-    function iterate(rowIndex, columnIndex) {
-        if (inProgress[`${rowIndex}_${columnIndex}`]) {
-            return Infinity;
+    const query = [[1, 0]];
+    const rowCount = board.length;
+    const labelAdd = { 1: 0 };
+    let minSteps = Infinity;
+    while (query.length) {
+        const [label, steps] = query.shift();
+        if (label > rowCount * rowCount) {
+            continue;
         }
-        if (addressed[`${rowIndex}_${columnIndex}`] != undefined) {
-            return addressed[`${rowIndex}_${columnIndex}`];
+        if (label == rowCount * rowCount) {
+            minSteps = Math.min(minSteps, steps);
         }
-        if (rowIndex <= 0 && columnIndex <= 0) {
-            return 0;
-        }
-        inProgress[`${rowIndex}_${columnIndex}`] = true;
-        let label = getLabel(board, rowIndex, columnIndex);
-        const fromStep = label + 1;
-        const tillStep = Math.min(label + 6, Math.pow(board.length, 2));
-        let minValue = Infinity;
-        for (let label = fromStep; label <= tillStep; label++) {
-            let { rowIndex: row, columnIndex: column } = getRowColFromLabel(board, label);
-            const canJumpToLabel = board[row][column];
-            let steps;
-            if (canJumpToLabel !== -1) {
-                const temp = getRowColFromLabel(board, canJumpToLabel);
-                steps =
-                    1 + Math.min(iterate(row, column), iterate(temp.rowIndex, temp.columnIndex));
-            } else {
-                steps = 1 + iterate(row, column);
+        const rowCol = getRowColFromLabel(board, label);
+        const { rowIndex, columnIndex } = rowCol;
+        if (board[rowIndex] && board[rowIndex][columnIndex] !== -1) {
+            const rowCol = getRowColFromLabel(board, board[rowIndex][columnIndex]);
+            if (labelAdd[board[rowIndex][columnIndex]] < steps + 1) {
+                continue;
             }
-            minValue = Math.min(steps, minValue);
+            labelAdd[board[rowIndex][columnIndex]] = steps + 1;
+            query.push([board[rowIndex][columnIndex], steps + 1]);
         }
-        addressed[`${rowIndex}_${columnIndex}`] = minValue;
-        inProgress[`${rowIndex}_${columnIndex}`] = false;
-        return minValue;
+        for (let index = label + 1; index <= Math.min(label + 6, rowCount * rowCount); index++) {
+            if (labelAdd[index] <= steps + 1) {
+                continue;
+            }
+            labelAdd[index] = steps + 1;
+            query.push([index, steps + 1]);
+        }
+        console.log('');
     }
-    const resp = iterate(rowIndex, columnIndex);
-    return resp;
+    return minSteps;
 };
 
+console.log(
+    snakesAndLadders(
+        (board = [
+            [-1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1, -1],
+            [-1, 35, -1, -1, 13, -1],
+            [-1, -1, -1, -1, -1, -1],
+            [-1, 15, -1, -1, -1, -1],
+        ]),
+    ),
+);
 console.log(
     snakesAndLadders(
         (board = [
@@ -119,6 +91,15 @@ console.log(
 console.log(
     snakesAndLadders(
         (board = [
+            [-1, -1],
+            [-1, 3],
+        ]),
+    ),
+);
+
+console.log(
+    getRowColFromLabel(
+        (board = [
             [-1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1],
             [-1, -1, -1, -1, -1, -1],
@@ -126,14 +107,19 @@ console.log(
             [-1, -1, -1, -1, -1, -1],
             [-1, 15, -1, -1, -1, -1],
         ]),
+        7,
     ),
 );
 
 console.log(
-    snakesAndLadders(
+    getRowColFromLabel(
         (board = [
-            [-1, -1],
-            [-1, 3],
+            [-1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1],
+            [-1, -1, -1, -1, -1],
+            [-1, 35, -1, -1, 13],
+            [-1, -1, -1, -1, -1],
         ]),
+        5,
     ),
 );
