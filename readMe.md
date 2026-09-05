@@ -32,13 +32,20 @@ If you'd like to discuss problem-solving strategies, collaborate on a project, o
 
 Happy coding! 🚀
 Below are my social links:
-1. Personal WebPage🌐: https://www.anurag-sindhu.github.io
-2. LeetCode⭐: https://www.leetcode.com/anurag-sindhu
-3. GitHub</>: https://www.github.com/anurag-sindhu
-4. Stack Overflow🦄: https://www.stackoverflow.com/users/9768827/anurag-sindhu
-5. HackerRank👨‍💻: https://www.hackerrank.com/anurag_sindhu
-6. Medium👨‍💻: https://www.medium.com/@anurag-sindhu
-7. LinkedIn🌐: https://www.linkedin.com/in/-anurag-sindhu/
 
+- Personal Website🌐: https://anuragsindhu.com
+- Market Website🌐: http://market.anuragsindhu.com
+- LeetCode⭐: https://www.leetcode.com/anurag-sindhu
+- GitHub</>: https://www.github.com/anurag-sindhu
+- Stack Overflow🦄: https://www.stackoverflow.com/users/9768827/anurag-sindhu
+- HackerRank👨‍💻: https://www.hackerrank.com/anurag_sindhu
+- Medium👨‍💻: https://www.medium.com/@anurag-sindhu
+- LinkedIn🌐: https://www.linkedin.com/in/-anurag-sindhu/
 
-
+const BinarySearchTree = require('../javascript/binary-search-tree.js');
+const binarySearchTree = new BinarySearchTree();
+for (const iterator of [1, null, 2, 3]) {
+binarySearchTree.add(iterator);
+}
+const resp = preorderTraversal(binarySearchTree.tree);
+console.log(resp);
