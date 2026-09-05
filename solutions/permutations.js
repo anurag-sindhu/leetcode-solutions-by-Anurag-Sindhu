@@ -1,10 +1,13 @@
-var permute1 = function (nums) {
+var permute = function (nums) {
     let output = [];
     if (nums.length === 1) {
         return [nums];
     }
     for (let index = 0; index < nums.length; index++) {
-        const getCombination = permute([...nums.slice(0, index), ...nums.slice(index + 1)]);
+        //The code loops through each number in the array. In each iteration, it removes the current number (nums[index])
+        //and puts the remaining numbers into a new array called temp.
+        const temp = [...nums.slice(0, index), ...nums.slice(index + 1)];
+        const getCombination = permute(temp);
         for (const iterator of getCombination) {
             output.push([nums[index], ...iterator]);
         }
@@ -27,7 +30,7 @@ var permute11 = function (nums) {
     return output;
 };
 
-function permute(candidates, alreadyAddressed = {}, string = '', result = []) {
+function permute11(candidates, alreadyAddressed = {}, string = '', result = []) {
     function permuteHelper(candidates, alreadyAddressed = {}, string = '', result = []) {
         if (alreadyAddressed[string]) {
             return;

@@ -1,7 +1,7 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
 //level-order traversal.
-var connect = function (root) {
+var connect1 = function (root) {
     let q = [root];
     while (q[0]) {
         let qlen = q.length,
@@ -23,6 +23,46 @@ var connect = function (root) {
     return root;
 };
 
+var connect11 = function (root) {
+    const ar = [root];
+    while (ar.length) {
+        let len = ar.length;
+        let lastPointerReference = '';
+        for (let index = 0; index < len; index++) {
+            const element = ar.shift();
+            if (lastPointerReference) {
+                element.next = lastPointerReference;
+            }
+            if (element.right) {
+                ar.push(element.right);
+            }
+            if (element.left) {
+                ar.push(element.left);
+            }
+            lastPointerReference = element;
+        }
+    }
+    return root;
+};
+
+var connect = function (root) {
+    if (!root) return null;
+
+    let levelStart = root;
+    while (levelStart.left) {
+        let current = levelStart;
+        while (current) {
+            current.left.next = current.right;
+            if (current.next) {
+                current.right.next = current.next.left;
+            }
+            current = current.next;
+        }
+        levelStart = levelStart.left;
+    }
+
+    return root;
+};
 let binaryTree;
 
 binaryTree = new BinaryTree();

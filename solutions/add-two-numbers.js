@@ -22,8 +22,7 @@ const createLinkedList = function (num, list) {
     }
     return list;
 };
-
-var addTwoNumbers = function (l1, l2) {
+var addTwoNumbers1 = function (l1, l2) {
     const l1Numbers = getAllNumbers(l1);
     const l2Numbers = getAllNumbers(l2);
     let sum = ``;
@@ -52,8 +51,42 @@ var addTwoNumbers = function (l1, l2) {
     }
     return output;
 };
+var addTwoNumbers = function (l1, l2, grace = 0) {
+    if (l1 || l2) {
+        if (grace) {
+            l2.val += grace;
+            grace = 0;
+        }
+        l2.val += (l1 && l1.val) || 0;
+        if (l2.val > 9) {
+            l2.val = l2.val % 10;
+            grace = 1;
+        }
+        if ((l1 && l1.next) || (l2 && l2.next)) {
+            if (!l2.next && l1 && l1.next) {
+                l2.next = l1.next;
+                l1.next = null;
+            }
+            addTwoNumbers(l1 && l1.next, l2.next, grace);
+        } else {
+            if (grace) {
+                l2.next = new Node(grace);
+            }
+        }
+    }
+    return l2;
+};
 
+console.log(
+    addTwoNumbers(
+        singlyLinkedList([9, 9, 9, 9, 9, 9, 9]).head,
+        singlyLinkedList([9, 9, 9, 9]).head,
+    ),
+); //[8,9,9,9,0,0,0,1]
+
+console.log(addTwoNumbers(singlyLinkedList([0]).head, singlyLinkedList([0]).head));
 console.log(addTwoNumbers(singlyLinkedList([2, 4, 3]).head, singlyLinkedList([5, 6, 4]).head));
+
 console.log(
     addTwoNumbers(
         singlyLinkedList([
@@ -63,10 +96,3 @@ console.log(
         singlyLinkedList([5, 6, 4]).head,
     ),
 );
-console.log(
-    addTwoNumbers(
-        singlyLinkedList([9, 9, 9, 9, 9, 9, 9]).head,
-        singlyLinkedList([9, 9, 9, 9]).head,
-    ),
-);
-console.log(addTwoNumbers(singlyLinkedList([0]).head, singlyLinkedList([0]).head));

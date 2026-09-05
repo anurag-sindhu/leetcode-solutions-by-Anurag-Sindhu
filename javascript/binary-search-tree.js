@@ -11,7 +11,7 @@ class BinarySearchTree {
         this.tree = null;
     }
     addNode(data, tree) {
-        if (tree.val > data) {
+        if (data < tree.val) {
             if (!tree.left) {
                 tree.left = new Node(data);
             } else {
@@ -26,9 +26,8 @@ class BinarySearchTree {
         }
     }
     add(data) {
-        const node = new Node(data);
         if (!this.tree) {
-            this.tree = node;
+            this.tree = new Node(data);
         } else {
             this.addNode(data, this.tree);
         }
@@ -161,7 +160,7 @@ module.exports = BinarySearchTree;
 
 const binarySearchTree = new BinarySearchTree();
 for (const iterator of [
-    500, 250, 125, 1000, 2000, 3000, 4000, 6000, 7000, 8000, 750, 650, 600, 550
+    500, 250, 125, 1000, 2000, 3000, 4000, 6000, 7000, 8000, 750, 650, 600, 550,
 ]) {
     binarySearchTree.add(iterator);
 }

@@ -1,63 +1,37 @@
 const BinaryTree = require('../javascript/binary-tree.js');
+/**
+The idea is to traverse the tree and find the node where both p and q split into different subtrees.
+That node is the Lowest Common Ancestor.
+We use postorder traversal to return the LCA once both sides have non-null results.
 
+Base case: If root is null, return null.
+If root is equal to either p or q, return root.
+Recursively check left and right subtree.
+If both return non-null, current node is the LCA.
+If only one is non-null, propagate it upward.
+ */
 var lowestCommonAncestor = function (root, p, q) {
-    const isRootMatching = root === p || root === q;
-    if (isRootMatching) {
+    if (!root || root === p || root === q) {
         return root;
     }
-    function explore(root) {
-        let isP = false;
-        let isQ = false;
-        function exploreHelper(root) {
-            if (!root) {
-                return;
-            }
-            if (p === root) {
-                isP = true;
-            }
-            if (q === root) {
-                isQ = true;
-            }
-            exploreHelper(root.left);
-            exploreHelper(root.right);
-        }
-        exploreHelper(root);
-        return { isP, isQ };
-    }
-    function exploreAgain(root) {
-        let reference = null;
-        function exploreHelper(root) {
-            if (!root) {
-                return;
-            }
-            if (p === root && reference == null) {
-                reference = root;
-            }
-            if (q === root && reference == null) {
-                reference = root;
-            }
-            exploreHelper(root.left);
-            exploreHelper(root.right);
-        }
-        exploreHelper(root);
-        return reference;
-    }
-
-    const leftNodeCount = explore(root.left);
-    if (
-        (leftNodeCount.isP && leftNodeCount.isQ === false) ||
-        (leftNodeCount.isQ && leftNodeCount.isP === false)
-    ) {
+    let left = lowestCommonAncestor(root.left, p, q);
+    let right = lowestCommonAncestor(root.right, p, q);
+    if (left && right) {
         return root;
     }
-    if (leftNodeCount.isP && leftNodeCount.isQ) {
-        return exploreAgain(root.left);
-    }
-    return exploreAgain(root.right);
+    return left || right;
 };
 
 let binaryTree;
 let resp;
+
+binaryTree = new BinaryTree();
+for (const iterator of [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]) {
+    binaryTree.add(iterator);
+}
+resp = lowestCommonAncestor(binaryTree.tree, (p = 5), (q = 1));
+console.log(resp);
+
 binaryTree = new BinaryTree();
 for (const iterator of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
     binaryTree.add(iterator);
@@ -74,13 +48,6 @@ for (const iterator of [1, 2]) {
     binaryTree.add(iterator);
 }
 resp = lowestCommonAncestor(binaryTree.tree, (p = 1), (q = 2));
-console.log(resp);
-
-binaryTree = new BinaryTree();
-for (const iterator of [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]) {
-    binaryTree.add(iterator);
-}
-resp = lowestCommonAncestor(binaryTree.tree, (p = 5), (q = 4));
 console.log(resp);
 
 binaryTree = new BinaryTree();

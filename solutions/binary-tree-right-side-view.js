@@ -37,6 +37,20 @@ function rightSideView1(root) {
     return output;
 }
 
+function rightSideView11(root, output = [], level = 0) {
+    if (!root) {
+        return [];
+    }
+    if ((root.val || root.val === 0) && output.length === level) {
+        output.push(root.val);
+    }
+    rightSideView(root.right, output, level + 1);
+    if (level + 1 === output.length) {
+        rightSideView(root.left, output, level + 1);
+    }
+    return output;
+}
+
 function rightSideView(root, output = [], level = 0) {
     if (!root) {
         return [];

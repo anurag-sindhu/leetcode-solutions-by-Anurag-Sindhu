@@ -53,7 +53,7 @@ function cutSubNodesAsPerTheSizeGiven(head, size, cutSubNodes = new Node()) {
     return { cutSubNodes: cutSubNodes.next, leftHead };
 }
 
-var reverseKGroup = function (head, size) {
+var reverseKGroup1 = function (head, size) {
     const totalNode = new countList().count(head);
     const lastNodesToBeSkipped = totalNode % size;
     function splitNodesAsPerSize(head, size, nodesExplored = 0) {
@@ -67,5 +67,31 @@ var reverseKGroup = function (head, size) {
     return splitNodesAsPerSize(head, size);
 };
 
-console.log(reverseKGroup(singlyLinkedList((head = [1, 2, 3, 4, 5])).head, (k = 3)));
+var reverseKGroup = function (head, size) {
+    function reverseKGroupHelper(head, size, num = 0, totalNum = 0, arr = [], arrIndex = 0) {
+        if (head) {
+            if (arr.length >= size) {
+                arrIndex = 0;
+                arr = [];
+            }
+            arr.push(head);
+            reverseKGroupHelper(head.next, size, (num + 1) % size, totalNum + 1, arr, arrIndex + 1);
+            const currentIndex = totalNum + 1;
+            if (!(arr.length < size)) {
+                const toBeReplacedWith = currentIndex - size + 1;
+                const activeArrIndex = arrIndex;
+                const arrIndexToReplaceWith = activeArrIndex + size - 1 - activeArrIndex * 2;
+                const numToReplaceWith = arr[arrIndexToReplaceWith];
+                const headNext = head.next;
+                head.next = numToReplaceWith;
+                numToReplaceWith.next = headNext;
+                console.log('');
+            }
+        }
+    }
+    reverseKGroupHelper(head, size);
+    return head;
+};
+
 console.log(reverseKGroup(singlyLinkedList((head = [1, 2, 3, 4, 5])).head, (k = 2)));
+console.log(reverseKGroup(singlyLinkedList((head = [1, 2, 3, 4, 5])).head, (k = 3)));

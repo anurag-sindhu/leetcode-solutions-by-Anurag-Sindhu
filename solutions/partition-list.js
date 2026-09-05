@@ -33,7 +33,7 @@ var partition1 = function (head, x) {
     return left.next;
 };
 
-var partition = function (head, x) {
+var partition1 = function (head, x) {
     let dummy = { value: null, next: head };
     const spare = { value: null, next: null };
     let sparePointer = spare;
@@ -50,7 +50,7 @@ var partition = function (head, x) {
         dummyPointer = dummyPointer.next;
     }
 
-    function merge(head) {,
+    function merge(head) {
         if (!head) {
             return spare.next;
         }
@@ -61,6 +61,31 @@ var partition = function (head, x) {
     }
     merge(dummy);
     return left.next;
+};
+
+var partition = function (head, breakeven) {
+    const above = [];
+    function partitionHelper(head, breakeven) {
+        if (head) {
+            if (head.next && head.next.val >= breakeven) {
+                above.push(head);
+            } else {
+                if (above.length) {
+                    const eligible = above.pop();
+                    const headNext = head.next;
+                    head.next = head.next.next;
+                    headNext.next = head;
+                    eligible.next = headNext;
+                    head = headNext;
+                    console.log(eligible);
+                    console.log(head);
+                }
+            }
+            partitionHelper(head.next, breakeven);
+        }
+    }
+    partitionHelper(head, breakeven);
+    return;
 };
 
 console.log(partition(singlyLinkedList([1, 4, 3, 2, 5, 2]).head, 3));
