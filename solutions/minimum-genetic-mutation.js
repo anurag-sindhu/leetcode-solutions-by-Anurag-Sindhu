@@ -54,7 +54,7 @@ function isSingleCharacterChange(from, to) {
     return diff === 1;
 }
 
-var minMutation = function (start, end, bank) {
+var minMutation11 = function (start, end, bank) {
     const bankMap = {};
     for (const gene of bank) {
         bankMap[gene] = true;
@@ -62,6 +62,41 @@ var minMutation = function (start, end, bank) {
 
     // end must exist in bank
     if (!bankMap[end]) return -1;
+
+    let minSteps = Infinity;
+
+    function dfs(current, visited, steps) {
+        if (current === end) {
+            minSteps = Math.min(minSteps, steps);
+            return;
+        }
+
+        for (const gene of bank) {
+            if (!visited[gene] && isSingleCharacterChange(current, gene)) {
+                visited[gene] = true;
+                dfs(gene, visited, steps + 1);
+                delete visited[gene]; // backtrack
+            }
+        }
+    }
+
+    const visited = {};
+    visited[start] = true;
+
+    dfs(start, visited, 0);
+
+    return minSteps === Infinity ? -1 : minSteps;
+};
+var minMutation = function (start, end, bank) {
+    const bankMap = {};
+    for (const gene of bank) {
+        bankMap[gene] = true;
+    }
+
+    // end must exist in bank
+    if (!bankMap[end]) {
+        return -1;
+    }
 
     let minSteps = Infinity;
 

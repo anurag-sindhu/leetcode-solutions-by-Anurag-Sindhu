@@ -1,6 +1,6 @@
 const BinaryTree = require('../javascript/binary-tree.js');
 
-var averageOfLevels = function (root) {
+var averageOfLevels1 = function (root) {
     const levelMapping = {};
     var averageOfLevelsHelper = function (root, currentLevel = 0, levelMapping = {}) {
         if (!root) {
@@ -21,6 +21,27 @@ var averageOfLevels = function (root) {
     const output = [];
     for (const key in levelMapping) {
         output.push((levelMapping[key].sum / levelMapping[key].count).toFixed(5));
+    }
+    return output;
+};
+
+var averageOfLevels = function (root) {
+    const output = [];
+    let q = [root];
+    while (q[0]) {
+        let qLen = q.length;
+        let sum = 0;
+        for (let i = 0; i < qLen; i++) {
+            let curr = q.shift();
+            sum += curr.val;
+            if (curr.left) {
+                q.push(curr.left);
+            }
+            if (curr.right) {
+                q.push(curr.right);
+            }
+        }
+        output.push(sum / qLen);
     }
     return output;
 };

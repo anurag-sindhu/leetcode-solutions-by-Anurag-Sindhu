@@ -23,11 +23,34 @@ var start = function (root, level) {
     return output;
 };
 
-var levelOrder = function (root, output = []) {
+var levelOrder1 = function (root, output = []) {
     const levelsCount = countLevels(root);
     for (let index = 1; index <= levelsCount; index++) {
         const elementFromLevel = start(root, index);
         output.push(elementFromLevel);
+    }
+    return output;
+};
+
+var levelOrder = function (root) {
+    const output = [];
+    let q = [root];
+    while (q[0]) {
+        let qLen = q.length;
+        const tempOutput = [];
+        for (let i = 0; i < qLen; i++) {
+            let curr = q.shift();
+            if (curr.val) {
+                tempOutput.push(curr.val);
+            }
+            if (curr.left) {
+                q.push(curr.left);
+            }
+            if (curr.right) {
+                q.push(curr.right);
+            }
+        }
+        output.push(tempOutput);
     }
     return output;
 };

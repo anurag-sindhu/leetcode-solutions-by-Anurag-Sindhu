@@ -51,16 +51,23 @@ function rightSideView11(root, output = [], level = 0) {
     return output;
 }
 
-function rightSideView(root, output = [], level = 0) {
-    if (!root) {
-        return [];
-    }
-    if ((root.val || root.val === 0) && output.length === level) {
-        output.push(root.val);
-    }
-    rightSideView(root.right, output, level + 1);
-    if (level + 1 === output.length) {
-        rightSideView(root.left, output, level + 1);
+function rightSideView(root) {
+    const output = [];
+    let q = [root];
+    while (q[0]) {
+        let qLen = q.length;
+        for (let i = 0; i < qLen; i++) {
+            let curr = q.shift();
+            if (i == qLen - 1) {
+                output.push(curr.val);
+            }
+            if (curr.left) {
+                q.push(curr.left);
+            }
+            if (curr.right) {
+                q.push(curr.right);
+            }
+        }
     }
     return output;
 }
@@ -74,6 +81,9 @@ function rightSideView(root, output = [], level = 0) {
 
 let res;
 
+res = rightSideView(new BinaryTree().createFromArray([1, 2, 3, null, 5, null, 4]));
+console.log(res);
+
 res = rightSideView(new BinaryTree().createFromArray([1, 2, 3, null, 5, 4, null]));
 console.log(res);
 
@@ -84,9 +94,6 @@ res = rightSideView(new BinaryTree().createFromArray([1, 2, 0]));
 console.log(res); //1,0
 
 res = rightSideView(new BinaryTree().createFromArray([1, null, 3]));
-console.log(res);
-
-res = rightSideView(new BinaryTree().createFromArray([1, 2, 3, null, 5, null, 4]));
 console.log(res);
 
 res = rightSideView(new BinaryTree().createFromArray([]));

@@ -25,7 +25,7 @@ var isValidBST1 = function (root) {
     return true;
 };
 
-var isValidBST = function (root) {
+var isValidBST111 = function (root) {
     let last = null;
     let out = true;
     function isValidBSTHelper(root) {
@@ -46,18 +46,29 @@ var isValidBST = function (root) {
     return out;
 };
 
+var isValidBST = function (root) {
+    let prev = null;
+    let isValid = true;
+
+    function dfs(node) {
+        if (!node) return;
+        dfs(node.left);
+        if (prev != null && !(prev < node.val)) {
+            isValid = false;
+        }
+        prev = node.val;
+        dfs(node.right);
+    }
+
+    dfs(root);
+    return isValid;
+};
+
 let resp = null;
 let binaryTree;
 
 binaryTree = new BinaryTree();
-for (const iterator of [120, 70, 140, 50, 100, 130, 160, 20, 55, 75, 110, 119, 135, 150, 200]) {
-    binaryTree.add(iterator);
-}
-resp = isValidBST(binaryTree.tree);
-console.log(resp);
-
-binaryTree = new BinaryTree();
-for (const iterator of [5, 6, 4]) {
+for (const iterator of [0, null, -1]) {
     binaryTree.add(iterator);
 }
 resp = isValidBST(binaryTree.tree);
@@ -75,11 +86,25 @@ for (const iterator of [2, 1, 3]) {
     binaryTree.add(iterator);
 }
 resp = isValidBST(binaryTree.tree);
-console.log(resp);
+console.log(resp == true);
+
+binaryTree = new BinaryTree();
+for (const iterator of [120, 70, 140, 50, 100, 130, 160, 20, 55, 75, 110, 119, 135, 150, 200]) {
+    binaryTree.add(iterator);
+}
+resp = isValidBST(binaryTree.tree);
+console.log(resp == false);
+
+binaryTree = new BinaryTree();
+for (const iterator of [5, 6, 4]) {
+    binaryTree.add(iterator);
+}
+resp = isValidBST(binaryTree.tree);
+console.log(resp == false);
 
 binaryTree = new BinaryTree();
 for (const iterator of [5, 4, 6, null, null, 3, 7]) {
     binaryTree.add(iterator);
 }
 resp = isValidBST(binaryTree.tree);
-console.log(resp);
+console.log(resp == false);

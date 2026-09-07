@@ -23,7 +23,7 @@ var kthSmallest1 = function (root, k, output = [], found = null) {
     return found;
 };
 
-var kthSmallest = function (root, k) {
+var kthSmallest1 = function (root, k) {
     let output = 0;
     let count = 0;
     function kthSmallestHelper(root, k) {
@@ -47,6 +47,28 @@ var kthSmallest = function (root, k) {
     return output;
 };
 
+var kthSmallest = function (root, k) {
+    let prev = null;
+    let output = -1;
+    let nodeNum = 0;
+
+    function dfs(node) {
+        if (!node) return;
+        dfs(node.left);
+        if (node.val !== null) {
+            nodeNum += 1;
+            if (nodeNum == k) {
+                output = node.val;
+            }
+        }
+        prev = node.val;
+        dfs(node.right);
+    }
+
+    dfs(root);
+    return output;
+};
+
 let binarySearchTree;
 let resp;
 
@@ -55,14 +77,14 @@ for (const iterator of [5, 3, 6, 2, 4, null, null, 1]) {
     binarySearchTree.add(iterator);
 }
 resp = kthSmallest(binarySearchTree.tree, (k = 3));
-console.log(resp);
+console.log(resp === 3);
 
 binarySearchTree = new BinarySearchTree();
 for (const iterator of [3, 1, 4, null, 2]) {
     binarySearchTree.add(iterator);
 }
 resp = kthSmallest(binarySearchTree.tree, (k = 1));
-console.log(resp);
+console.log(resp === 1);
 
 binarySearchTree = new BinarySearchTree();
 for (const iterator of [
@@ -165,4 +187,4 @@ for (const iterator of [
     binarySearchTree.add(iterator);
 }
 resp = kthSmallest(binarySearchTree.tree, (k = 25));
-console.log(resp);
+console.log(resp == 0);
